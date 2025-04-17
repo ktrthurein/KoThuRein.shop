@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Details</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+
+    body {
+      background: #fff;
+      padding: 10px;
+    }
+
+.page-header {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  padding: 12px 16px;
+  font-size: 18px;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.page-header a {
+  text-decoration: none;
+  font-size: 22px;
+  color: #000;
+}
+
+
+    .slider-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .slider {
+      display: flex;
+      transition: transform 0.4s ease-in-out;
+    }
+
+    .slider img {
+      width: 100%;
+      flex-shrink: 0;
+    }
+
+    .slider-top-right {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 4px 8px;
+      border-radius: 12px;
+    }
+
+    .slider-top-right span {
+      color: white;
+      font-size: 12px;
+    }
+
+    .slider-top-right img {
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 5px;
+      padding: 2px;
+    }
+
+.price-bar {
+  background: linear-gradient(90deg, #ff7eb3, #ffcc70);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+    .availability {
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .product-title {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 10px;
+    }
+
+    .tabs {
+      display: flex;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #eee;
+    }
+
+    .tabs div {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .tabs .active {
+      font-weight: bold;
+      border-bottom: 3px solid dodgerblue;
+      color: dodgerblue;
+    }
+
+    .tab-content {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+.amount-section {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  border-top: 1px solid #ccc;
+  padding: 15px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+
+    .amount-label {
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .amount-value {
+      font-size: 16px;
+      color: dodgerblue;
+      font-weight: bold;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .actions button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .buy-now {
+      background: orange;
+      color: white;
+    }
+
+    .add-cart {
+      background: tomato;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+<!-- Sticky Top Header -->
+<div class="page-header">
+  <a href="index.html">←</a>
+  <span>Product Details</span>
+</div>
+
+  <!-- Image Slider -->
+  <div class="slider-wrapper">
+    <div class="slider" id="slider">
+      <img src="tv1.jpg" alt="img1" />
+      <img src="tv1.jpg" alt="img2" />
+      <img src="tv1.jpg" alt="img3" />
+    </div>
+    <div class="slider-top-right" id="slider-indicator">
+      <span>1/3</span>
+      <img src="image-icon.png" alt="Image">
+      <img src="video-icon.jpg" alt="Video">
+    </div>
+  </div>
+
+  <!-- Price & Availability -->
+<div class="price-bar">
+  <div>950,000 Ks</div>
+  <div class="availability">
+    <span style="color: white;">Available:</span>
+    <span style="color: red; font-weight: bold;">In Stock</span>
+  </div>
+</div>
+
+  <!-- Product Title -->
+  <div class="product-title">
+    Samsung QA65S90DAKXXT 65 inch OLED AI Gen 2 TV
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('desc')">Description</div>
+    <div class="tab" onclick="showTab('specs')">Specifications</div>
+  </div>
+
+  <!-- Tab Contents -->
+  <div id="desc" class="tab-content active">
+    <p>
+      Samsung QA65S90DAKXXT OLED TV သည် AI Processor 2nd Gen, Dolby Atmos Sound, Wi-Fi 6 စနစ်များဖြင့် လှပစွာတပ်ဆင်ထားပြီး 65-inch UHD 4K Display ကိုထောက်ပံ့သည်။
+AI Upscaling နည်းပညာဖြင့် SD သို့မဟုတ် HD content များကိုပါ 4K အနီးစပ်ဆုံးအထိ တိုးမြှင့်နိုင်သည်။
+HDR10+ သုံးထားသောကြောင့် အရောင်အလင်းနဲ့အမှောင်ပိုင်းတွေမှာ အလွန်ချောမွေ့ပြီး သဘာဝကျပါတယ်။
+အလွန်ပါးလွှာတဲ့ bezels များကြောင့် စက်ပစ္စည်းကိုမမြင်ရလောက်အောင် မြင်ကွင်းကျယ်တိုးနေစေသည်။
+Dolby Atmos အသံစနစ်ကြောင့် Surround Sound Effect အပြည့်အဝခံစားနိုင်သည်။
+Motion Xcelerator Turbo+ ပါဝင်၍ Game Mode များတွင် ပြတ်ပြတ်သားသားနှုန်းမြန်မြန်နဲ့ ပြသပေးနိုင်သည်။
+အကြိမ်ကြိမ်ထပ်မံပြီးလွှင့်နိုင်သော Refresh Rate 120Hz ဖြစ်၍ Sports နှင့် Gaming တွင် အဆင်ပြေသည်။
+Tizen OS ဖြင့် Smart Features များ၊ Netflix, YouTube, Apple TV+ တို့ကို တစ်ချက်ထဲဖွင့်နိုင်သည်။
+Multiple voice assistant options (Bixby, Alexa, Google Assistant) တွေနဲ့ စကားပြောဖော်ပြောဖော် အသုံးပြုနိုင်သည်။
+TV Remote တစ်ခုတည်းဖြင့် Soundbar, Game Console, Air Conditioner တို့ကိုပါ ထိန်းချုပ်နိုင်သည်။
+Design ကိုလည်း အနုမြလှပပြီး အိမ်ဖက်ရှင်ပျော်ရွှင်မှုကို မြှင့်တင်ပေးနိုင်တဲ့ Luxury Gadget တစ်ခုဖြစ်သည်။
+    </p>
+  </div>
+
+  <div id="specs" class="tab-content">
+    <ul>
+      <li>Display: 65" UHD 4K OLED</li>
+      <li>Processor: AI Gen 2</li>
+      <li>Connectivity: HDMI x3, USB x2</li>
+      <li>Features: Dolby Vision, Wi-Fi 6</li>
+    </ul>
+  </div>
+
+<!-- Amount + Buttons -->
+<div class="amount-section">
+  <div class="amount-content">
+    <div class="amount-label">Amount</div>
+    <div class="amount-value">11,950,000 Ks</div>
+  </div>
+  <div class="actions">
+    <button class="buy-now">Buy Now</button>
+    <button class="add-cart">Add to Cart</button>
+  </div>
+</div>
+
+  <script>
+    // Image Slider
+    let sliderIndex = 0;
+    const slider = document.getElementById("slider");
+    const images = slider.querySelectorAll("img");
+    const indicator = document.getElementById("slider-indicator").querySelector("span");
+
+    setInterval(() => {
+      sliderIndex = (sliderIndex + 1) % images.length;
+      slider.style.transform = `translateX(-${sliderIndex * 100}%)`;
+      indicator.textContent = `${sliderIndex + 1}/${images.length}`;
+    }, 3000);
+
+    // Tab Switcher
+    function showTab(id) {
+      document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
+      document.querySelectorAll(".tab").forEach(btn => btn.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+      event.target.classList.add("active");
+    }
+  </script>
+
+</body>
+</html>
