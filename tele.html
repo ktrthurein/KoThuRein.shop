@@ -2,139 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Zenith Login Card</title>
+  <title>Telegram Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f2f5fb;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom right, #0088cc, #ffffff);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
 
-    .card {
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-      width: 350px;
-      overflow: hidden;
+    .login-container {
       text-align: center;
     }
 
-    .card-header {
-      background: linear-gradient(to right, #0066ff, #3399ff);
-      color: white;
-      padding: 20px;
-    }
-
-    .card-header h2 {
-      margin: 0;
-      font-size: 20px;
-    }
-
-    .card-header span {
-      font-size: 18px;
-      opacity: 0.9;
-    }
-
-    .card-body {
-      padding: 20px;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
-    .card-body strong {
-      font-weight: bold;
-    }
-
-    .actions {
-      display: flex;
-      justify-content: space-between;
-      padding: 15px 20px 20px;
-      gap: 10px;
-    }
-
-    .btn {
-      flex: 1;
-      padding: 10px;
-      border-radius: 10px;
-      text-decoration: none;
-      color: white;
-      text-align: center;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .btn-phone {
-      background-color: #444;
-    }
-
-    .btn-telegram {
-      background-color: #30a3ec;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .btn-telegram img {
-      width: 20px;
-      margin-right: 8px;
-    }
-
-    #user-info {
-      margin-top: 10px;
-      display: none;
-    }
-
-    #user-photo {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      margin-top: 10px;
+    h2 {
+      color: #fff;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
-
-  <div class="card">
-    <div class="card-header">
-      <h2 id="username">бочка Крекерная</h2>
-      <span>0 ကျပ်</span>
-    </div>
-    <div class="card-body">
-      မနက်ဖြန်ရင် မူ ဗျာ ၁၀နာရီအထိပဲရှိပါတယ်။
-      <br>
-      သင့်သတင်းများကို အောက်ဖော်ပြပါ <strong>Social Platform</strong> မှာကြည့်နိုင်ပါတယ်။
-      <div id="user-info">
-        <img id="user-photo" src="" alt="User Photo">
-        <div id="user-name"></div>
-      </div>
-    </div>
-    <div class="actions">
-      <a class="btn btn-phone" href="tel:09891156710">09891156710</a>
-      <div id="telegram-login" class="btn btn-telegram"></div>
-    </div>
+  <div class="login-container">
+    <h2>Login with Telegram</h2>
+    <script async src="https://telegram.org/js/telegram-widget.js?22"
+      data-telegram-login="KoThuReinShopBot" 
+      data-size="large" 
+      data-onauth="onTelegramAuth(user)"
+      data-request-access="write">
+    </script>
   </div>
 
-  <script async src="https://telegram.org/js/telegram-widget.js?7"></script>
-  <script>
-    window.onload = function () {
-      new TelegramLoginWidget.Widget({
-        bot: "KoThuReinBot", // Replace with your bot
-        requestAccess: true,
-        userpic: true,
-        size: "medium",
-        callback: function (user) {
-          document.getElementById("username").textContent = user.first_name + (user.last_name ? ' ' + user.last_name : '');
-          document.getElementById("user-photo").src = user.photo_url;
-          document.getElementById("user-name").textContent = "@" + user.username;
-          document.getElementById("user-info").style.display = "block";
-          document.getElementById("telegram-login").style.display = "none";
-        }
-      }).render(document.getElementById("telegram-login"));
-    };
-  </script>
+  <script type="text/javascript">
+    function onTelegramAuth(user) {
+      // You can send the user data to your backend or redirect here
+      alert('Logged in as ' + user.first_name + ' ' + (user.last_name || '') + 
+        ' (@' + user.username + ', ID: ' + user.id + ')');
 
+      // Optional: Redirect after login
+      // window.location.href = "/your-app-page";
+    }
+  </script>
 </body>
 </html>
