@@ -2,48 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Telegram Login</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome</title>
   <style>
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom right, #0088cc, #ffffff);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .login-container {
       text-align: center;
+      padding-top: 50px;
+      font-family: sans-serif;
     }
-
-    h2 {
-      color: #fff;
-      margin-bottom: 20px;
+    img {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
     }
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <h2>Login with Telegram</h2>
-    <script async src="https://telegram.org/js/telegram-widget.js?22"
-      data-telegram-login="KoThuReinShopBot" 
-      data-size="large" 
-      data-onauth="onTelegramAuth(user)"
-      data-request-access="write">
-    </script>
-  </div>
-
-  <script type="text/javascript">
-    function onTelegramAuth(user) {
-      // You can send the user data to your backend or redirect here
-      alert('Logged in as ' + user.first_name + ' ' + (user.last_name || '') + 
-        ' (@' + user.username + ', ID: ' + user.id + ')');
-
-      // Optional: Redirect after login
-      // window.location.href = "/your-app-page";
+  <h2 id="welcome-text">Welcome!</h2>
+  <img id="profile-pic" src="" alt="Profile Picture" style="display:none;">
+  <script>
+    const user = JSON.parse(localStorage.getItem("tgUser"));
+    if (user) {
+      document.getElementById("welcome-text").innerText = `Welcome, ${user.first_name}`;
+      if (user.photo_url) {
+        document.getElementById("profile-pic").src = user.photo_url;
+        document.getElementById("profile-pic").style.display = "block";
+      }
     }
   </script>
 </body>
