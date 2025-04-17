@@ -1,29 +1,38 @@
-<html>
-  <head>
-    <script async src="https://telegram.org/js/telegram-widget.js?7"
-      data-telegram-login="KoThuReinShopBot" 
-      data-size="large"
-      data-userpic="true"
-      data-radius="10"
-      data-request-access="write"
-      data-userpic="true"
-      data-on-auth="onTelegramAuth">
-    </script>
-  </head>
-  <body>
-    <div id="telegram-user-info"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Telegram Login</title>
+</head>
+<body>
 
-    <script>
-      function onTelegramAuth(user) {
-        document.getElementById("telegram-user-info").innerHTML = `
-          <div style="margin-top: 20px;">
-            <img src="${user.photo_url}" width="80" style="border-radius: 50%;" />
-            <p>Name: ${user.first_name} ${user.last_name || ''}</p>
-            <p>Username: @${user.username}</p>
-            <p>ID: ${user.id}</p>
-          </div>
-        `;
-      }
-    </script>
-  </body>
+  <button id="loginBtn">Login with Telegram</button>
+  <div id="userInfo" style="margin-top: 20px;"></div>
+
+  <script>
+    function loadTelegramLogin() {
+      const script = document.createElement('script');
+      script.src = "https://telegram.org/js/telegram-widget.js?7";
+      script.setAttribute("data-telegram-login", "KoThuReinShopBot"); // your bot
+      script.setAttribute("data-size", "large");
+      script.setAttribute("data-userpic", "true");
+      script.setAttribute("data-request-access", "write");
+      script.setAttribute("data-on-auth", "onTelegramAuth");
+      script.async = true;
+      document.getElementById("loginBtn").replaceWith(script);
+    }
+
+    function onTelegramAuth(user) {
+      document.getElementById("userInfo").innerHTML = `
+        <img src="${user.photo_url}" width="100" style="border-radius:50%;"><br>
+        <strong>${user.first_name} ${user.last_name || ''}</strong><br>
+        @${user.username}<br>
+        Telegram ID: ${user.id}
+      `;
+    }
+
+    document.getElementById("loginBtn").addEventListener("click", loadTelegramLogin);
+  </script>
+
+</body>
 </html>
