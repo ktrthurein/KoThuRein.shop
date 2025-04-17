@@ -2,52 +2,134 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ko Thu Rein Shop - Telegram Login</title>
+  <title>Zenith Login Card</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f2f5fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      width: 350px;
+      overflow: hidden;
       text-align: center;
-      padding-top: 50px;
-      background: linear-gradient(to bottom, #f0f0f0, #d0e8ff);
     }
+
+    .card-header {
+      background: linear-gradient(to right, #0066ff, #3399ff);
+      color: white;
+      padding: 20px;
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .card-header span {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+
+    .card-body {
+      padding: 20px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .card-body strong {
+      font-weight: bold;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 20px 20px;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: white;
+      text-align: center;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-phone {
+      background-color: #444;
+    }
+
+    .btn-telegram {
+      background-color: #30a3ec;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-telegram img {
+      width: 20px;
+      margin-right: 8px;
+    }
+
     #user-info {
+      margin-top: 10px;
       display: none;
-      margin-top: 20px;
     }
+
     #user-photo {
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
-  <h2>Telegram ဖြင့် Login ဝင်ပါ</h2>
-
-  <div id="telegram-login"></div>
-
-  <div id="user-info">
-    <img id="user-photo" src="" alt="User Photo">
-    <h3 id="user-name"></h3>
+  <div class="card">
+    <div class="card-header">
+      <h2 id="username">бочка Крекерная</h2>
+      <span>0 ကျပ်</span>
+    </div>
+    <div class="card-body">
+      မနက်ဖြန်ရင် မူ ဗျာ ၁၀နာရီအထိပဲရှိပါတယ်။
+      <br>
+      သင့်သတင်းများကို အောက်ဖော်ပြပါ <strong>Social Platform</strong> မှာကြည့်နိုင်ပါတယ်။
+      <div id="user-info">
+        <img id="user-photo" src="" alt="User Photo">
+        <div id="user-name"></div>
+      </div>
+    </div>
+    <div class="actions">
+      <a class="btn btn-phone" href="tel:09891156710">09891156710</a>
+      <div id="telegram-login" class="btn btn-telegram"></div>
+    </div>
   </div>
 
   <script async src="https://telegram.org/js/telegram-widget.js?7"></script>
   <script>
     window.onload = function () {
       new TelegramLoginWidget.Widget({
-        bot: "KoThuReinShopBot", // Your bot username
+        bot: "KoThuReinBot", // Replace with your bot
         requestAccess: true,
         userpic: true,
-        size: "large",
-        cornerRadius: 10,
-        radius: 15,
-        lang: "en",
+        size: "medium",
         callback: function (user) {
-          document.getElementById("user-info").style.display = "block";
-          document.getElementById("user-name").textContent = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+          document.getElementById("username").textContent = user.first_name + (user.last_name ? ' ' + user.last_name : '');
           document.getElementById("user-photo").src = user.photo_url;
+          document.getElementById("user-name").textContent = "@" + user.username;
+          document.getElementById("user-info").style.display = "block";
           document.getElementById("telegram-login").style.display = "none";
         }
       }).render(document.getElementById("telegram-login"));
