@@ -1,37 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
   <title>Telegram Login</title>
 </head>
 <body>
 
-  <button id="loginBtn">Login with Telegram</button>
-  <div id="userInfo" style="margin-top: 20px;"></div>
+  <h2>Login with Telegram</h2>
+  <div id="telegram-login"></div>
+  <div id="user-info" style="margin-top: 20px;"></div>
 
   <script>
-    function loadTelegramLogin() {
-      const script = document.createElement('script');
-      script.src = "https://telegram.org/js/telegram-widget.js?7";
-      script.setAttribute("data-telegram-login", "KoThuReinShopBot"); // your bot
-      script.setAttribute("data-size", "large");
-      script.setAttribute("data-userpic", "true");
-      script.setAttribute("data-request-access", "write");
-      script.setAttribute("data-on-auth", "onTelegramAuth");
-      script.async = true;
-      document.getElementById("loginBtn").replaceWith(script);
-    }
+    const BOT_TOKEN = '7569196503:AAE4k8OMdaZEx0w-C7xLQxS66bdinTp1fGQ'; // Your bot token
 
     function onTelegramAuth(user) {
-      document.getElementById("userInfo").innerHTML = `
-        <img src="${user.photo_url}" width="100" style="border-radius:50%;"><br>
-        <strong>${user.first_name} ${user.last_name || ''}</strong><br>
-        @${user.username}<br>
-        Telegram ID: ${user.id}
-      `;
+      if (verifyTelegramLogin(user)) {
+        document.getElementById("user-info").innerHTML = `
+          <img src="${user.photo_url}" width="100" style="border-radius:50%;" /><br/>
+          <strong>${user.first_name} ${user.last_name || ''}</strong><br/>
+          @${user.username}<br/>
+          Telegram ID: ${user.id}
+        `;
+      } else {
+        alert("Invalid login data from Telegram!");
+      }
     }
 
-    document.getElementById("loginBtn").addEventListener("click", loadTelegramLogin);
+    function verifyTelegramLogin(authData) {
+      const hash = authData.hash;
+      delete authData.hash;
+
+      const sortedKeys = Object.keys(authData).sort();
+      const dataCheckString = sortedKeys.map(key => `${key}=${authData[key]}`).join('\n');
+
+      const encoder = new TextEncoder();
+      const secretKey = crypto.subtle.digest("SHA-256", encoder.encode(BOT_TOKEN));
+
+      return secretKey.then(key => {
+        return crypto.subtle.importKey("raw", key, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+      }).then(cryptoKey => {
+        return crypto.subtle.sign("HMAC", cryptoKey, encoder.encode(dataCheckString));
+      }).then(sig => {
+        const hashArray = Array.from(new Uint8Array(sig));
+        const hex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        return hex === hash;
+      }).catch(e => {
+        console.error("Verification error:", e);
+        return false;
+      });
+    }
+
+    // Inject Telegram Login Button
+    const script = document.createElement('script');
+    script.src = "https://telegram.org/js/telegram-widget.js?7";
+    script.setAttribute("data-telegram-login", "KoThuReinShopBot"); // your bot
+    script.setAttribute("data-size", "large");
+    script.setAttribute("data-userpic", "true");
+    script.setAttribute("data-request-access", "write");
+    script.setAttribute("data-userpic", "true");
+    script.setAttribute("data-on-auth", "onTelegramAuth");
+    script.async = true;
+    document.getElementById("telegram-login").appendChild(script);
   </script>
 
 </body>
