@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Telegram Profile Display</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    .top-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      background-color: #f3f3f3;
+      padding: 10px 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .top-section img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+
+    .top-info h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .top-info p {
+      margin: 5px 0 0;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Telegram Login Widget -->
+  <script async src="https://telegram.org/js/telegram-widget.js?7"
+    data-telegram-login="KoThuReinBot"
+    data-size="large"
+    data-userpic="true"
+    data-request-access="write"
+    data-onauth="onTelegramAuth(user)">
+  </script>
+
+  <!-- Top Section -->
+  <div class="top-section" id="profileBox">
+    <img src="mcggl.png" alt="Profile" id="profilePic">
+    <div class="top-info">
+      <h2 id="profileName">Guest</h2>
+      <p>Amount - 8000</p>
+    </div>
+  </div>
+
+  <!-- Telegram Login Handler Script -->
+  <script>
+    function onTelegramAuth(user) {
+      document.getElementById("profilePic").src = user.photo_url;
+      document.getElementById("profileName").textContent = user.first_name;
+    }
+  </script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Telegram Profile Display</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    .top-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      background-color: #f3f3f3;
+      padding: 10px 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .top-section img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+
+    .top-info h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .top-info p {
+      margin: 5px 0 0;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Telegram Login Widget -->
+  <script async src="https://telegram.org/js/telegram-widget.js?7"
+    data-telegram-login="KoThuReinBot"
+    data-size="large"
+    data-userpic="true"
+    data-request-access="write"
+    data-onauth="onTelegramAuth(user)">
+  </script>
+
+  <!-- Top Section -->
+  <div class="top-section" id="profileBox">
+    <img src="mcggl.png" alt="Profile" id="profilePic">
+    <div class="top-info">
+      <h2 id="profileName">Guest</h2>
+      <p>Amount - 8000</p>
+    </div>
+  </div>
+
+  <!-- Telegram Login Handler Script -->
+  <script>
+    function onTelegramAuth(user) {
+      document.getElementById("profilePic").src = user.photo_url;
+      document.getElementById("profileName").textContent = user.first_name;
+    }
+  </script>
+
+</body>
+</html>
