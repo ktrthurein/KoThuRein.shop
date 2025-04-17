@@ -1,87 +1,61 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Telegram Login - Ko Thu Rein Shop</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ko Thu Rein Shop</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background: linear-gradient(to bottom, #f0f0f0, #d2e9ff);
+    }
+    img {
+      border-radius: 50%;
+      margin-top: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 350px;
+      margin: auto;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    h2 {
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-br from-blue-100 to-purple-200 min-h-screen flex items-center justify-center">
-  <div class="bg-white shadow-2xl rounded-2xl p-8 max-w-sm text-center">
-    <h2 class="text-2xl font-bold mb-4">Login with Telegram</h2><div id="telegram-login" class="mb-4"></div>
+<body>
+  <div class="card">
+    <h2>Welcome to Ko Thu Rein Shop</h2>
+    <p><strong>Telegram Username:</strong> <span id="username">Loading...</span></p>
+    <p><strong>Full Name:</strong> <span id="fullname">Loading...</span></p>
+    <img id="profile-pic" src="" alt="Profile Photo" width="100" height="100" />
+  </div>
 
-<div id="user-info" class="mt-4 hidden">
-  <img id="user-pic" class="w-24 h-24 mx-auto rounded-full mb-2" />
-  <h3 id="user-name" class="text-xl font-semibold"></h3>
-  <p id="user-username" class="text-gray-600"></p>
-  <p id="user-id" class="text-gray-400 text-sm"></p>
-  <button onclick="logout()" class="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Logout</button>
-</div>
+  <!-- Telegram WebApp script -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    window.onload = () => {
+      const tg = window.Telegram.WebApp;
+      tg.ready();
 
-  </div>  <script>
-    const BOT_TOKEN = '7569196503:AAE4k8OMdaZEx0w-C7xLQxS66bdinTp1fGQ';
+      const user = tg.initDataUnsafe.user;
 
-    function onTelegramAuth(user) {
-      verifyTelegramLogin(user).then(isValid => {
-        if (isValid) {
-          localStorage.setItem("tg_user", JSON.stringify(user));
-          renderUser(user);
-        } else {
-          alert("Invalid Telegram login.");
-        }
-      });
-    }
-
-    function verifyTelegramLogin(authData) {
-      const hash = authData.hash;
-      delete authData.hash;
-
-      const sortedKeys = Object.keys(authData).sort();
-      const dataCheckString = sortedKeys.map(key => `${key}=${authData[key]}`).join('\n');
-
-      const encoder = new TextEncoder();
-      return crypto.subtle.digest("SHA-256", encoder.encode(BOT_TOKEN)).then(secretKey => {
-        return crypto.subtle.importKey("raw", secretKey, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-      }).then(cryptoKey => {
-        return crypto.subtle.sign("HMAC", cryptoKey, encoder.encode(dataCheckString));
-      }).then(sig => {
-        const hashArray = Array.from(new Uint8Array(sig));
-        const hex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        return hex === hash;
-      }).catch(e => {
-        console.error("Verification failed:", e);
-        return false;
-      });
-    }
-
-    function renderUser(user) {
-      document.getElementById("telegram-login").classList.add("hidden");
-      document.getElementById("user-info").classList.remove("hidden");
-      document.getElementById("user-pic").src = user.photo_url;
-      document.getElementById("user-name").innerText = `${user.first_name} ${user.last_name || ''}`;
-      document.getElementById("user-username").innerText = `@${user.username}`;
-      document.getElementById("user-id").innerText = `ID: ${user.id}`;
-    }
-
-    function logout() {
-      localStorage.removeItem("tg_user");
-      location.reload();
-    }
-
-    // If already logged in
-    const storedUser = localStorage.getItem("tg_user");
-    if (storedUser) {
-      renderUser(JSON.parse(storedUser));
-    }
-
-    // Inject Telegram Login Button
-    const script = document.createElement('script');
-    script.src = "https://telegram.org/js/telegram-widget.js?7";
-    script.setAttribute("data-telegram-login", "KoThuReinShopBot");
-    script.setAttribute("data-size", "large");
-    script.setAttribute("data-userpic", "true");
-    script.setAttribute("data-request-access", "write");
-    script.setAttribute("data-on-auth", "onTelegramAuth");
-    script.async = true;
-    document.getElementById("telegram-login").appendChild(script);
-  </script></body>
+      if (user) {
+        document.getElementById("username").innerText = user.username || "No username";
+        document.getElementById("fullname").innerText = `${user.first_name} ${user.last_name || ''}`;
+        document.getElementById("profile-pic").src = user.photo_url || "https://via.placeholder.com/100";
+      } else {
+        document.getElementById("username").innerText = "No user data found";
+        document.getElementById("fullname").innerText = "-";
+        document.getElementById("profile-pic").src = "https://via.placeholder.com/100";
+      }
+    };
+  </script>
+</body>
 </html>
