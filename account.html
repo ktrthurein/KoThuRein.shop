@@ -163,6 +163,28 @@
       from { transform: translate(-50%, -60%); opacity: 0; }
       to { transform: translate(-50%, -50%); opacity: 1; }
     }
+    .circle-minus {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white; /* Stroke white border */
+}
+
+.circle-minus::before {
+  content: '';
+  width: 12px;
+  height: 2px;
+  background: white;
+  border-radius: 1px;
+}
   </style>
 </head>
 <body>
@@ -171,7 +193,7 @@
   <div class="cloud"></div>
   <div class="cloud"></div>
   <div class="cloud"></div>
-
+<a href="index.html" class="circle-minus"></a>
   <!-- Auth UI -->
   <div class="auth-box" id="authBox">
     <h2 id="form-title">Login</h2>
@@ -237,4 +259,4 @@
   </script>
 
 </body>
-</html>
+</html
