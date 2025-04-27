@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Myanmar Net Top-up</title>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://www.toptal.com/designers/subtlepatterns/patterns/waves.png') repeat-x;
+      background-position: center top;
+      background-size: cover;
+    }
+
+    /* Top-up form container with blur effect */
+    .form-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+      backdrop-filter: blur(10px); /* Apply blur */
+      -webkit-backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      width: 80%;
+      max-width: 450px;
+      margin: 50px auto;
+    }
+
+    .guide {
+      background-color: #111;
+      padding: 20px;
+      border-radius: 15px;
+      margin-top: 30px;
+      box-shadow: 0 0 10px #00f0ff55;
+      color: #fff;
+    }
+
+    h2 {
+      text-align: center;
+      color: #003366;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      font-weight: bold;
+      font-size: 14px;
+      display: block;
+      margin-top: 1rem;
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    select {
+      background: #f9f9f9;
+    }
+
+    .topup-cards {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .card-item {
+      width: 30%;
+      background: linear-gradient(145deg, #ffffff, #e6e6e6);
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-align: center;
+      cursor: pointer;
+      padding: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .card-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .card-item img {
+      width: 60px;
+      height: 40px;
+      border-radius: 5px;
+      object-fit: cover;
+    }
+
+    /* Blur Effect */
+    .blur-input {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: none;
+      margin-top: 1rem;
+    }
+
+    button {
+      background: #0077ff;
+      color: white;
+      border: none;
+      margin-top: 1rem;
+      font-weight: bold;
+      transition: background 0.3s ease;
+      cursor: pointer;
+      padding: 0.8rem;
+    }
+
+    button:hover {
+      background: #005fcc;
+    }
+
+    /* Toast Message Style */
+    .toast {
+      visibility: hidden;
+      min-width: 250px;
+      margin-left: -125px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 2px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1;
+      left: 50%;
+      bottom: 30px;
+      font-size: 17px;
+    }
+
+    .toast.show {
+      visibility: visible;
+      animation: fadeInOut 3s ease-in-out;
+    }
+
+    @keyframes fadeInOut {
+      0% { bottom: 30px; opacity: 0; }
+      50% { bottom: 50px; opacity: 1; }
+      100% { bottom: 30px; opacity: 0; }
+    }
+
+    /* Mobile Responsiveness */
+    @media screen and (max-width: 768px) {
+      .form-card {
+        padding: 1.5rem;
+        width: 90%;
+      }
+
+      .topup-cards {
+        justify-content: space-around;
+      }
+
+      .card-item {
+        width: 45%;
+        margin-bottom: 1rem;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .form-card {
+        width: 95%;
+        padding: 1rem;
+      }
+
+      .topup-cards {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .card-item {
+        width: 80%;
+        margin-bottom: 1rem;
+      }
+
+      button {
+        padding: 1rem;
+      }
+    }
+
+    .payment-box {
+      display: flex;
+      flex-direction: column;
+      margin-top: 1rem;
+      gap: 15px;
+    }
+
+    .pay-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #f9f9f9;
+      transition: background 0.3s ease;
+    }
+
+    .pay-card:hover {
+      background: #e6e6e6;
+    }
+
+    .pay-card img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .copyBtn {
+      background: none;
+      border: none;
+      font-size: 14px;
+      color: #0077ff;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .copyBtn:hover {
+      color: #005fcc;
+    }
+
+    .line-divider {
+      margin-top: 20px;
+      border-top: 1px solid #ccc;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-card">
+    <h2>Top-up Form</h2>
+    <form id="topupForm">
+      <label>Choose Platform</label>
+      <select required>
+        <option value="">-- Select Viber / Telegram --</option>
+        <option value="viber">Viber</option>
+        <option value="telegram">Telegram</option>
+      </select>
+
+      <label>Phone Number</label>
+      <input type="tel" placeholder="09xxxxxxxxx" required />
+
+      <label>Select Top-up Card</label>
+      <div class="topup-cards">
+        <label class="card-item">
+          <img src="mmnet.jpg" alt="1000 Ks">
+          <div>1000 Ks (4 days)</div>
+          <input type="radio" name="card" value="1000" required />
+        </label>
+        <label class="card-item">
+          <img src="mmnet.jpg" alt="3000 Ks">
+          <div>3000 Ks (12 days)</div>
+          <input type="radio" name="card" value="3000" />
+        </label>
+        <label class="card-item">
+          <img src="mmnet.jpg" alt="5000 Ks">
+          <div>5000 Ks (25 days)</div>
+          <input type="radio" name="card" value="5000" />
+        </label>
+      </div>
+
+      <label>Enter Quantity</label>
+      <input type="number" class="blur-input" placeholder="Enter quantity" min="1" required />
+
+      <label>Payment Platforms</label>
+      <div class="payment-box">
+        <!-- KPay -->
+        <div class="pay-card">
+          <img src="wavemoney.png" alt="KBZ Pay" />
+          <div>09 123 456 789</div>
+          <button type="button" class="copyBtn" data-clipboard-text="09 123 456 789">
+            Copy
+          </button>
+        </div>
+
+        <div class="line-divider"></div>
+
+        <!-- Wave Money -->
+        <div class="pay-card">
+          <img src="kbzpy.jpg" alt="Wave Money" />
+          <div>09 987 654 321</div>
+          <button type="button" class="copyBtn" data-clipboard-text="09 987 654 321">
+            Copy
+          </button>
+        </div>
+
+        <div class="line-divider"></div>
+
+        <!-- AYA Pay -->
+        <div class="pay-card">
+          <img src="aya.jpg" alt="AYA Pay" />
+          <div>09 555 888 444</div>
+          <button type="button" class="copyBtn" data-clipboard-text="09 555 888 444">
+            Copy
+          </button>
+        </div>
+      </div>
+
+      <button type="submit">Submit Top-up</button>
+    </form>
+
+    <div class="guide">
+      <h3>How to Use:</h3>
+      <p><strong>1. Top-up amount</strong> ကိုရွေးပါ။</p>
+      <p><strong>2. Telegram/Viber</strong> နဲ့ ဆက်သွယ်ရန် ရွေးပါ။</p>
+      <p><strong>3. Payment method</strong> ကိုရွေးပြီး <strong>Copy</strong> နှိပ်ကာ ကူးယူပါ။</p>
+      <p><strong>4. ပေးချေပြီးပါက</strong> Screenshot ကို Telegram/Viber မှတဆင့် ပေးပို့ပါ။</p>
+    </div>
+  </div>
+
+  <!-- Toast Message -->
+  <div id="toast" class="toast">ကူးယူပြီးပါပြီ!</div>
+
+  <script>
+    document.getElementById("topupForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("Top-up submitted!");
+    });
+
+    const copyBtns = document.querySelectorAll(".copyBtn");
+
+    copyBtns.forEach(button => {
+      button.addEventListener("click", function() {
+        const phoneNumber = button.getAttribute("data-clipboard-text");
+        navigator.clipboard.writeText(phoneNumber).then(() => {
+          // Show toast
+          const toast = document.getElementById("toast");
+          toast.className = "toast show";
+          setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 6000);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
