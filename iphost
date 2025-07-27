@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IP and Device Info</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f1f1;
+      padding: 40px;
+      text-align: center;
+    }
+    .info-box {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: inline-block;
+      max-width: 400px;
+    }
+    h2 {
+      color: #333;
+    }
+    .data {
+      text-align: left;
+      margin-top: 20px;
+    }
+    .data p {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="info-box">
+    <h2>Your IP & Device Info</h2>
+    <div class="data" id="info">
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <script>
+    async function getInfo() {
+      const infoBox = document.getElementById('info');
+
+      try {
+        // Fetch IP info using ipapi.co (free, no key required)
+        const ipRes = await fetch('https://ipapi.co/json/');
+        const ipData = await ipRes.json();
+
+        // Get device info
+        const deviceInfo = {
+          userAgent: navigator.userAgent,
+          platform: navigator.platform,
+          language: navigator.language,
+        };
+
+        infoBox.innerHTML = `
+          <p><strong>IP Address:</strong> ${ipData.ip}</p>
+          <p><strong>City:</strong> ${ipData.city}</p>
+          <p><strong>Region:</strong> ${ipData.region}</p>
+          <p><strong>Country:</strong> ${ipData.country_name}</p>
+          <p><strong>ISP:</strong> ${ipData.org}</p>
+          <hr>
+          <p><strong>Platform:</strong> ${deviceInfo.platform}</p>
+          <p><strong>Language:</strong> ${deviceInfo.language}</p>
+          <p><strong>User Agent:</strong><br>${deviceInfo.userAgent}</p>
+        `;
+      } catch (error) {
+        infoBox.innerHTML = `<p>Error fetching info: ${error.message}</p>`;
+      }
+    }
+
+    getInfo();
+  </script>
+</body>
+</html>
