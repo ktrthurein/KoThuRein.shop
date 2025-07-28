@@ -7,72 +7,66 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f1f1f1;
-      padding: 40px;
+      background-color: #f0f2f5;
       text-align: center;
+      padding: 40px;
     }
-    .info-box {
+
+    .box {
       background: white;
-      padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       display: inline-block;
+      text-align: left;
       max-width: 400px;
     }
-    h2 {
+
+    .box h2 {
       color: #333;
     }
-    .data {
-      text-align: left;
-      margin-top: 20px;
-    }
-    .data p {
-      margin: 10px 0;
+
+    .box p {
+      margin: 8px 0;
     }
   </style>
 </head>
 <body>
 
-  <div class="info-box">
+  <div class="box">
     <h2>Your IP & Device Info</h2>
-    <div class="data" id="info">
-      <p>Loading...</p>
+    <div id="info">
+      <p>Loading info...</p>
     </div>
   </div>
 
   <script>
-    async function getInfo() {
-      const infoBox = document.getElementById('info');
+    async function loadInfo() {
+      const info = document.getElementById("info");
 
       try {
-        // Fetch IP info using ipapi.co (free, no key required)
-        const ipRes = await fetch('https://ipapi.co/json/');
+        // Get IP Address
+        const ipRes = await fetch("https://api.ipify.org?format=json");
         const ipData = await ipRes.json();
 
-        // Get device info
-        const deviceInfo = {
-          userAgent: navigator.userAgent,
-          platform: navigator.platform,
-          language: navigator.language,
-        };
+        // Device Info
+        const userAgent = navigator.userAgent;
+        const platform = navigator.platform;
+        const language = navigator.language;
 
-        infoBox.innerHTML = `
+        info.innerHTML = `
           <p><strong>IP Address:</strong> ${ipData.ip}</p>
-          <p><strong>City:</strong> ${ipData.city}</p>
-          <p><strong>Region:</strong> ${ipData.region}</p>
-          <p><strong>Country:</strong> ${ipData.country_name}</p>
-          <p><strong>ISP:</strong> ${ipData.org}</p>
-          <hr>
-          <p><strong>Platform:</strong> ${deviceInfo.platform}</p>
-          <p><strong>Language:</strong> ${deviceInfo.language}</p>
-          <p><strong>User Agent:</strong><br>${deviceInfo.userAgent}</p>
+          <p><strong>Platform:</strong> ${platform}</p>
+          <p><strong>Language:</strong> ${language}</p>
+          <p><strong>User Agent:</strong> ${userAgent}</p>
         `;
-      } catch (error) {
-        infoBox.innerHTML = `<p>Error fetching info: ${error.message}</p>`;
+      } catch (e) {
+        info.innerHTML = `<p>Error fetching info: ${e.message}</p>`;
       }
     }
 
-    getInfo();
+    loadInfo();
   </script>
+
 </body>
 </html>
