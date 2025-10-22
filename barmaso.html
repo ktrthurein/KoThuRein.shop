@@ -1,4 +1,110 @@
-</div>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barmaso Brand Inventory</title>
+
+    <!-- Tailwind CDN (optional, for styling support) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="test.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1 id="brand-title">Barmaso</h1>
+        <p>Premium Electronics Inventory</p>
+      </div>
+
+      <!-- Products -->
+      <div class="products">
+        <!-- Earphones -->
+        <div class="product-card">
+          <div class="product-image earphone-bg">🎧</div>
+          <div class="stock-badge in-stock">✓ In Stock (1)</div>
+          <div class="product-title">Premium Earphones</div>
+          <div class="product-desc">
+            High-quality audio experience with crystal clear sound
+          </div>
+          <div class="product-footer">
+            <div class="price" id="earphone-price">4,500 MMK</div>
+            <button class="btn" onclick="openDialog('earphone')">
+              View Details
+            </button>
+          </div>
+        </div>
+
+        <!-- Power Bank -->
+        <div class="product-card">
+          <div class="product-image powerbank-bg">🔋</div>
+          <div class="stock-badge out-stock">✗ Out of Stock</div>
+          <div class="product-title">Fast Charge Power Bank</div>
+          <div class="product-desc">
+            20,000mAh capacity with quick charging technology
+          </div>
+          <div class="product-footer">
+            <div class="price" id="powerbank-price">8,000 MMK</div>
+            <button class="btn btn-green" onclick="openDialog('powerbank')">
+              View Details
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div class="summary">
+        <h2>Inventory Summary</h2>
+        <div class="summary-grid">
+          <div class="summary-item summary-blue">
+            <div class="summary-number">2</div>
+            <div class="summary-label">Total Products</div>
+          </div>
+          <div class="summary-item summary-purple">
+            <div class="summary-number">1</div>
+            <div class="summary-label">Available Stock</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Earphone Dialog -->
+    <div id="earphone-dialog" class="dialog">
+      <div class="dialog-content">
+        <div class="dialog-header">
+          <div class="dialog-title">Premium Earphones</div>
+          <button class="close-btn" onclick="closeDialog('earphone')">×</button>
+        </div>
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab('earphone', 'specs')">
+            Specifications
+          </button>
+          <button class="tab" onclick="switchTab('earphone', 'desc')">
+            Description
+          </button>
+        </div>
+        <div class="tab-content">
+          <div id="earphone-specs" class="tab-panel">
+            <div class="spec-grid">
+              <div class="spec-item">
+                <div class="spec-label">Driver Size</div>
+                <div class="spec-value">40mm Dynamic</div>
+              </div>
+              <div class="spec-item">
+                <div class="spec-label">Frequency Response</div>
+                <div class="spec-value">20Hz - 20kHz</div>
+              </div>
+              <div class="spec-item">
+                <div class="spec-label">Impedance</div>
+                <div class="spec-value">32 Ohms</div>
+              </div>
+              <div class="spec-item">
+                <div class="spec-label">Cable Length</div>
+                <div class="spec-value">1.2m</div>
+              </div>
               <div class="spec-item">
                 <div class="spec-label">Connector</div>
                 <div class="spec-value">3.5mm Jack</div>
