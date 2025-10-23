@@ -10,46 +10,186 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 25%, #2d1b69 50%, #1a1a3a 75%, #0f0f23 100%);
             color: white;
             min-height: 100%;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 15% 25%, rgba(138, 43, 226, 0.2) 0%, transparent 60%),
+                radial-gradient(circle at 85% 75%, rgba(63, 81, 181, 0.2) 0%, transparent 60%),
+                radial-gradient(circle at 50% 50%, rgba(33, 150, 243, 0.15) 0%, transparent 70%),
+                linear-gradient(45deg, transparent 30%, rgba(255, 215, 0, 0.05) 50%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+            animation: backgroundShift 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            position: relative;
         }
 
         .header {
             text-align: center;
             margin-bottom: 40px;
-            padding: 30px 0;
+            padding: 40px 0;
+            position: relative;
+            background: linear-gradient(145deg, rgba(138, 43, 226, 0.1), rgba(63, 81, 181, 0.1));
+            border-radius: 25px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
         }
 
         .logo {
-            font-size: 2.5rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ffd700, #3f51b5, #9c27b0, #2196f3);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+            letter-spacing: 3px;
+            animation: gradientShift 4s ease-in-out infinite;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .logo::after {
+            content: '⚡';
+            position: absolute;
+            top: -10px;
+            right: -20px;
+            font-size: 1.5rem;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
         }
 
         .subtitle {
-            font-size: 1.2rem;
-            color: #a0a0a0;
-            margin-bottom: 20px;
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #ffd700, #2196f3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            font-weight: 600;
         }
 
         .contact-info {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
+            background: linear-gradient(145deg, rgba(255, 215, 0, 0.15), rgba(138, 43, 226, 0.1));
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            padding: 20px 25px;
+            border-radius: 20px;
             display: inline-block;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .contact-info:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+        }
+
+        .server-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 35px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .server-tab {
+            background: linear-gradient(145deg, rgba(138, 43, 226, 0.2), rgba(63, 81, 181, 0.2));
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-weight: bold;
+            backdrop-filter: blur(15px);
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .server-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .server-tab:hover::before {
+            left: 100%;
+        }
+
+        .server-tab.active {
+            background: linear-gradient(45deg, #ffd700, #9c27b0, #3f51b5);
+            border-color: #ffd700;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+            color: #000;
+            font-weight: 900;
+        }
+
+        .server-tab:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .server-content {
+            display: none;
+        }
+
+        .server-content.active {
+            display: block;
+        }
+
+        .package-section {
+            margin-bottom: 40px;
+        }
+
+        .package-title {
+            color: #2196f3;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(33, 150, 243, 0.4);
         }
 
         .diamond-grid {
@@ -60,15 +200,16 @@
         }
 
         .diamond-card {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            background: linear-gradient(145deg, rgba(45, 27, 105, 0.9), rgba(26, 26, 58, 0.8));
             border: 2px solid rgba(255, 215, 0, 0.3);
-            border-radius: 20px;
-            padding: 25px;
+            border-radius: 25px;
+            padding: 30px;
             text-align: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            backdrop-filter: blur(15px);
             position: relative;
             overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         }
 
         .diamond-card::before {
@@ -78,15 +219,33 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.15), transparent);
             transform: rotate(45deg);
-            transition: all 0.5s ease;
+            transition: all 0.6s ease;
             opacity: 0;
+        }
+
+        .diamond-card::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.6), transparent);
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.3s ease;
         }
 
         .diamond-card:hover::before {
             opacity: 1;
-            animation: shine 1.5s ease-in-out;
+            animation: shine 2s ease-in-out;
+        }
+
+        .diamond-card:hover::after {
+            opacity: 1;
+            animation: pulse 1.5s ease-in-out infinite;
         }
 
         @keyframes shine {
@@ -94,78 +253,158 @@
             100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+
         .diamond-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-12px) scale(1.02);
             border-color: #ffd700;
-            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 25px 50px rgba(255, 215, 0, 0.3);
         }
 
         .diamond-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
 
         .diamond-amount {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #ffd700;
-            margin-bottom: 10px;
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ffd700, #3f51b5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         }
 
         .diamond-price {
-            font-size: 1.5rem;
-            color: #4ade80;
+            font-size: 1.6rem;
+            color: #32cd32;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            text-shadow: 0 0 12px rgba(50, 205, 50, 0.6);
+            background: linear-gradient(145deg, rgba(50, 205, 50, 0.1), transparent);
+            padding: 8px 15px;
+            border-radius: 15px;
+            border: 1px solid rgba(50, 205, 50, 0.3);
         }
 
         .buy-button {
-            background: linear-gradient(45deg, #ffd700, #ffed4e);
-            color: #1a1a2e;
+            background: linear-gradient(45deg, #ffd700, #9c27b0, #3f51b5);
+            color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 1rem;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-weight: 900;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             width: 100%;
             position: relative;
             z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .buy-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .buy-button:hover::before {
+            left: 100%;
         }
 
         .buy-button:hover {
-            background: linear-gradient(45deg, #ffed4e, #ffd700);
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+            background: linear-gradient(45deg, #32cd32, #ffd700, #9c27b0);
+            transform: scale(1.08);
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.6);
         }
 
         .popular-badge {
             position: absolute;
-            top: -10px;
-            right: -10px;
-            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            transform: rotate(15deg);
+            top: -12px;
+            right: -12px;
+            background: linear-gradient(45deg, #ff4500, #ffd700, #ff6347);
+            color: #000;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 900;
+            transform: rotate(12deg);
+            box-shadow: 0 6px 18px rgba(255, 69, 0, 0.6);
+            border: 2px solid #fff;
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: rotate(12deg) scale(1); }
+            50% { transform: rotate(12deg) scale(1.1); }
+        }
+
+        .weekly-pass-card {
+            background: linear-gradient(145deg, rgba(138, 43, 226, 0.4), rgba(75, 0, 130, 0.3));
+            border: 3px solid rgba(255, 215, 0, 0.6);
+            box-shadow: 0 15px 40px rgba(138, 43, 226, 0.4);
+        }
+
+        .weekly-pass-card .diamond-amount {
+            background: linear-gradient(45deg, #ffd700, #9c27b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .double-diamond-card {
+            background: linear-gradient(145deg, rgba(255, 193, 7, 0.3), rgba(255, 152, 0, 0.2));
+            border: 3px solid rgba(255, 193, 7, 0.6);
+            box-shadow: 0 15px 40px rgba(255, 193, 7, 0.3);
+        }
+
+        .double-diamond-card .diamond-amount {
+            background: linear-gradient(45deg, #ffd700, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .double-diamond-card::after {
+            background: radial-gradient(circle, rgba(255, 193, 7, 0.8), transparent) !important;
         }
 
         .features {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
+            background: linear-gradient(145deg, rgba(26, 35, 126, 0.8), rgba(16, 33, 62, 0.6));
+            border: 1px solid rgba(63, 81, 181, 0.3);
+            border-radius: 20px;
             padding: 30px;
             margin-top: 40px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
         .features h3 {
-            color: #ffd700;
+            color: #3f51b5;
             margin-bottom: 20px;
             font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(63, 81, 181, 0.4);
         }
 
         .feature-list {
@@ -177,96 +416,22 @@
         .feature-item {
             display: flex;
             align-items: center;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-
-        .feature-icon {
-            margin-right: 10px;
-            font-size: 1.2rem;
-        }
-
-        .slider-container {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto 40px auto;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .slider {
-            position: relative;
-            height: 250px;
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-        }
-
-        .slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .slide.active {
-            opacity: 1;
-        }
-
-        .slide-content {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .slide-icon {
-            font-size: 4rem;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
-        }
-
-        .slide-content h3 {
-            color: #ffd700;
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .slide-content p {
-            color: #e0e0e0;
-            font-size: 1.1rem;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .slider-dots {
-            text-align: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .dot {
-            height: 12px;
-            width: 12px;
-            margin: 0 5px;
-            background-color: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            display: inline-block;
-            cursor: pointer;
+            padding: 12px;
+            background: linear-gradient(145deg, rgba(63, 81, 181, 0.1), rgba(33, 150, 243, 0.05));
+            border: 1px solid rgba(63, 81, 181, 0.2);
+            border-radius: 12px;
             transition: all 0.3s ease;
         }
 
-        .dot.active,
-        .dot:hover {
-            background-color: #ffd700;
-            transform: scale(1.2);
+        .feature-item:hover {
+            background: linear-gradient(145deg, rgba(63, 81, 181, 0.15), rgba(33, 150, 243, 0.1));
+            border-color: rgba(63, 81, 181, 0.4);
+        }
+
+        .feature-icon {
+            margin-right: 12px;
+            font-size: 1.3rem;
+            filter: drop-shadow(0 0 5px rgba(63, 81, 181, 0.5));
         }
 
         @media (max-width: 768px) {
@@ -283,20 +448,14 @@
                 padding: 15px;
             }
 
-            .slider {
-                height: 200px;
+            .server-tabs {
+                flex-direction: column;
+                align-items: center;
             }
 
-            .slide-content h3 {
-                font-size: 1.5rem;
-            }
-
-            .slide-content p {
-                font-size: 1rem;
-            }
-
-            .slide-icon {
-                font-size: 3rem;
+            .server-tab {
+                width: 200px;
+                text-align: center;
             }
         }
     </style>
@@ -308,113 +467,687 @@
   <div class="container">
    <header class="header">
     <h1 class="logo" id="store-title">MLBB Diamond Store</h1>
-    <p class="subtitle">မိုဘိုင်းလီဂျင်းဒိုင်ယာမွန်းများ လျင်မြန်စွာ ရယူပါ</p>
+    <p class="subtitle">Mobile Legends Bang Bang Diamonds များ လျင်မြန်စွာ ရယူပါ</p>
     <div class="contact-info" id="contact-info">
      📱 ဆက်သွယ်ရန်: 09-XXX-XXX-XXX | 💬 Viber/Telegram
     </div>
-   </header><!-- Image Slider -->
-   <div class="slider-container">
-    <div class="slider">
-     <div class="slide active">
-      <div class="slide-content">
-       <div class="slide-icon">
-        🎮
+   </header><!-- Server Selection Tabs -->
+   <div class="server-tabs"><button class="server-tab active" onclick="showServer('global')">🌍 Global Server</button> <button class="server-tab" onclick="showServer('ban')">🚫 Ban Server</button> <button class="server-tab" onclick="showServer('russia')">🇷🇺 Russia Server</button>
+   </div><!-- Global Server Content -->
+   <div id="global-server" class="server-content active"><!-- Weekly Pass -->
+    <div class="package-section">
+     <h2 class="package-title">🎫 Weekly Pass</h2>
+     <div class="diamond-grid">
+      <div class="diamond-card weekly-pass-card">
+       <div class="popular-badge">
+        အကောင်းဆုံး
        </div>
-       <h3>Mobile Legends Bang Bang</h3>
-       <p>အကောင်းဆုံး MOBA ဂိမ်းတွင် သင့်အား စောင့်နေပါသည်</p>
-      </div>
-     </div>
-     <div class="slide">
-      <div class="slide-content">
-       <div class="slide-icon">
+       <div class="diamond-icon">
         💎
        </div>
-       <h3>Premium Diamonds</h3>
-       <p>တရားဝင် Diamonds များဖြင့် သင့်ဟီးရိုးများကို အဆင့်မြှင့်ပါ</p>
-      </div>
-     </div>
-     <div class="slide">
-      <div class="slide-content">
-       <div class="slide-icon">
-        ⚡
+       <div class="diamond-amount">
+        Weekly Pass
        </div>
-       <h3>လျင်မြန်သော ဝန်ဆောင်မှု</h3>
-       <p>၅မိနစ်အတွင်း သင့်အကောင့်သို့ Diamonds များ ရောက်ရှိပါမည်</p>
+       <div class="diamond-price">
+        6,000 MMK
+       </div><button class="buy-button" onclick="buyDiamond('Weekly Pass', 6000, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+     </div>
+    </div><!-- Regular Diamonds -->
+    <div class="package-section">
+     <h2 class="package-title">💎 Regular Diamonds</h2>
+     <div class="diamond-grid">
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        86 💎
+       </div>
+       <div class="diamond-price">
+        4,900 MMK
+       </div><button class="buy-button" onclick="buyDiamond('86 💎', 4900, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        172 💎
+       </div>
+       <div class="diamond-price">
+        9,800 MMK
+       </div><button class="buy-button" onclick="buyDiamond('172 💎', 9800, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        257 💎
+       </div>
+       <div class="diamond-price">
+        14,700 MMK
+       </div><button class="buy-button" onclick="buyDiamond('257 💎', 14700, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        343 💎
+       </div>
+       <div class="diamond-price">
+        19,600 MMK
+       </div><button class="buy-button" onclick="buyDiamond('343 💎', 19600, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        429 💎
+       </div>
+       <div class="diamond-price">
+        24,500 MMK
+       </div><button class="buy-button" onclick="buyDiamond('429 💎', 24500, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        514 💎
+       </div>
+       <div class="diamond-price">
+        29,400 MMK
+       </div><button class="buy-button" onclick="buyDiamond('514 💎', 29400, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        600 💎
+       </div>
+       <div class="diamond-price">
+        34,300 MMK
+       </div><button class="buy-button" onclick="buyDiamond('600 💎', 34300, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        706 💎
+       </div>
+       <div class="diamond-price">
+        39,200 MMK
+       </div><button class="buy-button" onclick="buyDiamond('706 💎', 39200, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        878 💎
+       </div>
+       <div class="diamond-price">
+        49,000 MMK
+       </div><button class="buy-button" onclick="buyDiamond('878 💎', 49000, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        1049 💎
+       </div>
+       <div class="diamond-price">
+        58,800 MMK
+       </div><button class="buy-button" onclick="buyDiamond('1049 💎', 58800, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        1412 💎
+       </div>
+       <div class="diamond-price">
+        78,400 MMK
+       </div><button class="buy-button" onclick="buyDiamond('1412 💎', 78400, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        2195 💎
+       </div>
+       <div class="diamond-price">
+        117,600 MMK
+       </div><button class="buy-button" onclick="buyDiamond('2195 💎', 117600, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        3688 💎
+       </div>
+       <div class="diamond-price">
+        196,000 MMK
+       </div><button class="buy-button" onclick="buyDiamond('3688 💎', 196000, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        5532 💎
+       </div>
+       <div class="diamond-price">
+        294,000 MMK
+       </div><button class="buy-button" onclick="buyDiamond('5532 💎', 294000, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        9288 💎
+       </div>
+       <div class="diamond-price">
+        490,000 MMK
+       </div><button class="buy-button" onclick="buyDiamond('9288 💎', 490000, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+     </div>
+    </div><!-- Double Diamond -->
+    <div class="package-section">
+     <h2 class="package-title">✨ Double Diamond</h2>
+     <div class="diamond-grid">
+      <div class="diamond-card double-diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        50+5 💎
+       </div>
+       <div class="diamond-price">
+        3,300 MMK
+       </div><button class="buy-button" onclick="buyDiamond('50+5 💎', 3300, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card double-diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        150+15 💎
+       </div>
+       <div class="diamond-price">
+        9,700 MMK
+       </div><button class="buy-button" onclick="buyDiamond('150+15 💎', 9700, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card double-diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        250+25 💎
+       </div>
+       <div class="diamond-price">
+        15,900 MMK
+       </div><button class="buy-button" onclick="buyDiamond('250+25 💎', 15900, 'global')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card double-diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        500+65 💎
+       </div>
+       <div class="diamond-price">
+        31,500 MMK
+       </div><button class="buy-button" onclick="buyDiamond('500+65 💎', 31500, 'global')">ရွေးချယ်မယ်</button>
       </div>
      </div>
     </div>
-    <div class="slider-dots"><span class="dot active" onclick="currentSlide(1)"></span> <span class="dot" onclick="currentSlide(2)"></span> <span class="dot" onclick="currentSlide(3)"></span>
+   </div><!-- Ban Server Content -->
+   <div id="ban-server" class="server-content"><!-- Weekly Pass -->
+    <div class="package-section">
+     <h2 class="package-title">🎫 Weekly Pass</h2>
+     <div class="diamond-grid">
+      <div class="diamond-card weekly-pass-card">
+       <div class="popular-badge">
+        အကောင်းဆုံး
+       </div>
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        Weekly Pass
+       </div>
+       <div class="diamond-price">
+        9,600 MMK
+       </div><button class="buy-button" onclick="buyDiamond('Weekly Pass', 9600, 'ban')">ရွေးချယ်မယ်</button>
+      </div>
+     </div>
+    </div><!-- Regular Diamonds -->
+    <div class="package-section">
+     <h2 class="package-title">💎 Regular Diamonds</h2>
+     <div class="diamond-grid">
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        70 💎
+       </div>
+       <div class="diamond-price">
+        5,600 MMK
+       </div><button class="buy-button" onclick="buyDiamond('70 💎', 5600, 'ban')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        140 💎
+       </div>
+       <div class="diamond-price">
+        11,200 MMK
+       </div><button class="buy-button" onclick="buyDiamond('140 💎', 11200, 'ban')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        284 💎
+       </div>
+       <div class="diamond-price">
+        22,400 MMK
+       </div><button class="buy-button" onclick="buyDiamond('284 💎', 22400, 'ban')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        355 💎
+       </div>
+       <div class="diamond-price">
+        28,000 MMK
+       </div><button class="buy-button" onclick="buyDiamond('355 💎', 28000, 'ban')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        429 💎
+       </div>
+       <div class="diamond-price">
+        33,550 MMK
+       </div><button class="buy-button" onclick="buyDiamond('429 💎', 33550, 'ban')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        716 💎
+       </div>
+       <div class="diamond-price">
+        56,000 MMK
+       </div><button class="buy-button" onclick="buyDiamond('716 💎', 56000, 'ban')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        1145 💎
+       </div>
+       <div class="diamond-price">
+        89,500 MMK
+       </div><button class="buy-button" onclick="buyDiamond('1145 💎', 89500, 'ban')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        1446 💎
+       </div>
+       <div class="diamond-price">
+        111,600 MMK
+       </div><button class="buy-button" onclick="buyDiamond('1446 💎', 111600, 'ban')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        2976 💎
+       </div>
+       <div class="diamond-price">
+        223,800 MMK
+       </div><button class="buy-button" onclick="buyDiamond('2976 💎', 223800, 'ban')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        7502 💎
+       </div>
+       <div class="diamond-price">
+        558,400 MMK
+       </div><button class="buy-button" onclick="buyDiamond('7502 💎', 558400, 'ban')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        9377 💎
+       </div>
+       <div class="diamond-price">
+        703,500 MMK
+       </div><button class="buy-button" onclick="buyDiamond('9377 💎', 703500, 'ban')">ရွေးချယ်မယ်</button>
+      </div>
+     </div>
+    </div><!-- Double Diamond -->
+    <div class="package-section">
+     <h2 class="package-title">✨ Double Diamond</h2>
+     <div class="diamond-grid">
+      <div class="diamond-card double-diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        50+5 💎
+       </div>
+       <div class="diamond-price">
+        4,700 MMK
+       </div><button class="buy-button" onclick="buyDiamond('50+5 💎', 4700, 'ban')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card double-diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        150+15 💎
+       </div>
+       <div class="diamond-price">
+        13,500 MMK
+       </div><button class="buy-button" onclick="buyDiamond('150+15 💎', 13500, 'ban')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card double-diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        250+25 💎
+       </div>
+       <div class="diamond-price">
+        23,500 MMK
+       </div><button class="buy-button" onclick="buyDiamond('250+25 💎', 23500, 'ban')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card double-diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        500+65 💎
+       </div>
+       <div class="diamond-price">
+        46,000 MMK
+       </div><button class="buy-button" onclick="buyDiamond('500+65 💎', 46000, 'ban')">ရွေးချယ်မယ်</button>
+      </div>
+     </div>
     </div>
-   </div>
-   <div class="diamond-grid">
-    <div class="diamond-card">
-     <div class="diamond-icon">
-      💎
+   </div><!-- Russia Server Content -->
+   <div id="russia-server" class="server-content"><!-- Weekly Pass -->
+    <div class="package-section">
+     <h2 class="package-title">🎫 Weekly Pass</h2>
+     <div class="diamond-grid">
+      <div class="diamond-card weekly-pass-card">
+       <div class="popular-badge">
+        အကောင်းဆုံး
+       </div>
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        Weekly Pass
+       </div>
+       <div class="diamond-price">
+        8,500 MMK
+       </div><button class="buy-button" onclick="buyDiamond('Weekly Pass', 8500, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
      </div>
-     <div class="diamond-amount">
-      120 Diamonds
+    </div><!-- Regular Diamonds -->
+    <div class="package-section">
+     <h2 class="package-title">💎 Regular Diamonds</h2>
+     <div class="diamond-grid">
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        86 💎
+       </div>
+       <div class="diamond-price">
+        6,200 MMK
+       </div><button class="buy-button" onclick="buyDiamond('86 💎', 6200, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        172 💎
+       </div>
+       <div class="diamond-price">
+        12,400 MMK
+       </div><button class="buy-button" onclick="buyDiamond('172 💎', 12400, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        257 💎
+       </div>
+       <div class="diamond-price">
+        18,600 MMK
+       </div><button class="buy-button" onclick="buyDiamond('257 💎', 18600, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        343 💎
+       </div>
+       <div class="diamond-price">
+        24,800 MMK
+       </div><button class="buy-button" onclick="buyDiamond('343 💎', 24800, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        429 💎
+       </div>
+       <div class="diamond-price">
+        31,000 MMK
+       </div><button class="buy-button" onclick="buyDiamond('429 💎', 31000, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        514 💎
+       </div>
+       <div class="diamond-price">
+        37,200 MMK
+       </div><button class="buy-button" onclick="buyDiamond('514 💎', 37200, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        600 💎
+       </div>
+       <div class="diamond-price">
+        43,400 MMK
+       </div><button class="buy-button" onclick="buyDiamond('600 💎', 43400, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        706 💎
+       </div>
+       <div class="diamond-price">
+        49,600 MMK
+       </div><button class="buy-button" onclick="buyDiamond('706 💎', 49600, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        878 💎
+       </div>
+       <div class="diamond-price">
+        62,000 MMK
+       </div><button class="buy-button" onclick="buyDiamond('878 💎', 62000, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        1049 💎
+       </div>
+       <div class="diamond-price">
+        74,400 MMK
+       </div><button class="buy-button" onclick="buyDiamond('1049 💎', 74400, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        1412 💎
+       </div>
+       <div class="diamond-price">
+        99,200 MMK
+       </div><button class="buy-button" onclick="buyDiamond('1412 💎', 99200, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        2195 💎
+       </div>
+       <div class="diamond-price">
+        148,800 MMK
+       </div><button class="buy-button" onclick="buyDiamond('2195 💎', 148800, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        3688 💎
+       </div>
+       <div class="diamond-price">
+        248,000 MMK
+       </div><button class="buy-button" onclick="buyDiamond('3688 💎', 248000, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        5532 💎
+       </div>
+       <div class="diamond-price">
+        372,000 MMK
+       </div><button class="buy-button" onclick="buyDiamond('5532 💎', 372000, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        9288 💎
+       </div>
+       <div class="diamond-price">
+        620,000 MMK
+       </div><button class="buy-button" onclick="buyDiamond('9288 💎', 620000, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
      </div>
-     <div class="diamond-price">
-      5,000 MMK
-     </div><button class="buy-button" onclick="buyDiamonds(120, 5000)">ရွေးချယ်မယ်</button>
-    </div>
-    <div class="diamond-card">
-     <div class="popular-badge">
-      လူကြိုက်များ
+    </div><!-- Double Diamond -->
+    <div class="package-section">
+     <h2 class="package-title">✨ Double Diamond</h2>
+     <div class="diamond-grid">
+      <div class="diamond-card double-diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        50+5 💎
+       </div>
+       <div class="diamond-price">
+        4,200 MMK
+       </div><button class="buy-button" onclick="buyDiamond('50+5 💎', 4200, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card double-diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        150+15 💎
+       </div>
+       <div class="diamond-price">
+        12,300 MMK
+       </div><button class="buy-button" onclick="buyDiamond('150+15 💎', 12300, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card double-diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        250+25 💎
+       </div>
+       <div class="diamond-price">
+        20,100 MMK
+       </div><button class="buy-button" onclick="buyDiamond('250+25 💎', 20100, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
+      <div class="diamond-card double-diamond-card">
+       <div class="diamond-icon">
+        💎
+       </div>
+       <div class="diamond-amount">
+        500+65 💎
+       </div>
+       <div class="diamond-price">
+        39,800 MMK
+       </div><button class="buy-button" onclick="buyDiamond('500+65 💎', 39800, 'russia')">ရွေးချယ်မယ်</button>
+      </div>
      </div>
-     <div class="diamond-icon">
-      💎
-     </div>
-     <div class="diamond-amount">
-      250 Diamonds
-     </div>
-     <div class="diamond-price">
-      10,000 MMK
-     </div><button class="buy-button" onclick="buyDiamonds(250, 10000)">ရွေးချယ်မယ်</button>
-    </div>
-    <div class="diamond-card">
-     <div class="diamond-icon">
-      💎
-     </div>
-     <div class="diamond-amount">
-      500 Diamonds
-     </div>
-     <div class="diamond-price">
-      19,500 MMK
-     </div><button class="buy-button" onclick="buyDiamonds(500, 19500)">ရွေးချယ်မယ်</button>
-    </div>
-    <div class="diamond-card">
-     <div class="diamond-icon">
-      💎
-     </div>
-     <div class="diamond-amount">
-      1000 Diamonds
-     </div>
-     <div class="diamond-price">
-      38,000 MMK
-     </div><button class="buy-button" onclick="buyDiamonds(1000, 38000)">ရွေးချယ်မယ်</button>
-    </div>
-    <div class="diamond-card">
-     <div class="diamond-icon">
-      💎
-     </div>
-     <div class="diamond-amount">
-      2000 Diamonds
-     </div>
-     <div class="diamond-price">
-      75,000 MMK
-     </div><button class="buy-button" onclick="buyDiamonds(2000, 75000)">ရွေးချယ်မယ်</button>
-    </div>
-    <div class="diamond-card">
-     <div class="diamond-icon">
-      💎
-     </div>
-     <div class="diamond-amount">
-      5000 Diamonds
-     </div>
-     <div class="diamond-price">
-      180,000 MMK
-     </div><button class="buy-button" onclick="buyDiamonds(5000, 180000)">ရွေးချယ်မယ်</button>
     </div>
    </div>
    <div class="features">
@@ -426,9 +1159,9 @@
      </div>
      <div class="feature-item"><span class="feature-icon">💯</span> <span>၁၀၀% ယုံကြည်စိတ်ချရသော</span>
      </div>
-     <div class="feature-item"><span class="feature-icon">🎮</span> <span>တရားဝင် MLBB Diamonds</span>
+     <div class="feature-item"><span class="feature-icon">💎</span> <span>တရားဝင် MLBB Diamonds</span>
      </div>
-     <div class="feature-item"><span class="feature-icon">📞</span> <span>၂၄/၇ ဖောက်သည်ဝန်ဆောင်မှု</span>
+     <div class="feature-item"><span class="feature-icon">📞</span> <span>၉/၇ ဖောက်သည်ဝန်ဆောင်မှု</span>
      </div>
      <div class="feature-item"><span class="feature-icon">💰</span> <span>အကောင်းဆုံး စျေးနှုန်း</span>
      </div>
@@ -441,7 +1174,27 @@
             contact_info: "📱 ဆက်သွယ်ရန်: 09-XXX-XXX-XXX | 💬 Viber/Telegram"
         };
 
-        function buyDiamonds(amount, price) {
+        function showServer(serverType) {
+            // Hide all server contents
+            document.querySelectorAll('.server-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.server-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected server content
+            document.getElementById(serverType + '-server').classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        function buyDiamond(amount, price, server) {
+            const serverName = server === 'global' ? 'Global Server' : server === 'ban' ? 'Ban Server' : 'Russia Server';
+            
             const confirmation = document.createElement('div');
             confirmation.style.cssText = `
                 position: fixed;
@@ -458,23 +1211,25 @@
             
             confirmation.innerHTML = `
                 <div style="
-                    background: linear-gradient(145deg, #1a1a2e, #16213e);
+                    background: linear-gradient(145deg, #1a237e, #16213e);
                     padding: 30px;
                     border-radius: 20px;
                     text-align: center;
-                    border: 2px solid #ffd700;
+                    border: 2px solid #3f51b5;
                     max-width: 400px;
                     width: 90%;
+                    box-shadow: 0 15px 40px rgba(63, 81, 181, 0.3);
                 ">
                     <div style="font-size: 3rem; margin-bottom: 20px;">💎</div>
-                    <h3 style="color: #ffd700; margin-bottom: 15px;">အော်ဒါ အတည်ပြုခြင်း</h3>
+                    <h3 style="color: #3f51b5; margin-bottom: 15px;">အော်ဒါ အတည်ပြုခြင်း</h3>
                     <p style="margin-bottom: 20px; color: white;">
-                        ${amount} Diamonds<br>
+                        ${amount}<br>
+                        Server: ${serverName}<br>
                         စျေးနှုန်း: ${price.toLocaleString()} MMK
                     </p>
                     <div style="display: flex; gap: 15px; justify-content: center;">
-                        <button onclick="proceedOrder(${amount}, ${price})" style="
-                            background: linear-gradient(45deg, #4ade80, #22c55e);
+                        <button onclick="proceedDiamondOrder('${amount}', ${price}, '${server}')" style="
+                            background: linear-gradient(45deg, #32cd32, #228b22);
                             color: white;
                             border: none;
                             padding: 12px 25px;
@@ -483,7 +1238,7 @@
                             font-weight: bold;
                         ">အတည်ပြုမယ်</button>
                         <button onclick="closeConfirmation()" style="
-                            background: linear-gradient(45deg, #ef4444, #dc2626);
+                            background: linear-gradient(45deg, #dc143c, #b22222);
                             color: white;
                             border: none;
                             padding: 12px 25px;
@@ -498,12 +1253,14 @@
             document.body.appendChild(confirmation);
         }
 
-        function proceedOrder(amount, price) {
+        function proceedDiamondOrder(amount, price, server) {
             closeConfirmation();
-            showOrderForm(amount, price);
+            showDiamondOrderForm(amount, price, server);
         }
 
-        function showOrderForm(amount, price) {
+        function showDiamondOrderForm(amount, price, server) {
+            const serverName = server === 'global' ? 'Global Server' : server === 'ban' ? 'Ban Server' : 'Russia Server';
+            
             const orderForm = document.createElement('div');
             orderForm.style.cssText = `
                 position: fixed;
@@ -521,26 +1278,28 @@
             
             orderForm.innerHTML = `
                 <div style="
-                    background: linear-gradient(145deg, #1a1a2e, #16213e);
+                    background: linear-gradient(145deg, #1a237e, #16213e);
                     padding: 30px;
                     border-radius: 20px;
-                    border: 2px solid #ffd700;
+                    border: 2px solid #3f51b5;
                     max-width: 500px;
                     width: 90%;
                     margin: 20px;
+                    box-shadow: 0 15px 40px rgba(63, 81, 181, 0.3);
                 ">
-                    <h3 style="color: #ffd700; text-align: center; margin-bottom: 25px;">
-                        💎 ${amount} Diamonds - ${price.toLocaleString()} MMK
+                    <h3 style="color: #3f51b5; text-align: center; margin-bottom: 25px;">
+                        💎 ${amount} - ${price.toLocaleString()} MMK<br>
+                        <small style="color: #2196f3;">${serverName}</small>
                     </h3>
-                    <form onsubmit="submitOrder(event, ${amount}, ${price})">
+                    <form onsubmit="submitDiamondOrder(event, '${amount}', ${price}, '${server}')">
                         <div style="margin-bottom: 20px;">
                             <label style="display: block; margin-bottom: 8px; color: white;">MLBB ID:</label>
                             <input type="text" id="mlbb-id" required style="
                                 width: 100%;
                                 padding: 12px;
-                                border: 2px solid #ffd700;
+                                border: 2px solid #3f51b5;
                                 border-radius: 10px;
-                                background: rgba(255, 255, 255, 0.1);
+                                background: rgba(63, 81, 181, 0.1);
                                 color: white;
                                 font-size: 16px;
                             " placeholder="ဥပမာ: 123456789">
@@ -550,9 +1309,9 @@
                             <input type="text" id="server-id" required style="
                                 width: 100%;
                                 padding: 12px;
-                                border: 2px solid #ffd700;
+                                border: 2px solid #3f51b5;
                                 border-radius: 10px;
-                                background: rgba(255, 255, 255, 0.1);
+                                background: rgba(63, 81, 181, 0.1);
                                 color: white;
                                 font-size: 16px;
                             " placeholder="ဥပမာ: 1234">
@@ -562,16 +1321,16 @@
                             <input type="text" id="contact" required style="
                                 width: 100%;
                                 padding: 12px;
-                                border: 2px solid #ffd700;
+                                border: 2px solid #3f51b5;
                                 border-radius: 10px;
-                                background: rgba(255, 255, 255, 0.1);
+                                background: rgba(63, 81, 181, 0.1);
                                 color: white;
                                 font-size: 16px;
                             " placeholder="@username သို့မဟုတ် 09-XXX-XXX-XXX သို့မဟုတ် Facebook link">
                         </div>
                         <div style="display: flex; gap: 15px; justify-content: center;">
                             <button type="submit" style="
-                                background: linear-gradient(45deg, #4ade80, #22c55e);
+                                background: linear-gradient(45deg, #32cd32, #228b22);
                                 color: white;
                                 border: none;
                                 padding: 15px 30px;
@@ -581,7 +1340,7 @@
                                 font-size: 16px;
                             ">Download & ပို့မယ်</button>
                             <button type="button" onclick="closeOrderForm()" style="
-                                background: linear-gradient(45deg, #ef4444, #dc2626);
+                                background: linear-gradient(45deg, #dc143c, #b22222);
                                 color: white;
                                 border: none;
                                 padding: 15px 30px;
@@ -598,33 +1357,35 @@
             document.body.appendChild(orderForm);
         }
 
-        function generateOrderImage(mlbbId, serverId, amount, price, contact) {
+        function generateDiamondOrderImage(mlbbId, serverId, amount, price, contact, server) {
             const canvas = document.createElement('canvas');
             canvas.width = 800;
             canvas.height = 600;
             const ctx = canvas.getContext('2d');
             
-            // Background gradient
+            // Background gradient (MLBB style - blue theme)
             const gradient = ctx.createLinearGradient(0, 0, 800, 600);
-            gradient.addColorStop(0, '#1a1a2e');
-            gradient.addColorStop(0.5, '#16213e');
-            gradient.addColorStop(1, '#0f3460');
+            gradient.addColorStop(0, '#0a0a2e');
+            gradient.addColorStop(0.3, '#16213e');
+            gradient.addColorStop(0.5, '#1a237e');
+            gradient.addColorStop(0.7, '#16213e');
+            gradient.addColorStop(1, '#0a0a2e');
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 800, 600);
             
-            // Border
-            ctx.strokeStyle = '#ffd700';
+            // Border (MLBB blue theme)
+            ctx.strokeStyle = '#3f51b5';
             ctx.lineWidth = 4;
             ctx.strokeRect(20, 20, 760, 560);
             
             // Header
-            ctx.fillStyle = '#ffd700';
+            ctx.fillStyle = '#3f51b5';
             ctx.font = 'bold 36px Arial';
             ctx.textAlign = 'center';
             ctx.fillText('MLBB Diamond Order', 400, 80);
             
-            // Thurein Stamp (Chinese style)
-            ctx.fillStyle = '#ff4444';
+            // Thurein Stamp (MLBB style)
+            ctx.fillStyle = '#2196f3';
             ctx.fillRect(600, 30, 120, 60);
             ctx.fillStyle = '#ffffff';
             ctx.font = 'bold 16px Arial';
@@ -633,7 +1394,7 @@
             ctx.fillText('သူရိန်', 660, 70);
             
             // Diamond icon (using text)
-            ctx.fillStyle = '#ffd700';
+            ctx.fillStyle = '#3f51b5';
             ctx.font = '80px Arial';
             ctx.fillText('💎', 400, 180);
             
@@ -642,10 +1403,13 @@
             ctx.font = 'bold 24px Arial';
             ctx.textAlign = 'left';
             
+            const serverName = server === 'global' ? 'Global Server' : server === 'ban' ? 'Ban Server' : 'Russia Server';
+            
             const details = [
                 `MLBB ID: ${mlbbId}`,
                 `Server ID: ${serverId}`,
-                `Diamonds: ${amount}`,
+                `Server: ${serverName}`,
+                `Diamond: ${amount}`,
                 `Price: ${price.toLocaleString()} MMK`,
                 `Contact: ${contact}`,
                 `Date: ${new Date().toLocaleDateString('my-MM')}`,
@@ -659,37 +1423,34 @@
             });
             
             // Footer
-            ctx.fillStyle = '#ffd700';
+            ctx.fillStyle = '#3f51b5';
             ctx.font = 'bold 20px Arial';
             ctx.textAlign = 'center';
             ctx.fillText('MLBB Diamond Store - Official Dealer', 400, 520);
             ctx.fillStyle = '#a0a0a0';
             ctx.font = '16px Arial';
-            ctx.fillText('Viber: 09798976687 | Telegram: @ktrthurein', 400, 550);
+            ctx.fillText('Viber: 09757424457 | Telegram: @ktrthurein', 400, 550);
             
             return canvas;
         }
 
-        function downloadOrderImage(canvas, mlbbId) {
-            // Convert canvas to blob for better compatibility
+        function downloadDiamondOrderImage(canvas, mlbbId) {
             canvas.toBlob(function(blob) {
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
-                link.download = `order${mlbbId}.jpg`;
+                link.download = `mlbb_order_${mlbbId}.jpg`;
                 link.href = url;
                 link.style.display = 'none';
                 
-                // Add to DOM, click, then remove
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
                 
-                // Clean up the URL object
                 setTimeout(() => URL.revokeObjectURL(url), 100);
             }, 'image/jpeg', 0.95);
         }
 
-        function submitOrder(event, amount, price) {
+        function submitDiamondOrder(event, amount, price, server) {
             event.preventDefault();
             
             const mlbbId = document.getElementById('mlbb-id').value;
@@ -697,10 +1458,12 @@
             const contact = document.getElementById('contact').value;
             
             // Generate and download order image
-            const canvas = generateOrderImage(mlbbId, serverId, amount, price, contact);
-            downloadOrderImage(canvas, mlbbId);
+            const canvas = generateDiamondOrderImage(mlbbId, serverId, amount, price, contact, server);
+            downloadDiamondOrderImage(canvas, mlbbId);
             
             closeOrderForm();
+            
+            const serverName = server === 'global' ? 'Global Server' : server === 'ban' ? 'Ban Server' : 'Russia Server';
             
             const successMessage = document.createElement('div');
             successMessage.style.cssText = `
@@ -718,27 +1481,28 @@
             
             successMessage.innerHTML = `
                 <div style="
-                    background: linear-gradient(145deg, #1a1a2e, #16213e);
+                    background: linear-gradient(145deg, #1a237e, #16213e);
                     padding: 40px;
                     border-radius: 20px;
                     text-align: center;
-                    border: 2px solid #4ade80;
+                    border: 2px solid #32cd32;
                     max-width: 400px;
                     width: 90%;
+                    box-shadow: 0 15px 40px rgba(50, 205, 50, 0.3);
                 ">
-                    <!-- Chinese Style Stamp -->
+                    <!-- MLBB Style Stamp -->
                     <div style="
                         width: 80px;
                         height: 80px;
-                        border: 3px solid #ff4444;
+                        border: 3px solid #2196f3;
                         border-radius: 50%;
-                        background: linear-gradient(45deg, #ff4444, #cc3333);
+                        background: linear-gradient(45deg, #2196f3, #3f51b5);
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         margin: 0 auto 15px auto;
                         position: relative;
-                        box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
+                        box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
                     ">
                         <div style="
                             color: white;
@@ -749,26 +1513,27 @@
                         ">
                             THUREIN<br>သူရိန်
                         </div>
-                        <!-- Traditional Chinese stamp decorative elements -->
                         <div style="
                             position: absolute;
                             top: -2px;
                             left: -2px;
                             width: 84px;
                             height: 84px;
-                            border: 1px solid #ffaaaa;
+                            border: 1px solid #aaccff;
                             border-radius: 50%;
                         "></div>
                     </div>
                     <div style="font-size: 3rem; margin-bottom: 15px;">✅</div>
-                    <h3 style="color: #4ade80; margin-bottom: 20px;">အော်ဒါ အောင်မြင်ပါသည်!</h3>
+                    <h3 style="color: #32cd32; margin-bottom: 20px;">အော်ဒါ အောင်မြင်ပါသည်!</h3>
                     <p style="color: white; margin-bottom: 15px;">
-                        MLBB ID: ${mlbbId} (${serverId})<br>
-                        ${amount} Diamonds - ${price.toLocaleString()} MMK
+                        MLBB ID: ${mlbbId}<br>
+                        Server ID: ${serverId}<br>
+                        Server: ${serverName}<br>
+                        ${amount} - ${price.toLocaleString()} MMK
                     </p>
                     <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 25px; flex-wrap: wrap;">
-                        <button onclick="takeScreenshotAndSend('${mlbbId}', '${serverId}', '${amount}', '${price}', '${contact}')" style="
-                            background: linear-gradient(45deg, #4ade80, #22c55e);
+                        <button onclick="takeDiamondScreenshotAndSend('${mlbbId}', '${serverId}', '${amount}', '${price}', '${contact}', '${server}')" style="
+                            background: linear-gradient(45deg, #32cd32, #228b22);
                             color: white;
                             border: none;
                             padding: 15px 25px;
@@ -782,8 +1547,8 @@
                         ">📸 Screenshot ရိုက်ပြီး ပို့မယ်</button>
                     </div>
                     <button onclick="closeSuccessMessage()" style="
-                        background: linear-gradient(45deg, #ffd700, #ffed4e);
-                        color: #1a1a2e;
+                        background: linear-gradient(45deg, #3f51b5, #2196f3);
+                        color: white;
                         border: none;
                         padding: 12px 30px;
                         border-radius: 10px;
@@ -811,8 +1576,9 @@
             if (successMessage) successMessage.remove();
         }
 
-        function takeScreenshotAndSend(mlbbId, serverId, amount, price, contact) {
-            // Show order details in a screenshot-ready format
+        function takeDiamondScreenshotAndSend(mlbbId, serverId, amount, price, contact, server) {
+            const serverName = server === 'global' ? 'Global Server' : server === 'ban' ? 'Ban Server' : 'Russia Server';
+            
             const screenshotModal = document.createElement('div');
             screenshotModal.style.cssText = `
                 position: fixed;
@@ -830,36 +1596,35 @@
                 overflow-y: auto;
             `;
             
-            // Check if mobile device
             const isMobile = window.innerWidth <= 768;
             
             screenshotModal.innerHTML = `
                 <div style="
-                    background: linear-gradient(145deg, #1a1a2e, #16213e);
-                    border: 3px solid #ffd700;
+                    background: linear-gradient(145deg, #1a237e, #16213e);
+                    border: 3px solid #3f51b5;
                     border-radius: ${isMobile ? '15px' : '20px'};
                     padding: ${isMobile ? '20px' : '40px'};
                     max-width: ${isMobile ? '95%' : '500px'};
                     width: 100%;
                     text-align: center;
                     position: relative;
-                    box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+                    box-shadow: 0 0 30px rgba(63, 81, 181, 0.4);
                     margin: ${isMobile ? '10px 0' : '20px 0'};
                 ">
-                    <!-- Chinese Style Official Stamp -->
+                    <!-- MLBB Style Official Stamp -->
                     <div style="
                         position: absolute;
                         top: ${isMobile ? '10px' : '20px'};
                         right: ${isMobile ? '10px' : '20px'};
                         width: ${isMobile ? '60px' : '80px'};
                         height: ${isMobile ? '60px' : '80px'};
-                        border: 3px solid #ff4444;
+                        border: 3px solid #2196f3;
                         border-radius: 50%;
-                        background: linear-gradient(45deg, #ff4444, #cc3333);
+                        background: linear-gradient(45deg, #2196f3, #3f51b5);
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
+                        box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
                         transform: rotate(-15deg);
                     ">
                         <div style="
@@ -875,41 +1640,42 @@
                     
                     <!-- Header -->
                     <div style="margin-bottom: ${isMobile ? '20px' : '30px'}; padding-right: ${isMobile ? '70px' : '100px'};">
-                        <h2 style="color: #ffd700; margin: 0 0 10px 0; font-size: ${isMobile ? '20px' : '28px'}; line-height: 1.2;">🎮 MLBB Diamond Order</h2>
-                        <div style="color: #4ade80; font-size: ${isMobile ? '14px' : '18px'}; font-weight: bold;">✅ အတည်ပြုပြီးပါပြီ</div>
+                        <h2 style="color: #3f51b5; margin: 0 0 10px 0; font-size: ${isMobile ? '20px' : '28px'}; line-height: 1.2;">💎 MLBB Diamond Order</h2>
+                        <div style="color: #32cd32; font-size: ${isMobile ? '14px' : '18px'}; font-weight: bold;">✅ အတည်ပြုပြီးပါပြီ</div>
                     </div>
                     
                     <!-- Diamond Icon -->
-                    <div style="font-size: ${isMobile ? '40px' : '60px'}; margin-bottom: ${isMobile ? '15px' : '25px'}; filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));">💎</div>
+                    <div style="font-size: ${isMobile ? '40px' : '60px'}; margin-bottom: ${isMobile ? '15px' : '25px'}; filter: drop-shadow(0 0 15px rgba(63, 81, 181, 0.6));">💎</div>
                     
                     <!-- Order Details -->
-                    <div style="background: rgba(255, 255, 255, 0.1); border-radius: ${isMobile ? '10px' : '15px'}; padding: ${isMobile ? '15px' : '25px'}; margin-bottom: ${isMobile ? '15px' : '25px'}; text-align: left;">
+                    <div style="background: rgba(63, 81, 181, 0.1); border-radius: ${isMobile ? '10px' : '15px'}; padding: ${isMobile ? '15px' : '25px'}; margin-bottom: ${isMobile ? '15px' : '25px'}; text-align: left;">
                         <div style="color: white; font-size: ${isMobile ? '13px' : '16px'}; line-height: 1.6;">
-                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'}; word-break: break-all;"><strong style="color: #ffd700;">🆔 MLBB ID:</strong> ${mlbbId}</div>
-                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #ffd700;">🌐 Server ID:</strong> ${serverId}</div>
-                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #ffd700;">💎 Diamonds:</strong> ${amount}</div>
-                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #ffd700;">💰 စျေးနှုန်း:</strong> ${parseInt(price).toLocaleString()} MMK</div>
-                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'}; word-break: break-all;"><strong style="color: #ffd700;">📱 ဆက်သွယ်ရန်:</strong> ${contact}</div>
-                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #ffd700;">📅 ရက်စွဲ:</strong> ${new Date().toLocaleDateString('my-MM')}</div>
-                            <div><strong style="color: #ffd700;">⏰ အချိန်:</strong> ${new Date().toLocaleTimeString('my-MM')}</div>
+                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'}; word-break: break-all;"><strong style="color: #3f51b5;">🆔 MLBB ID:</strong> ${mlbbId}</div>
+                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #3f51b5;">🌐 Server ID:</strong> ${serverId}</div>
+                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #3f51b5;">🎮 Server:</strong> ${serverName}</div>
+                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #3f51b5;">💎 Diamond:</strong> ${amount}</div>
+                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #3f51b5;">💰 စျေးနှုန်း:</strong> ${parseInt(price).toLocaleString()} MMK</div>
+                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'}; word-break: break-all;"><strong style="color: #3f51b5;">📱 ဆက်သွယ်ရန်:</strong> ${contact}</div>
+                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #3f51b5;">📅 ရက်စွဲ:</strong> ${new Date().toLocaleDateString('my-MM')}</div>
+                            <div><strong style="color: #3f51b5;">⏰ အချိန်:</strong> ${new Date().toLocaleTimeString('my-MM')}</div>
                         </div>
                     </div>
                     
                     <!-- Footer -->
-                    <div style="border-top: 2px solid #ffd700; padding-top: ${isMobile ? '15px' : '20px'}; margin-top: ${isMobile ? '15px' : '20px'};">
-                        <div style="color: #ffd700; font-weight: bold; font-size: ${isMobile ? '16px' : '18px'}; margin-bottom: 8px;">MLBB Diamond Store</div>
+                    <div style="border-top: 2px solid #3f51b5; padding-top: ${isMobile ? '15px' : '20px'}; margin-top: ${isMobile ? '15px' : '20px'};">
+                        <div style="color: #3f51b5; font-weight: bold; font-size: ${isMobile ? '16px' : '18px'}; margin-bottom: 8px;">MLBB Diamond Store</div>
                         <div style="color: #a0a0a0; font-size: ${isMobile ? '12px' : '14px'}; line-height: 1.4;">
                             📱 Viber: 09798976687<br>
                             ✈️ Telegram: @ktrthurein<br>
-                            💬 Official MLBB Diamond Dealer
+                            💎 Official MLBB Diamond Dealer
                         </div>
                     </div>
                 </div>
                 
                 <!-- Instructions -->
                 <div style="
-                    background: rgba(255, 215, 0, 0.1);
-                    border: 2px solid #ffd700;
+                    background: rgba(63, 81, 181, 0.1);
+                    border: 2px solid #3f51b5;
                     border-radius: ${isMobile ? '10px' : '15px'};
                     padding: ${isMobile ? '15px' : '20px'};
                     margin-top: ${isMobile ? '15px' : '20px'};
@@ -917,18 +1683,18 @@
                     width: 100%;
                     text-align: center;
                 ">
-                    <h3 style="color: #ffd700; margin: 0 0 15px 0; font-size: ${isMobile ? '16px' : '20px'};">📸 Screenshot လုပ်နည်း</h3>
+                    <h3 style="color: #3f51b5; margin: 0 0 15px 0; font-size: ${isMobile ? '16px' : '20px'};">📸 Screenshot လုပ်နည်း</h3>
                     <div style="color: white; font-size: ${isMobile ? '13px' : '16px'}; line-height: 1.6;">
                         <div style="margin-bottom: 10px;">📱 <strong>iPhone:</strong> Power + Volume Up ခလုတ်များ တပြိုင်နက်နှိပ်ပါ</div>
                         <div style="margin-bottom: 10px;">🤖 <strong>Android:</strong> Power + Volume Down ခလုတ်များ တပြိုင်နက်နှိပ်ပါ</div>
-                        <div style="color: #4ade80; font-weight: bold;">Screenshot ရိုက်ပြီးရင် ကျွန်ုပ်တို့ထံ ပို့ပေးပါ!</div>
+                        <div style="color: #32cd32; font-weight: bold;">Screenshot ရိုက်ပြီးရင် ကျွန်ုပ်တို့ထံ ပို့ပေးပါ!</div>
                     </div>
                 </div>
                 
                 <!-- Action Buttons -->
                 <div style="display: flex; gap: ${isMobile ? '10px' : '15px'}; margin-top: ${isMobile ? '20px' : '25px'}; flex-wrap: wrap; justify-content: center; width: 100%; max-width: ${isMobile ? '95%' : '500px'};">
-                    <button onclick="sendScreenshotOrder('${mlbbId}', '${amount}', '${price}')" style="
-                        background: linear-gradient(45deg, #4ade80, #22c55e);
+                    <button onclick="sendDiamondScreenshotOrder('${mlbbId}', '${serverId}', '${amount}', '${price}', '${server}')" style="
+                        background: linear-gradient(45deg, #32cd32, #228b22);
                         color: white;
                         border: none;
                         padding: ${isMobile ? '12px 20px' : '15px 25px'};
@@ -940,7 +1706,7 @@
                         min-width: ${isMobile ? '120px' : 'auto'};
                     ">📤 Screenshot ပို့မယ်</button>
                     <button onclick="closeScreenshotModal()" style="
-                        background: linear-gradient(45deg, #ef4444, #dc2626);
+                        background: linear-gradient(45deg, #dc143c, #b22222);
                         color: white;
                         border: none;
                         padding: ${isMobile ? '12px 20px' : '15px 25px'};
@@ -962,7 +1728,9 @@
             if (screenshotModal) screenshotModal.remove();
         }
 
-        function sendScreenshotOrder(mlbbId, amount, price) {
+        function sendDiamondScreenshotOrder(mlbbId, serverId, amount, price, server) {
+            const serverName = server === 'global' ? 'Global Server' : server === 'ban' ? 'Ban Server' : 'Russia Server';
+            
             const sendOptions = document.createElement('div');
             sendOptions.style.cssText = `
                 position: fixed;
@@ -979,22 +1747,25 @@
             
             sendOptions.innerHTML = `
                 <div style="
-                    background: linear-gradient(145deg, #1a1a2e, #16213e);
+                    background: linear-gradient(145deg, #1a237e, #16213e);
                     padding: 30px;
                     border-radius: 20px;
                     text-align: center;
-                    border: 2px solid #ffd700;
+                    border: 2px solid #3f51b5;
                     max-width: 400px;
                     width: 90%;
+                    box-shadow: 0 15px 40px rgba(63, 81, 181, 0.3);
                 ">
-                    <h3 style="color: #ffd700; margin-bottom: 20px;">📸 Screenshot ပို့မယ်</h3>
+                    <h3 style="color: #3f51b5; margin-bottom: 20px;">📸 Screenshot ပို့မယ်</h3>
                     <p style="color: white; margin-bottom: 25px;">
                         MLBB ID: ${mlbbId}<br>
-                        ${amount} Diamonds - ${price.toLocaleString()} MMK<br><br>
-                        <span style="color: #4ade80;">Screenshot ရိုက်ပြီးပါပြီလား?</span>
+                        Server ID: ${serverId}<br>
+                        Server: ${serverName}<br>
+                        ${amount} - ${price.toLocaleString()} MMK<br><br>
+                        <span style="color: #32cd32;">Screenshot ရိုက်ပြီးပါပြီလား?</span>
                     </p>
                     <div style="display: flex; flex-direction: column; gap: 15px;">
-                        <button onclick="sendScreenshotToViber('${mlbbId}', '${amount}', '${price}')" style="
+                        <button onclick="sendDiamondScreenshotToViber('${mlbbId}', '${serverId}', '${amount}', '${price}', '${server}')" style="
                             background: linear-gradient(45deg, #665CAC, #7B68EE);
                             color: white;
                             border: none;
@@ -1004,7 +1775,7 @@
                             font-weight: bold;
                             font-size: 16px;
                         ">📱 Viber ပို့မယ်</button>
-                        <button onclick="sendScreenshotToTelegram('${mlbbId}', '${amount}', '${price}')" style="
+                        <button onclick="sendDiamondScreenshotToTelegram('${mlbbId}', '${serverId}', '${amount}', '${price}', '${server}')" style="
                             background: linear-gradient(45deg, #0088cc, #229ED9);
                             color: white;
                             border: none;
@@ -1014,7 +1785,7 @@
                             font-weight: bold;
                             font-size: 16px;
                         ">✈️ Telegram ပို့မယ်</button>
-                        <button onclick="sendScreenshotToMessenger('${mlbbId}', '${amount}', '${price}')" style="
+                        <button onclick="sendDiamondScreenshotToMessenger('${mlbbId}', '${serverId}', '${amount}', '${price}', '${server}')" style="
                             background: linear-gradient(45deg, #0084ff, #44a3ff);
                             color: white;
                             border: none;
@@ -1041,10 +1812,13 @@
             document.body.appendChild(sendOptions);
         }
 
-        function sendScreenshotToViber(mlbbId, amount, price) {
-            const message = `🎮 MLBB Diamond Order - Screenshot ပါပါတယ်
-💎 ${amount} Diamonds - ${price.toLocaleString()} MMK
+        function sendDiamondScreenshotToViber(mlbbId, serverId, amount, price, server) {
+            const serverName = server === 'global' ? 'Global Server' : server === 'ban' ? 'Ban Server' : 'Russia Server';
+            const message = `💎 MLBB Diamond Order - Screenshot ပါပါတယ်
+💎 ${amount} - ${price.toLocaleString()} MMK
 🆔 MLBB ID: ${mlbbId}
+🌐 Server ID: ${serverId}
+🎮 Server: ${serverName}
 📸 Screenshot ကို ပေးပို့ပါမည်`;
             
             const viberUrl = `viber://chat?number=09798976687&text=${encodeURIComponent(message)}`;
@@ -1053,10 +1827,13 @@
             closeScreenshotModal();
         }
 
-        function sendScreenshotToTelegram(mlbbId, amount, price) {
-            const message = `🎮 MLBB Diamond Order - Screenshot ပါပါတယ်
-💎 ${amount} Diamonds - ${price.toLocaleString()} MMK
+        function sendDiamondScreenshotToTelegram(mlbbId, serverId, amount, price, server) {
+            const serverName = server === 'global' ? 'Global Server' : server === 'ban' ? 'Ban Server' : 'Russia Server';
+            const message = `💎 MLBB Diamond Order - Screenshot ပါပါတယ်
+💎 ${amount} - ${price.toLocaleString()} MMK
 🆔 MLBB ID: ${mlbbId}
+🌐 Server ID: ${serverId}
+🎮 Server: ${serverName}
 📸 Screenshot ကို ပေးပို့ပါမည်`;
             
             const telegramUrl = `https://t.me/ktrthurein?text=${encodeURIComponent(message)}`;
@@ -1065,13 +1842,15 @@
             closeScreenshotModal();
         }
 
-        function sendScreenshotToMessenger(mlbbId, amount, price) {
-            const message = `🎮 MLBB Diamond Order - Screenshot ပါပါတယ်
-💎 ${amount} Diamonds - ${price.toLocaleString()} MMK
+        function sendDiamondScreenshotToMessenger(mlbbId, serverId, amount, price, server) {
+            const serverName = server === 'global' ? 'Global Server' : server === 'ban' ? 'Ban Server' : 'Russia Server';
+            const message = `💎 MLBB Diamond Order - Screenshot ပါပါတယ်
+💎 ${amount} - ${price.toLocaleString()} MMK
 🆔 MLBB ID: ${mlbbId}
+🌐 Server ID: ${serverId}
+🎮 Server: ${serverName}
 📸 Screenshot ကို ပေးပို့ပါမည်`;
             
-            // Facebook Messenger web URL
             const messengerUrl = `https://m.me/thurein.official?text=${encodeURIComponent(message)}`;
             window.open(messengerUrl, '_blank');
             closeSendScreenshotOptions();
@@ -1112,41 +1891,6 @@
             ]);
         }
 
-        // Slider functionality
-        let slideIndex = 1;
-        
-        function currentSlide(n) {
-            showSlide(slideIndex = n);
-        }
-        
-        function showSlide(n) {
-            const slides = document.querySelectorAll('.slide');
-            const dots = document.querySelectorAll('.dot');
-            
-            if (n > slides.length) { slideIndex = 1; }
-            if (n < 1) { slideIndex = slides.length; }
-            
-            slides.forEach(slide => slide.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
-            
-            if (slides[slideIndex - 1]) {
-                slides[slideIndex - 1].classList.add('active');
-            }
-            if (dots[slideIndex - 1]) {
-                dots[slideIndex - 1].classList.add('active');
-            }
-        }
-        
-        // Auto slide
-        function autoSlide() {
-            slideIndex++;
-            if (slideIndex > 3) slideIndex = 1;
-            showSlide(slideIndex);
-        }
-        
-        // Start auto sliding
-        setInterval(autoSlide, 4000);
-
         if (window.elementSdk) {
             window.elementSdk.init({
                 defaultConfig,
@@ -1156,5 +1900,5 @@
             });
         }
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'991e620ed63dfd3a',t:'MTc2MTAyNDgzNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99314e8f559efd2f',t:'MTc2MTIyMzI2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
