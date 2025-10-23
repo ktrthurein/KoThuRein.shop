@@ -10,8 +10,8 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #2d1810 50%, #1a1a1a 75%, #0a0a0a 100%);
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 25%, #2d1b69 50%, #1a1a3a 75%, #0f0f23 100%);
             color: white;
             min-height: 100%;
             position: relative;
@@ -25,11 +25,18 @@
             width: 100%;
             height: 100%;
             background-image: 
-                radial-gradient(circle at 20% 20%, rgba(255, 140, 0, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 60%, rgba(255, 165, 0, 0.05) 0%, transparent 50%);
+                radial-gradient(circle at 15% 25%, rgba(255, 87, 34, 0.2) 0%, transparent 60%),
+                radial-gradient(circle at 85% 75%, rgba(255, 152, 0, 0.2) 0%, transparent 60%),
+                radial-gradient(circle at 50% 50%, rgba(255, 193, 7, 0.15) 0%, transparent 70%),
+                linear-gradient(45deg, transparent 30%, rgba(255, 215, 0, 0.05) 50%, transparent 70%);
             pointer-events: none;
             z-index: -1;
+            animation: backgroundShift 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
         }
 
         .container {
@@ -42,37 +49,255 @@
         .header {
             text-align: center;
             margin-bottom: 40px;
-            padding: 30px 0;
+            padding: 40px 0;
             position: relative;
+            background: linear-gradient(145deg, rgba(255, 87, 34, 0.1), rgba(255, 152, 0, 0.1));
+            border-radius: 25px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
         }
 
         .logo {
-            font-size: 2.5rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #ff8c00, #ffa500, #ff6347);
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ffd700, #ff9800, #ff5722, #ffc107);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(255, 140, 0, 0.5);
-            letter-spacing: 2px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+            letter-spacing: 3px;
+            animation: gradientShift 4s ease-in-out infinite;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .logo::after {
+            content: '🪙';
+            position: absolute;
+            top: -10px;
+            right: -20px;
+            font-size: 1.5rem;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
         }
 
         .subtitle {
-            font-size: 1.2rem;
-            color: #ffa500;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px rgba(255, 165, 0, 0.3);
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #ffd700, #ff9800);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            font-weight: 600;
         }
 
         .contact-info {
-            background: linear-gradient(145deg, rgba(255, 140, 0, 0.2), rgba(255, 69, 0, 0.1));
-            border: 2px solid rgba(255, 140, 0, 0.4);
-            padding: 15px;
-            border-radius: 15px;
+            background: linear-gradient(145deg, rgba(255, 215, 0, 0.15), rgba(255, 87, 34, 0.1));
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            padding: 20px 25px;
+            border-radius: 20px;
             display: inline-block;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .contact-info:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Image Slider Styles */
+        .slider-container {
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        .slider-wrapper {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+
+        .slider-track {
+            display: flex;
+            width: 400%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            width: 25%;
+            height: 100%;
+            position: relative;
+            background: linear-gradient(135deg, #ff5722, #ff9800, #ffc107);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            animation: slideShine 6s ease-in-out infinite;
+        }
+
+        @keyframes slideShine {
+            0% { transform: translateX(-100%) skewX(-25deg); }
+            100% { transform: translateX(200%) skewX(-25deg); }
+        }
+
+        .slide-content {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+            padding: 20px;
+        }
+
+        .slide-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+            animation: slideIconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes slideIconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .slide h3 {
+            color: #000;
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin: 0 0 10px 0;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+        }
+
+        .slide p {
+            color: #333;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.2);
+        }
+
+        .slide:nth-child(1) {
+            background: linear-gradient(135deg, #ff5722, #ff9800);
+        }
+
+        .slide:nth-child(2) {
+            background: linear-gradient(135deg, #ffc107, #ffeb3b);
+        }
+
+        .slide:nth-child(3) {
+            background: linear-gradient(135deg, #9c27b0, #e91e63);
+        }
+
+        .slide:nth-child(4) {
+            background: linear-gradient(135deg, #2196f3, #00bcd4);
+        }
+
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
             backdrop-filter: blur(10px);
-            box-shadow: 0 8px 25px rgba(255, 140, 0, 0.2);
+        }
+
+        .slider-nav:hover {
+            background: rgba(255, 215, 0, 0.8);
+            color: #000;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .prev {
+            left: 15px;
+        }
+
+        .next {
+            right: 15px;
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #ffd700;
+            transform: scale(1.3);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        .dot:hover {
+            background: #ffd700;
+            transform: scale(1.2);
+        }
+
+        .uc-packages {
+            margin-bottom: 40px;
+        }
+
+        .package-title {
+            color: #ff9800;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(255, 152, 0, 0.4);
+            background: linear-gradient(45deg, #ffd700, #ff9800);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .uc-grid {
@@ -83,16 +308,16 @@
         }
 
         .uc-card {
-            background: linear-gradient(145deg, rgba(20, 20, 20, 0.9), rgba(40, 25, 15, 0.8));
-            border: 2px solid rgba(255, 140, 0, 0.4);
-            border-radius: 20px;
-            padding: 25px;
+            background: linear-gradient(145deg, rgba(255, 87, 34, 0.2), rgba(255, 152, 0, 0.1));
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 25px;
+            padding: 30px;
             text-align: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            backdrop-filter: blur(15px);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         }
 
         .uc-card::before {
@@ -102,15 +327,33 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 140, 0, 0.1), transparent);
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.15), transparent);
             transform: rotate(45deg);
-            transition: all 0.5s ease;
+            transition: all 0.6s ease;
             opacity: 0;
+        }
+
+        .uc-card::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.6), transparent);
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.3s ease;
         }
 
         .uc-card:hover::before {
             opacity: 1;
-            animation: shine 1.5s ease-in-out;
+            animation: shine 2s ease-in-out;
+        }
+
+        .uc-card:hover::after {
+            opacity: 1;
+            animation: pulse 1.5s ease-in-out infinite;
         }
 
         @keyframes shine {
@@ -118,75 +361,116 @@
             100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+
         .uc-card:hover {
-            transform: translateY(-10px);
-            border-color: #ff8c00;
-            box-shadow: 0 20px 40px rgba(255, 140, 0, 0.3);
+            transform: translateY(-12px) scale(1.02);
+            border-color: #ffd700;
+            box-shadow: 0 25px 50px rgba(255, 215, 0, 0.3);
         }
 
         .uc-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 0 15px rgba(255, 140, 0, 0.6));
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
 
         .uc-amount {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #ff8c00;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ffd700, #ff9800);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         }
 
         .uc-price {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             color: #32cd32;
             font-weight: bold;
-            margin-bottom: 20px;
-            text-shadow: 0 0 8px rgba(50, 205, 50, 0.4);
+            margin-bottom: 25px;
+            text-shadow: 0 0 12px rgba(50, 205, 50, 0.6);
+            background: linear-gradient(145deg, rgba(50, 205, 50, 0.1), transparent);
+            padding: 8px 15px;
+            border-radius: 15px;
+            border: 1px solid rgba(50, 205, 50, 0.3);
         }
 
         .buy-button {
-            background: linear-gradient(45deg, #ff8c00, #ffa500);
-            color: #000;
+            background: linear-gradient(45deg, #ffd700, #ff9800, #ff5722);
+            color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 1rem;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-weight: 900;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             width: 100%;
             position: relative;
             z-index: 1;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.3);
+            letter-spacing: 1.5px;
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .buy-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .buy-button:hover::before {
+            left: 100%;
         }
 
         .buy-button:hover {
-            background: linear-gradient(45deg, #ffa500, #ff6347);
-            transform: scale(1.05);
-            box-shadow: 0 10px 25px rgba(255, 140, 0, 0.4);
+            background: linear-gradient(45deg, #32cd32, #ffd700, #ff9800);
+            transform: scale(1.08);
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.6);
         }
 
         .popular-badge {
             position: absolute;
-            top: -10px;
-            right: -10px;
-            background: linear-gradient(45deg, #ff4500, #ff6347);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            transform: rotate(15deg);
-            box-shadow: 0 4px 12px rgba(255, 69, 0, 0.4);
+            top: -12px;
+            right: -12px;
+            background: linear-gradient(45deg, #ff4500, #ffd700, #ff6347);
+            color: #000;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 900;
+            transform: rotate(12deg);
+            box-shadow: 0 6px 18px rgba(255, 69, 0, 0.6);
+            border: 2px solid #fff;
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: rotate(12deg) scale(1); }
+            50% { transform: rotate(12deg) scale(1.1); }
         }
 
         .features {
-            background: linear-gradient(145deg, rgba(20, 20, 20, 0.8), rgba(40, 25, 15, 0.6));
-            border: 1px solid rgba(255, 140, 0, 0.3);
+            background: linear-gradient(145deg, rgba(255, 87, 34, 0.1), rgba(255, 152, 0, 0.05));
+            border: 1px solid rgba(255, 152, 0, 0.3);
             border-radius: 20px;
             padding: 30px;
             margin-top: 40px;
@@ -195,10 +479,10 @@
         }
 
         .features h3 {
-            color: #ff8c00;
+            color: #ff9800;
             margin-bottom: 20px;
             font-size: 1.5rem;
-            text-shadow: 0 0 10px rgba(255, 140, 0, 0.4);
+            text-shadow: 0 0 10px rgba(255, 152, 0, 0.4);
         }
 
         .feature-list {
@@ -211,107 +495,21 @@
             display: flex;
             align-items: center;
             padding: 12px;
-            background: linear-gradient(145deg, rgba(255, 140, 0, 0.1), rgba(255, 69, 0, 0.05));
-            border: 1px solid rgba(255, 140, 0, 0.2);
+            background: linear-gradient(145deg, rgba(255, 152, 0, 0.1), rgba(255, 193, 7, 0.05));
+            border: 1px solid rgba(255, 152, 0, 0.2);
             border-radius: 12px;
             transition: all 0.3s ease;
         }
 
         .feature-item:hover {
-            background: linear-gradient(145deg, rgba(255, 140, 0, 0.15), rgba(255, 69, 0, 0.1));
-            border-color: rgba(255, 140, 0, 0.4);
+            background: linear-gradient(145deg, rgba(255, 152, 0, 0.15), rgba(255, 193, 7, 0.1));
+            border-color: rgba(255, 152, 0, 0.4);
         }
 
         .feature-icon {
             margin-right: 12px;
             font-size: 1.3rem;
-            filter: drop-shadow(0 0 5px rgba(255, 140, 0, 0.5));
-        }
-
-        .slider-container {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto 40px auto;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-            border: 2px solid rgba(255, 140, 0, 0.3);
-        }
-
-        .slider {
-            position: relative;
-            height: 250px;
-            background: linear-gradient(135deg, rgba(255, 140, 0, 0.15), rgba(255, 69, 0, 0.1));
-            backdrop-filter: blur(15px);
-        }
-
-        .slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .slide.active {
-            opacity: 1;
-        }
-
-        .slide-content {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .slide-icon {
-            font-size: 4rem;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 0 20px rgba(255, 140, 0, 0.6));
-        }
-
-        .slide-content h3 {
-            color: #ff8c00;
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            font-weight: bold;
-            text-shadow: 0 0 15px rgba(255, 140, 0, 0.4);
-        }
-
-        .slide-content p {
-            color: #e0e0e0;
-            font-size: 1.1rem;
-            max-width: 500px;
-            margin: 0 auto;
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        }
-
-        .slider-dots {
-            text-align: center;
-            padding: 20px;
-            background: linear-gradient(145deg, rgba(0, 0, 0, 0.6), rgba(20, 20, 20, 0.4));
-        }
-
-        .dot {
-            height: 12px;
-            width: 12px;
-            margin: 0 5px;
-            background-color: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            display: inline-block;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 140, 0, 0.3);
-        }
-
-        .dot.active,
-        .dot:hover {
-            background-color: #ff8c00;
-            transform: scale(1.3);
-            box-shadow: 0 0 10px rgba(255, 140, 0, 0.6);
+            filter: drop-shadow(0 0 5px rgba(255, 152, 0, 0.5));
         }
 
         @media (max-width: 768px) {
@@ -328,20 +526,30 @@
                 padding: 15px;
             }
 
-            .slider {
-                height: 200px;
+            .slider-wrapper {
+                height: 250px;
             }
 
-            .slide-content h3 {
+            .slide h3 {
                 font-size: 1.5rem;
             }
 
-            .slide-content p {
+            .slide p {
                 font-size: 1rem;
             }
 
-            .slide-icon {
-                font-size: 3rem;
+            .slider-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .prev {
+                left: 10px;
+            }
+
+            .next {
+                right: 10px;
             }
         }
     </style>
@@ -353,130 +561,174 @@
   <div class="container">
    <header class="header">
     <h1 class="logo" id="store-title">PUBG UC Store</h1>
-    <p class="subtitle">PUBG Mobile UC များ လျင်မြန်စွာ ရယူပါ</p>
+    <p class="subtitle">PUBG UC များ လျင်မြန်စွာ ရယူပါ - ၉/၇ ဝန်ဆောင်မှု</p>
     <div class="contact-info" id="contact-info">
-     📱 ဆက်သွယ်ရန်: 09-XXX-XXX-XXX | 💬 Viber/Telegram
+     📱 ဆက်သွယ်ရန်: 09-757424457 | 💬 Viber/Telegram: @ktrthurein
     </div>
    </header><!-- Image Slider -->
    <div class="slider-container">
-    <div class="slider">
-     <div class="slide active">
-      <div class="slide-content">
-       <div class="slide-icon">
-        🔫
+    <div class="slider-wrapper">
+     <div class="slider-track" id="slider-track">
+      <div class="slide">
+       <div class="slide-content">
+        <div class="slide-icon">
+         🪙
+        </div>
+        <h3>PUBG UC Promotion</h3>
+        <p>လျင်မြန်သော ဝန်ဆောင်မှုဖြင့် UC များ</p>
        </div>
-       <h3>PUBG Mobile</h3>
-       <p>အကောင်းဆုံး Battle Royale ဂိမ်းတွင် Winner Winner Chicken Dinner ရယူပါ</p>
       </div>
-     </div>
-     <div class="slide">
-      <div class="slide-content">
-       <div class="slide-icon">
-        🪙
+      <div class="slide">
+       <div class="slide-content">
+        <div class="slide-icon">
+         ⚡
+        </div>
+        <h3>လျင်မြန်သော ဝန်ဆောင်မှု</h3>
+        <p>5 - 10 မိနစ်အတွင်း ရရှိမည်</p>
        </div>
-       <h3>Premium UC</h3>
-       <p>တရားဝင် UC များဖြင့် သင့်အကောင့်ကို အဆင့်မြှင့်ပါ</p>
       </div>
-     </div>
-     <div class="slide">
-      <div class="slide-content">
-       <div class="slide-icon">
-        ⚡
+      <div class="slide">
+       <div class="slide-content">
+        <div class="slide-icon">
+         🎁
+        </div>
+        <h3>အထူးကမ်းလှမ်းချက်</h3>
+        <p>မိတ်ဟောင်း၊ မိတ်သစ်များအားခေါ်ယူလျက်ရှိပါသည်<p>
        </div>
-       <h3>လျင်မြန်သော ဝန်ဆောင်မှု</h3>
-       <p>၅မိနစ်အတွင်း သင့်အကောင့်သို့ UC များ ရောက်ရှိပါမည်</p>
       </div>
+      <div class="slide">
+       <div class="slide-content">
+        <div class="slide-icon">
+         🔒
+        </div>
+        <h3>၉/၇ ဝန်ဆောင်မှု</h3>
+        <p>မနက် ၉နာရီ မှ ည ၅နာရီအထိ ဆက်သွယ်နိုင်သည်</p>
+       </div>
+      </div>
+     </div><button class="slider-nav prev" onclick="previousSlide()">❮</button> <button class="slider-nav next" onclick="nextSlide()">❯</button>
+     <div class="slider-dots"><span class="dot active" onclick="currentSlide(1)"></span> <span class="dot" onclick="currentSlide(2)"></span> <span class="dot" onclick="currentSlide(3)"></span> <span class="dot" onclick="currentSlide(4)"></span>
      </div>
     </div>
-    <div class="slider-dots"><span class="dot active" onclick="currentSlide(1)"></span> <span class="dot" onclick="currentSlide(2)"></span> <span class="dot" onclick="currentSlide(3)"></span>
-    </div>
-   </div>
-   <div class="uc-grid">
-    <div class="uc-card">
-     <div class="uc-icon">
-      🪙
+   </div><!-- PUBG UC Packages -->
+   <div class="uc-packages">
+    <h2 class="package-title">🪙 PUBG UC Packages</h2>
+    <div class="uc-grid">
+     <div class="uc-card">
+      <div class="uc-icon">
+       🪙
+      </div>
+      <div class="uc-amount">
+       60 UC
+      </div>
+      <div class="uc-price">
+       4,200 MMK
+      </div><button class="buy-button" onclick="buyItem('60 UC', 4200)">ရွေးချယ်မယ်</button>
      </div>
-     <div class="uc-amount">
-      60 UC
+     <div class="uc-card">
+      <div class="uc-icon">
+       🪙
+      </div>
+      <div class="uc-amount">
+       120 UC
+      </div>
+      <div class="uc-price">
+       8,400 MMK
+      </div><button class="buy-button" onclick="buyItem('120 UC', 8400)">ရွေးချယ်မယ်</button>
      </div>
-     <div class="uc-price">
-      2,500 MMK
-     </div><button class="buy-button" onclick="buyUC(60, 2500)">ရွေးချယ်မယ်</button>
-    </div>
-    <div class="uc-card">
-     <div class="popular-badge">
-      လူကြိုက်များ
+     <div class="uc-card">
+      <div class="uc-icon">
+       🪙
+      </div>
+      <div class="uc-amount">
+       180 UC
+      </div>
+      <div class="uc-price">
+       12,600 MMK
+      </div><button class="buy-button" onclick="buyItem('180 UC', 12600)">ရွေးချယ်မယ်</button>
      </div>
-     <div class="uc-icon">
-      🪙
+     <div class="uc-card">
+      <div class="popular-badge">
+       လူကြိုက်များ
+      </div>
+      <div class="uc-icon">
+       🪙
+      </div>
+      <div class="uc-amount">
+       325 UC
+      </div>
+      <div class="uc-price">
+       20,000 MMK
+      </div><button class="buy-button" onclick="buyItem('325 UC', 20000)">ရွေးချယ်မယ်</button>
      </div>
-     <div class="uc-amount">
-      325 UC
+     <div class="uc-card">
+      <div class="uc-icon">
+       🪙
+      </div>
+      <div class="uc-amount">
+       660 UC
+      </div>
+      <div class="uc-price">
+       39,800 MMK
+      </div><button class="buy-button" onclick="buyItem('660 UC', 39800)">ရွေးချယ်မယ်</button>
      </div>
-     <div class="uc-price">
-      12,000 MMK
-     </div><button class="buy-button" onclick="buyUC(325, 12000)">ရွေးချယ်မယ်</button>
-    </div>
-    <div class="uc-card">
-           <div class="popular-badge">
-      လူကြိုက်များ
+     <div class="uc-card">
+      <div class="uc-icon">
+       🪙
+      </div>
+      <div class="uc-amount">
+       985 UC
+      </div>
+      <div class="uc-price">
+       59,800 MMK
+      </div><button class="buy-button" onclick="buyItem('985 UC', 59800)">ရွေးချယ်မယ်</button>
      </div>
-     <div class="uc-icon">
-      🪙
+     <div class="uc-card">
+      <div class="uc-icon">
+       🪙
+      </div>
+      <div class="uc-amount">
+       1800 UC
+      </div>
+      <div class="uc-price">
+       100,000 MMK
+      </div><button class="buy-button" onclick="buyItem('1800 UC', 100000)">ရွေးချယ်မယ်</button>
      </div>
-     <div class="uc-amount">
-      660 UC
+     <div class="uc-card">
+      <div class="uc-icon">
+       🪙
+      </div>
+      <div class="uc-amount">
+       3850 UC
+      </div>
+      <div class="uc-price">
+       200,000 MMK
+      </div><button class="buy-button" onclick="buyItem('3850 UC', 200000)">ရွေးချယ်မယ်</button>
      </div>
-     <div class="uc-price">
-      24,000 MMK
-     </div><button class="buy-button" onclick="buyUC(660, 24000)">ရွေးချယ်မယ်</button>
-    </div>
-    <div class="uc-card">
-     <div class="uc-icon">
-      🪙
+     <div class="uc-card">
+      <div class="uc-icon">
+       🪙
+      </div>
+      <div class="uc-amount">
+       8100 UC
+      </div>
+      <div class="uc-price">
+       380,000 MMK
+      </div><button class="buy-button" onclick="buyItem('8100 UC', 380000)">ရွေးချယ်မယ်</button>
      </div>
-     <div class="uc-amount">
-      1800 UC
-     </div>
-     <div class="uc-price">
-      65,000 MMK
-     </div><button class="buy-button" onclick="buyUC(1800, 65000)">ရွေးချယ်မယ်</button>
-    </div>
-    <div class="uc-card">
-     <div class="uc-icon">
-      🪙
-     </div>
-     <div class="uc-amount">
-      3850 UC
-     </div>
-     <div class="uc-price">
-      130,000 MMK
-     </div><button class="buy-button" onclick="buyUC(3850, 130000)">ရွေးချယ်မယ်</button>
-    </div>
-    <div class="uc-card">
-     <div class="uc-icon">
-      🪙
-     </div>
-     <div class="uc-amount">
-      8100 UC
-     </div>
-     <div class="uc-price">
-      260,000 MMK
-     </div><button class="buy-button" onclick="buyUC(8100, 260000)">ရွေးချယ်မယ်</button>
     </div>
    </div>
    <div class="features">
     <h3>🌟 ကျွန်ုပ်တို့၏ ဝန်ဆောင်မှုများ</h3>
     <div class="feature-list">
-     <div class="feature-item"><span class="feature-icon">⚡</span> <span>လျင်မြန်သော ဝန်ဆောင်မှု (၅မိနစ်အတွင်း)</span>
+     <div class="feature-item"><span class="feature-icon">⚡</span> <span>လျင်မြန်သော ဝန်ဆောင်မှု (၅-၁၀ မိနစ်အတွင်း)</span>
      </div>
-     <div class="feature-item"><span class="feature-icon">🔒</span> <span>လုံခြုံသော ငွေပေးချေမှု</span>
+     <div class="feature-item"><span class="feature-icon">🔒</span> <span>လုံခြုံမှုရှိခြင်း</span>
      </div>
      <div class="feature-item"><span class="feature-icon">💯</span> <span>၁၀၀% ယုံကြည်စိတ်ချရသော</span>
      </div>
-     <div class="feature-item"><span class="feature-icon">🔫</span> <span>တရားဝင် PUBG Mobile UC</span>
+     <div class="feature-item"><span class="feature-icon">🪙</span> <span> PUBG UC</span>
      </div>
-     <div class="feature-item"><span class="feature-icon">📞</span> <span>၂၄/၇ ဖောက်သည်ဝန်ဆောင်မှု</span>
+     <div class="feature-item"><span class="feature-icon">📞</span> <span>၉/၇ ဖောက်သည်ဝန်ဆောင်မှု</span>
      </div>
      <div class="feature-item"><span class="feature-icon">💰</span> <span>အကောင်းဆုံး စျေးနှုန်း</span>
      </div>
@@ -486,10 +738,73 @@
   <script>
         const defaultConfig = {
             store_title: "PUBG UC Store",
-            contact_info: "📱 ဆက်သွယ်ရန်: 09-XXX-XXX-XXX | 💬 Viber/Telegram"
+            contact_info: "📱 ဆက်သွယ်ရန်: 09-757424457 | 💬 Viber/Telegram: @ktrthurein"
         };
 
-        function buyUC(amount, price) {
+        let slideIndex = 0;
+        let slideInterval;
+
+        function initializeSlider() {
+            showSlide(0);
+            startAutoSlide();
+        }
+
+        function showSlide(index) {
+            const sliderTrack = document.getElementById('slider-track');
+            const dots = document.querySelectorAll('.dot');
+            
+            if (!sliderTrack) return;
+            
+            // Remove active class from all dots
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            // Add active class to current dot
+            if (dots[index]) dots[index].classList.add('active');
+            
+            // Move slider track
+            sliderTrack.style.transform = `translateX(-${index * 25}%)`;
+            slideIndex = index;
+        }
+
+        function nextSlide() {
+            slideIndex = (slideIndex + 1) % 4;
+            showSlide(slideIndex);
+        }
+
+        function previousSlide() {
+            slideIndex = (slideIndex - 1 + 4) % 4;
+            showSlide(slideIndex);
+        }
+
+        function currentSlide(index) {
+            showSlide(index - 1);
+        }
+
+        function startAutoSlide() {
+            stopAutoSlide();
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+
+        function stopAutoSlide() {
+            if (slideInterval) {
+                clearInterval(slideInterval);
+                slideInterval = null;
+            }
+        }
+
+        // Initialize slider when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initializeSlider, 100);
+            
+            // Pause auto-slide on hover
+            const sliderWrapper = document.querySelector('.slider-wrapper');
+            if (sliderWrapper) {
+                sliderWrapper.addEventListener('mouseenter', stopAutoSlide);
+                sliderWrapper.addEventListener('mouseleave', startAutoSlide);
+            }
+        });
+
+        function buyItem(amount, price) {
             const confirmation = document.createElement('div');
             confirmation.style.cssText = `
                 position: fixed;
@@ -506,23 +821,24 @@
             
             confirmation.innerHTML = `
                 <div style="
-                    background: linear-gradient(145deg, #1a1a1a, #2d1810);
+                    background: linear-gradient(145deg, #1a237e, #16213e);
                     padding: 30px;
                     border-radius: 20px;
                     text-align: center;
-                    border: 2px solid #ff8c00;
+                    border: 2px solid #ff9800;
                     max-width: 400px;
                     width: 90%;
-                    box-shadow: 0 15px 40px rgba(255, 140, 0, 0.3);
+                    box-shadow: 0 15px 40px rgba(255, 152, 0, 0.3);
                 ">
                     <div style="font-size: 3rem; margin-bottom: 20px;">🪙</div>
-                    <h3 style="color: #ff8c00; margin-bottom: 15px;">အော်ဒါ အတည်ပြုခြင်း</h3>
+                    <h3 style="color: #ff9800; margin-bottom: 15px;">အော်ဒါ အတည်ပြုခြင်း</h3>
                     <p style="margin-bottom: 20px; color: white;">
-                        ${amount} UC<br>
+                        ${amount}<br>
+                        Game: PUBG Mobile<br>
                         စျေးနှုန်း: ${price.toLocaleString()} MMK
                     </p>
                     <div style="display: flex; gap: 15px; justify-content: center;">
-                        <button onclick="proceedUCOrder(${amount}, ${price})" style="
+                        <button onclick="proceedOrder('${amount}', ${price})" style="
                             background: linear-gradient(45deg, #32cd32, #228b22);
                             color: white;
                             border: none;
@@ -547,12 +863,12 @@
             document.body.appendChild(confirmation);
         }
 
-        function proceedUCOrder(amount, price) {
+        function proceedOrder(amount, price) {
             closeConfirmation();
-            showUCOrderForm(amount, price);
+            showOrderForm(amount, price);
         }
 
-        function showUCOrderForm(amount, price) {
+        function showOrderForm(amount, price) {
             const orderForm = document.createElement('div');
             orderForm.style.cssText = `
                 position: fixed;
@@ -570,51 +886,40 @@
             
             orderForm.innerHTML = `
                 <div style="
-                    background: linear-gradient(145deg, #1a1a1a, #2d1810);
+                    background: linear-gradient(145deg, #1a237e, #16213e);
                     padding: 30px;
                     border-radius: 20px;
-                    border: 2px solid #ff8c00;
+                    border: 2px solid #ff9800;
                     max-width: 500px;
                     width: 90%;
                     margin: 20px;
-                    box-shadow: 0 15px 40px rgba(255, 140, 0, 0.3);
+                    box-shadow: 0 15px 40px rgba(255, 152, 0, 0.3);
                 ">
-                    <h3 style="color: #ff8c00; text-align: center; margin-bottom: 25px;">
-                        🪙 ${amount} UC - ${price.toLocaleString()} MMK
+                    <h3 style="color: #ff9800; text-align: center; margin-bottom: 25px;">
+                        🪙 ${amount} - ${price.toLocaleString()} MMK<br>
+                        <small style="color: #ffc107;">PUBG Mobile</small>
                     </h3>
-                    <form onsubmit="submitUCOrder(event, ${amount}, ${price})">
+                    <form onsubmit="submitOrder(event, '${amount}', ${price})">
                         <div style="margin-bottom: 20px;">
                             <label style="display: block; margin-bottom: 8px; color: white;">PUBG ID:</label>
-                            <input type="text" id="pubg-id" required style="
+                            <input type="text" id="game-id" required style="
                                 width: 100%;
                                 padding: 12px;
-                                border: 2px solid #ff8c00;
+                                border: 2px solid #ff9800;
                                 border-radius: 10px;
-                                background: rgba(255, 140, 0, 0.1);
+                                background: rgba(255, 152, 0, 0.1);
                                 color: white;
                                 font-size: 16px;
                             " placeholder="ဥပမာ: 123456789">
-                        </div>
-                        <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 8px; color: white;">Character Name:</label>
-                            <input type="text" id="character-name" required style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #ff8c00;
-                                border-radius: 10px;
-                                background: rgba(255, 140, 0, 0.1);
-                                color: white;
-                                font-size: 16px;
-                            " placeholder="ဥပမာ: PlayerName">
                         </div>
                         <div style="margin-bottom: 20px;">
                             <label style="display: block; margin-bottom: 8px; color: white;">ဆက်သွယ်ရန် (Telegram/Viber/Facebook/Phone):</label>
                             <input type="text" id="contact" required style="
                                 width: 100%;
                                 padding: 12px;
-                                border: 2px solid #ff8c00;
+                                border: 2px solid #ff9800;
                                 border-radius: 10px;
-                                background: rgba(255, 140, 0, 0.1);
+                                background: rgba(255, 152, 0, 0.1);
                                 color: white;
                                 font-size: 16px;
                             " placeholder="@username သို့မဟုတ် 09-XXX-XXX-XXX သို့မဟုတ် Facebook link">
@@ -629,7 +934,7 @@
                                 cursor: pointer;
                                 font-weight: bold;
                                 font-size: 16px;
-                            ">Download & ပို့မယ်</button>
+                            ">Screenshot ရိုက်ပြီး ပို့မယ်</button>
                             <button type="button" onclick="closeOrderForm()" style="
                                 background: linear-gradient(45deg, #dc143c, #b22222);
                                 color: white;
@@ -648,106 +953,11 @@
             document.body.appendChild(orderForm);
         }
 
-        function generateUCOrderImage(pubgId, characterName, amount, price, contact) {
-            const canvas = document.createElement('canvas');
-            canvas.width = 800;
-            canvas.height = 600;
-            const ctx = canvas.getContext('2d');
-            
-            // Background gradient (PUBG style - darker with orange accents)
-            const gradient = ctx.createLinearGradient(0, 0, 800, 600);
-            gradient.addColorStop(0, '#0a0a0a');
-            gradient.addColorStop(0.3, '#1a1a1a');
-            gradient.addColorStop(0.5, '#2d1810');
-            gradient.addColorStop(0.7, '#1a1a1a');
-            gradient.addColorStop(1, '#0a0a0a');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, 800, 600);
-            
-            // Border (PUBG orange theme)
-            ctx.strokeStyle = '#ff8c00';
-            ctx.lineWidth = 4;
-            ctx.strokeRect(20, 20, 760, 560);
-            
-            // Header
-            ctx.fillStyle = '#ff8c00';
-            ctx.font = 'bold 36px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('PUBG Mobile UC Order', 400, 80);
-            
-            // Thurein Stamp (PUBG style)
-            ctx.fillStyle = '#ff4500';
-            ctx.fillRect(600, 30, 120, 60);
-            ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 16px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('THUREIN', 660, 50);
-            ctx.fillText('သူရိန်', 660, 70);
-            
-            // UC icon (using text)
-            ctx.fillStyle = '#ff8c00';
-            ctx.font = '80px Arial';
-            ctx.fillText('🪙', 400, 180);
-            
-            // Order details
-            ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 24px Arial';
-            ctx.textAlign = 'left';
-            
-            const details = [
-                `PUBG ID: ${pubgId}`,
-                `Character: ${characterName}`,
-                `UC Amount: ${amount}`,
-                `Price: ${price.toLocaleString()} MMK`,
-                `Contact: ${contact}`,
-                `Date: ${new Date().toLocaleDateString('my-MM')}`,
-                `Time: ${new Date().toLocaleTimeString('my-MM')}`
-            ];
-            
-            let yPos = 250;
-            details.forEach(detail => {
-                ctx.fillText(detail, 100, yPos);
-                yPos += 40;
-            });
-            
-            // Footer
-            ctx.fillStyle = '#ff8c00';
-            ctx.font = 'bold 20px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('PUBG UC Store - Official Dealer', 400, 520);
-            ctx.fillStyle = '#a0a0a0';
-            ctx.font = '16px Arial';
-            ctx.fillText('Viber: 09798976687 | Telegram: @ktrthurein', 400, 550);
-            
-            return canvas;
-        }
-
-        function downloadUCOrderImage(canvas, pubgId) {
-            canvas.toBlob(function(blob) {
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.download = `pubg_order_${pubgId}.jpg`;
-                link.href = url;
-                link.style.display = 'none';
-                
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                setTimeout(() => URL.revokeObjectURL(url), 100);
-            }, 'image/jpeg', 0.95);
-        }
-
-        function submitUCOrder(event, amount, price) {
+        function submitOrder(event, amount, price) {
             event.preventDefault();
             
-            const pubgId = document.getElementById('pubg-id').value;
-            const characterName = document.getElementById('character-name').value;
+            const gameId = document.getElementById('game-id').value;
             const contact = document.getElementById('contact').value;
-            
-            // Generate and download order image
-            const canvas = generateUCOrderImage(pubgId, characterName, amount, price, contact);
-            downloadUCOrderImage(canvas, pubgId);
             
             closeOrderForm();
             
@@ -767,7 +977,7 @@
             
             successMessage.innerHTML = `
                 <div style="
-                    background: linear-gradient(145deg, #1a1a1a, #2d1810);
+                    background: linear-gradient(145deg, #1a237e, #16213e);
                     padding: 40px;
                     border-radius: 20px;
                     text-align: center;
@@ -776,48 +986,15 @@
                     width: 90%;
                     box-shadow: 0 15px 40px rgba(50, 205, 50, 0.3);
                 ">
-                    <!-- PUBG Style Stamp -->
-                    <div style="
-                        width: 80px;
-                        height: 80px;
-                        border: 3px solid #ff4500;
-                        border-radius: 50%;
-                        background: linear-gradient(45deg, #ff4500, #ff6347);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin: 0 auto 15px auto;
-                        position: relative;
-                        box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4);
-                    ">
-                        <div style="
-                            color: white;
-                            font-weight: bold;
-                            font-size: 14px;
-                            text-align: center;
-                            line-height: 1.2;
-                        ">
-                            THUREIN<br>သူရိန်
-                        </div>
-                        <div style="
-                            position: absolute;
-                            top: -2px;
-                            left: -2px;
-                            width: 84px;
-                            height: 84px;
-                            border: 1px solid #ffaaaa;
-                            border-radius: 50%;
-                        "></div>
-                    </div>
                     <div style="font-size: 3rem; margin-bottom: 15px;">✅</div>
                     <h3 style="color: #32cd32; margin-bottom: 20px;">အော်ဒါ အောင်မြင်ပါသည်!</h3>
                     <p style="color: white; margin-bottom: 15px;">
-                        PUBG ID: ${pubgId}<br>
-                        Character: ${characterName}<br>
-                        ${amount} UC - ${price.toLocaleString()} MMK
+                        PUBG ID: ${gameId}<br>
+                        Game: PUBG Mobile<br>
+                        ${amount} - ${price.toLocaleString()} MMK
                     </p>
                     <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 25px; flex-wrap: wrap;">
-                        <button onclick="takeUCScreenshotAndSend('${pubgId}', '${characterName}', '${amount}', '${price}', '${contact}')" style="
+                        <button onclick="takeScreenshotAndSend('${gameId}', '${amount}', '${price}', '${contact}')" style="
                             background: linear-gradient(45deg, #32cd32, #228b22);
                             color: white;
                             border: none;
@@ -832,8 +1009,8 @@
                         ">📸 Screenshot ရိုက်ပြီး ပို့မယ်</button>
                     </div>
                     <button onclick="closeSuccessMessage()" style="
-                        background: linear-gradient(45deg, #ff8c00, #ffa500);
-                        color: #000;
+                        background: linear-gradient(45deg, #ff9800, #ffc107);
+                        color: white;
                         border: none;
                         padding: 12px 30px;
                         border-radius: 10px;
@@ -861,7 +1038,7 @@
             if (successMessage) successMessage.remove();
         }
 
-        function takeUCScreenshotAndSend(pubgId, characterName, amount, price, contact) {
+        function takeScreenshotAndSend(gameId, amount, price, contact) {
             const screenshotModal = document.createElement('div');
             screenshotModal.style.cssText = `
                 position: fixed;
@@ -883,81 +1060,49 @@
             
             screenshotModal.innerHTML = `
                 <div style="
-                    background: linear-gradient(145deg, #1a1a1a, #2d1810);
-                    border: 3px solid #ff8c00;
+                    background: linear-gradient(145deg, #1a237e, #16213e);
+                    border: 3px solid #ff9800;
                     border-radius: ${isMobile ? '15px' : '20px'};
                     padding: ${isMobile ? '20px' : '40px'};
                     max-width: ${isMobile ? '95%' : '500px'};
                     width: 100%;
                     text-align: center;
                     position: relative;
-                    box-shadow: 0 0 30px rgba(255, 140, 0, 0.4);
+                    box-shadow: 0 0 30px rgba(255, 152, 0, 0.4);
                     margin: ${isMobile ? '10px 0' : '20px 0'};
                 ">
-                    <!-- PUBG Style Official Stamp -->
-                    <div style="
-                        position: absolute;
-                        top: ${isMobile ? '10px' : '20px'};
-                        right: ${isMobile ? '10px' : '20px'};
-                        width: ${isMobile ? '60px' : '80px'};
-                        height: ${isMobile ? '60px' : '80px'};
-                        border: 3px solid #ff4500;
-                        border-radius: 50%;
-                        background: linear-gradient(45deg, #ff4500, #ff6347);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4);
-                        transform: rotate(-15deg);
-                    ">
-                        <div style="
-                            color: white;
-                            font-weight: bold;
-                            font-size: ${isMobile ? '9px' : '12px'};
-                            text-align: center;
-                            line-height: 1.1;
-                        ">
-                            THUREIN<br>သူရိန်<br>OFFICIAL
-                        </div>
-                    </div>
-                    
-                    <!-- Header -->
-                    <div style="margin-bottom: ${isMobile ? '20px' : '30px'}; padding-right: ${isMobile ? '70px' : '100px'};">
-                        <h2 style="color: #ff8c00; margin: 0 0 10px 0; font-size: ${isMobile ? '20px' : '28px'}; line-height: 1.2;">🔫 PUBG UC Order</h2>
+                    <div style="margin-bottom: ${isMobile ? '20px' : '30px'};">
+                        <h2 style="color: #ff9800; margin: 0 0 10px 0; font-size: ${isMobile ? '20px' : '28px'}; line-height: 1.2;">🪙 PUBG Mobile Order</h2>
                         <div style="color: #32cd32; font-size: ${isMobile ? '14px' : '18px'}; font-weight: bold;">✅ အတည်ပြုပြီးပါပြီ</div>
                     </div>
                     
-                    <!-- UC Icon -->
-                    <div style="font-size: ${isMobile ? '40px' : '60px'}; margin-bottom: ${isMobile ? '15px' : '25px'}; filter: drop-shadow(0 0 15px rgba(255, 140, 0, 0.6));">🪙</div>
+                    <div style="font-size: ${isMobile ? '40px' : '60px'}; margin-bottom: ${isMobile ? '15px' : '25px'}; filter: drop-shadow(0 0 15px rgba(255, 152, 0, 0.6));">🪙</div>
                     
-                    <!-- Order Details -->
-                    <div style="background: rgba(255, 140, 0, 0.1); border-radius: ${isMobile ? '10px' : '15px'}; padding: ${isMobile ? '15px' : '25px'}; margin-bottom: ${isMobile ? '15px' : '25px'}; text-align: left;">
+                    <div style="background: rgba(255, 152, 0, 0.1); border-radius: ${isMobile ? '10px' : '15px'}; padding: ${isMobile ? '15px' : '25px'}; margin-bottom: ${isMobile ? '15px' : '25px'}; text-align: left;">
                         <div style="color: white; font-size: ${isMobile ? '13px' : '16px'}; line-height: 1.6;">
-                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'}; word-break: break-all;"><strong style="color: #ff8c00;">🆔 PUBG ID:</strong> ${pubgId}</div>
-                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #ff8c00;">👤 Character:</strong> ${characterName}</div>
-                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #ff8c00;">🪙 UC Amount:</strong> ${amount}</div>
-                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #ff8c00;">💰 စျေးနှုန်း:</strong> ${parseInt(price).toLocaleString()} MMK</div>
-                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'}; word-break: break-all;"><strong style="color: #ff8c00;">📱 ဆက်သွယ်ရန်:</strong> ${contact}</div>
-                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #ff8c00;">📅 ရက်စွဲ:</strong> ${new Date().toLocaleDateString('my-MM')}</div>
-                            <div><strong style="color: #ff8c00;">⏰ အချိန်:</strong> ${new Date().toLocaleTimeString('my-MM')}</div>
+                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'}; word-break: break-all;"><strong style="color: #ff9800;">🆔 PUBG ID:</strong> ${gameId}</div>
+                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #ff9800;">🎮 Game:</strong> PUBG Mobile</div>
+                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #ff9800;">🪙 UC:</strong> ${amount}</div>
+                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #ff9800;">💰 စျေးနှုန်း:</strong> ${parseInt(price).toLocaleString()} MMK</div>
+                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'}; word-break: break-all;"><strong style="color: #ff9800;"> ဆက်သွယ်ရန်:</strong> ${contact}</div>
+                            <div style="margin-bottom: ${isMobile ? '8px' : '12px'};"><strong style="color: #ff9800;">📅 ရက်စွဲ:</strong> ${new Date().toLocaleDateString('my-MM')}</div>
+                            <div><strong style="color: #ff9800;">⏰ အချိန်:</strong> ${new Date().toLocaleTimeString('my-MM')}</div>
                         </div>
                     </div>
                     
-                    <!-- Footer -->
-                    <div style="border-top: 2px solid #ff8c00; padding-top: ${isMobile ? '15px' : '20px'}; margin-top: ${isMobile ? '15px' : '20px'};">
-                        <div style="color: #ff8c00; font-weight: bold; font-size: ${isMobile ? '16px' : '18px'}; margin-bottom: 8px;">PUBG UC Store</div>
+                    <div style="border-top: 2px solid #ff9800; padding-top: ${isMobile ? '15px' : '20px'}; margin-top: ${isMobile ? '15px' : '20px'};">
+                        <div style="color: #ff9800; font-weight: bold; font-size: ${isMobile ? '16px' : '18px'}; margin-bottom: 8px;">PUBG UC Store</div>
                         <div style="color: #a0a0a0; font-size: ${isMobile ? '12px' : '14px'}; line-height: 1.4;">
-                            📱 Viber: 09798976687<br>
+                            📱 Viber: 09757424457<br>
                             ✈️ Telegram: @ktrthurein<br>
-                            🔫 Official PUBG UC Dealer
+                            🪙 PUBG UC Dealer - ၉/၇ ဝန်ဆောင်မှု
                         </div>
                     </div>
                 </div>
                 
-                <!-- Instructions -->
                 <div style="
-                    background: rgba(255, 140, 0, 0.1);
-                    border: 2px solid #ff8c00;
+                    background: rgba(255, 152, 0, 0.1);
+                    border: 2px solid #ff9800;
                     border-radius: ${isMobile ? '10px' : '15px'};
                     padding: ${isMobile ? '15px' : '20px'};
                     margin-top: ${isMobile ? '15px' : '20px'};
@@ -965,7 +1110,7 @@
                     width: 100%;
                     text-align: center;
                 ">
-                    <h3 style="color: #ff8c00; margin: 0 0 15px 0; font-size: ${isMobile ? '16px' : '20px'};">📸 Screenshot လုပ်နည်း</h3>
+                    <h3 style="color: #ff9800; margin: 0 0 15px 0; font-size: ${isMobile ? '16px' : '20px'};">📸 Screenshot လုပ်နည်း</h3>
                     <div style="color: white; font-size: ${isMobile ? '13px' : '16px'}; line-height: 1.6;">
                         <div style="margin-bottom: 10px;">📱 <strong>iPhone:</strong> Power + Volume Up ခလုတ်များ တပြိုင်နက်နှိပ်ပါ</div>
                         <div style="margin-bottom: 10px;">🤖 <strong>Android:</strong> Power + Volume Down ခလုတ်များ တပြိုင်နက်နှိပ်ပါ</div>
@@ -973,9 +1118,8 @@
                     </div>
                 </div>
                 
-                <!-- Action Buttons -->
                 <div style="display: flex; gap: ${isMobile ? '10px' : '15px'}; margin-top: ${isMobile ? '20px' : '25px'}; flex-wrap: wrap; justify-content: center; width: 100%; max-width: ${isMobile ? '95%' : '500px'};">
-                    <button onclick="sendUCScreenshotOrder('${pubgId}', '${amount}', '${price}')" style="
+                    <button onclick="sendScreenshotOrder('${gameId}', '${amount}', '${price}')" style="
                         background: linear-gradient(45deg, #32cd32, #228b22);
                         color: white;
                         border: none;
@@ -1010,7 +1154,7 @@
             if (screenshotModal) screenshotModal.remove();
         }
 
-        function sendUCScreenshotOrder(pubgId, amount, price) {
+        function sendScreenshotOrder(gameId, amount, price) {
             const sendOptions = document.createElement('div');
             sendOptions.style.cssText = `
                 position: fixed;
@@ -1027,23 +1171,24 @@
             
             sendOptions.innerHTML = `
                 <div style="
-                    background: linear-gradient(145deg, #1a1a1a, #2d1810);
+                    background: linear-gradient(145deg, #1a237e, #16213e);
                     padding: 30px;
                     border-radius: 20px;
                     text-align: center;
-                    border: 2px solid #ff8c00;
+                    border: 2px solid #ff9800;
                     max-width: 400px;
                     width: 90%;
-                    box-shadow: 0 15px 40px rgba(255, 140, 0, 0.3);
+                    box-shadow: 0 15px 40px rgba(255, 152, 0, 0.3);
                 ">
-                    <h3 style="color: #ff8c00; margin-bottom: 20px;">📸 Screenshot ပို့မယ်</h3>
+                    <h3 style="color: #ff9800; margin-bottom: 20px;">📸 Screenshot ပို့မယ်</h3>
                     <p style="color: white; margin-bottom: 25px;">
-                        PUBG ID: ${pubgId}<br>
-                        ${amount} UC - ${price.toLocaleString()} MMK<br><br>
+                        PUBG ID: ${gameId}<br>
+                        Game: PUBG Mobile<br>
+                        ${amount} - ${price.toLocaleString()} MMK<br><br>
                         <span style="color: #32cd32;">Screenshot ရိုက်ပြီးပါပြီလား?</span>
                     </p>
                     <div style="display: flex; flex-direction: column; gap: 15px;">
-                        <button onclick="sendUCScreenshotToViber('${pubgId}', '${amount}', '${price}')" style="
+                        <button onclick="sendScreenshotToViber('${gameId}', '${amount}', '${price}')" style="
                             background: linear-gradient(45deg, #665CAC, #7B68EE);
                             color: white;
                             border: none;
@@ -1053,7 +1198,7 @@
                             font-weight: bold;
                             font-size: 16px;
                         ">📱 Viber ပို့မယ်</button>
-                        <button onclick="sendUCScreenshotToTelegram('${pubgId}', '${amount}', '${price}')" style="
+                        <button onclick="sendScreenshotToTelegram('${gameId}', '${amount}', '${price}')" style="
                             background: linear-gradient(45deg, #0088cc, #229ED9);
                             color: white;
                             border: none;
@@ -1063,7 +1208,7 @@
                             font-weight: bold;
                             font-size: 16px;
                         ">✈️ Telegram ပို့မယ်</button>
-                        <button onclick="sendUCScreenshotToMessenger('${pubgId}', '${amount}', '${price}')" style="
+                        <button onclick="sendScreenshotToMessenger('${gameId}', '${amount}', '${price}')" style="
                             background: linear-gradient(45deg, #0084ff, #44a3ff);
                             color: white;
                             border: none;
@@ -1090,10 +1235,11 @@
             document.body.appendChild(sendOptions);
         }
 
-        function sendUCScreenshotToViber(pubgId, amount, price) {
-            const message = `🔫 PUBG UC Order - Screenshot ပါပါတယ်
-🪙 ${amount} UC - ${price.toLocaleString()} MMK
-🆔 PUBG ID: ${pubgId}
+        function sendScreenshotToViber(gameId, amount, price) {
+            const message = `🪙 PUBG Mobile Order - Screenshot ပါပါတယ်
+🪙 ${amount} - ${price.toLocaleString()} MMK
+🆔 PUBG ID: ${gameId}
+🎮 Game: PUBG Mobile
 📸 Screenshot ကို ပေးပို့ပါမည်`;
             
             const viberUrl = `viber://chat?number=09798976687&text=${encodeURIComponent(message)}`;
@@ -1102,10 +1248,11 @@
             closeScreenshotModal();
         }
 
-        function sendUCScreenshotToTelegram(pubgId, amount, price) {
-            const message = `🔫 PUBG UC Order - Screenshot ပါပါတယ်
-🪙 ${amount} UC - ${price.toLocaleString()} MMK
-🆔 PUBG ID: ${pubgId}
+        function sendScreenshotToTelegram(gameId, amount, price) {
+            const message = `🪙 PUBG Mobile Order - Screenshot ပါပါတယ်
+🪙 ${amount} - ${price.toLocaleString()} MMK
+🆔 PUBG ID: ${gameId}
+🎮 Game: PUBG Mobile
 📸 Screenshot ကို ပေးပို့ပါမည်`;
             
             const telegramUrl = `https://t.me/ktrthurein?text=${encodeURIComponent(message)}`;
@@ -1114,10 +1261,11 @@
             closeScreenshotModal();
         }
 
-        function sendUCScreenshotToMessenger(pubgId, amount, price) {
-            const message = `🔫 PUBG UC Order - Screenshot ပါပါတယ်
-🪙 ${amount} UC - ${price.toLocaleString()} MMK
-🆔 PUBG ID: ${pubgId}
+        function sendScreenshotToMessenger(gameId, amount, price) {
+            const message = `🪙 PUBG Mobile Order - Screenshot ပါပါတယ်
+🪙 ${amount} - ${price.toLocaleString()} MMK
+🆔 PUBG ID: ${gameId}
+🎮 Game: PUBG Mobile
 📸 Screenshot ကို ပေးပို့ပါမည်`;
             
             const messengerUrl = `https://m.me/thurein.official?text=${encodeURIComponent(message)}`;
@@ -1160,41 +1308,6 @@
             ]);
         }
 
-        // Slider functionality
-        let slideIndex = 1;
-        
-        function currentSlide(n) {
-            showSlide(slideIndex = n);
-        }
-        
-        function showSlide(n) {
-            const slides = document.querySelectorAll('.slide');
-            const dots = document.querySelectorAll('.dot');
-            
-            if (n > slides.length) { slideIndex = 1; }
-            if (n < 1) { slideIndex = slides.length; }
-            
-            slides.forEach(slide => slide.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
-            
-            if (slides[slideIndex - 1]) {
-                slides[slideIndex - 1].classList.add('active');
-            }
-            if (dots[slideIndex - 1]) {
-                dots[slideIndex - 1].classList.add('active');
-            }
-        }
-        
-        // Auto slide
-        function autoSlide() {
-            slideIndex++;
-            if (slideIndex > 3) slideIndex = 1;
-            showSlide(slideIndex);
-        }
-        
-        // Start auto sliding
-        setInterval(autoSlide, 4000);
-
         if (window.elementSdk) {
             window.elementSdk.init({
                 defaultConfig,
@@ -1204,5 +1317,5 @@
             });
         }
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'991e694ff1870af4',t:'MTc2MTAyNTEzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9934432b522b35f2',t:'MTc2MTI1NDI1OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
