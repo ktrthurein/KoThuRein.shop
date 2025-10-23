@@ -1707,15 +1707,15 @@
     <!-- Contact Section -->
     <div class="modern-contact-section">
       <div class="contact-header">
-        <h2>📞 ဆက်သွယ်ရန်</h2>
+        <h2> ဆက်သွယ်ရန်</h2>
         <p>Get in touch with us through any of these channels</p>
       </div>
       <div class="contact-cards">
-        <div class="contact-card phone-card">
+        <div class="contact-card phone-card onclick="makePhoneCall()>
           <div class="contact-icon">📞</div>
           <div class="contact-content">
             <h3>Phone Call</h3>
-            <p id="contact-phone">+95 9 123 456 789</p>
+            <p id="contact-phone">09757424457</p>
             <span class="contact-action">Call Now</span>
           </div>
         </div>
@@ -1723,14 +1723,14 @@
           <div class="contact-icon">📧</div>
           <div class="contact-content">
             <h3>Email</h3>
-            <p id="contact-email">thurein@business.com</p>
+            <p id="contact-email">thureinlinhteik.trlh@gmail.com</p>
             <span class="contact-action">Send Email</span>
           </div>
         </div>
         <div class="contact-card viber-card">
           <div class="contact-icon">💬</div>
           <div class="contact-content">
-            <h3>Viber</h3>
+            <h3>Viber Business Name</h3>
             <p>Thu Rein (သုတ)</p>
             <span class="contact-action">Chat on Viber</span>
           </div>
@@ -1738,9 +1738,9 @@
         <div class="contact-card telegram-card">
           <div class="contact-icon">📱</div>
           <div class="contact-content">
-            <h3>Telegram Bot</h3>
-            <p>@KoThuReinBot</p>
-            <span class="contact-action">Start Bot</span>
+            <h3>Telegram</h3>
+            <p>@ktrthurein</p>
+            <span class="contact-action">Start</span>
           </div>
         </div>
       </div>
@@ -1850,9 +1850,19 @@ setInterval(updateAllStatus, 60000);
     // Configuration object for Element SDK
     const defaultConfig = {
       business_title: "Thu Rein (သုတ) တွင်ရရှိနိုင်သော ပစ္စည်းများ",
-      contact_phone: "+95 9 123 456 789",
-      contact_email: "thurein@business.com"
+      contact_phone: "09757424457",
+      contact_email: "thureinlinhteik.trlh@gmail.com"
     };
+
+//function clicked
+function makePhoneCall() {
+      window.location.href = `tel:${defaultConfig.contact_phone}`;
+    }
+
+    function sendEmail() {
+      window.location.href = `mailto:${defaultConfig.contact_email}`;
+    }
+
 
     // Initialize particles and effects
     function createParticles() {
