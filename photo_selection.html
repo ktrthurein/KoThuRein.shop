@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Photo Ranker Pro</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #0d1117; color: #e0e0e0; font-family: 'Poppins', sans-serif; }
+    .card { background: #161b22; border-radius: 12px; padding: 1rem; box-shadow: 0 0 10px #00ffa240; }
+    .highlight { box-shadow: 0 0 15px #00ffa2; border: 2px solid #00ffa2; }
+  </style>
+</head>
+<body class="flex flex-col items-center min-h-screen py-10">
+  <h1 class="text-3xl font-bold text-[#00ffa2] mb-4">🤖 AI Photo Ranker Pro</h1>
+  <div class="card w-11/12 md:w-2/3 text-center">
+    <input type="file" id="photoInput" multiple accept="image/*" class="mb-4 text-sm text-gray-300" />
+    <div id="progress" class="text-sm text-gray-400 mb-2">Upload photos to start analysis...</div>
+    <div id="photoTable" class="overflow-x-auto mt-4"></div>
+    <button id="downloadZip" class="mt-5 bg-[#00ffa2] hover:bg-[#00cc82] text-black px-4 py-2 rounded font-bold hidden">Download Selected Photos (ZIP)</button>
+  </div>
+
+  <script>
+    const input = document.getElementById("photoInput");
+    const progress = document.getElementById("progress");
+    const tableContainer = document.getElementById("photoTable");
+    const downloadBtn = document.getElementById("downloadZip");
+
+    let analyzedResults = [];
+
+    async function analyzeImage(img, mobilenetModel, faceModel) {
+      const tensor = tf.browser.fromPixels(img);
+      const gray = tensor.mean(2);
+      const edges = tf.image.sobelEdges(gray.expandDims(-1));
+      const sharpness = edges.mean().dataSync()[0];
+      const brightness = gray.mean().dataSync()[0] / 255;
+      const predictions = await mobilenetModel.classify(img);
+      const confidence = predictions[0]?.probability || 0;
+      const faces = await faceModel.estimateFaces(img, false);
+      const faceScore = faces.length > 0 ? 0.25 : 0;
+      const aesthetic = (sharpness * 0.4) + (brightness * 0.2) + (confidence * 0.15) + faceScore;
+      return { sharpness, brightness, confidence, faceScore, aesthetic };
+    }
+
+    function renderTable(results) {
+      let html = `
+      <table class="min-w-full text-sm text-left">
+        <thead class="text-gray-400 border-b border-gray-700">
+          <tr>
+            <th class="p-2">Select</th>
+            <th class="p-2">Preview</th>
+            <th class="p-2">Sharpness</th>
+            <th class="p-2">Brightness</th>
+            <th class="p-2">Confidence</th>
+            <th class="p-2">Faces</th>
+            <th class="p-2">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+      `;
+      results.forEach((r, i) => {
+        html += `
+          <tr class="border-b border-gray-800 ${i === 0 ? 'bg-[#00ffa210]' : ''}">
+            <td class="p-2"><input type="checkbox" class="selectPhoto" data-src="${r.src}" checked></td>
+            <td class="p-2"><img src="${r.src}" width="100" class="${i === 0 ? 'highlight rounded' : 'rounded'}"></td>
+            <td class="p-2">${r.sharpness.toFixed(2)}</td>
+            <td class="p-2">${r.brightness.toFixed(2)}</td>
+            <td class="p-2">${r.confidence.toFixed(2)}</td>
+            <td class="p-2">${r.faceScore > 0 ? 'Yes' : 'No'}</td>
+            <td class="p-2 font-bold text-[#00ffa2]">${r.aesthetic.toFixed(3)}</td>
+          </tr>
+        `;
+      });
+      html += "</tbody></table>";
+      tableContainer.innerHTML = html;
+      downloadBtn.classList.remove("hidden");
+    }
+
+    async function createZip(selectedPhotos) {
+      const zip = new JSZip();
+      let count = 0;
+      for (const photo of selectedPhotos) {
+        const response = await fetch(photo);
+        const blob = await response.blob();
+        zip.file(`photo_${++count}.jpg`, blob);
+      }
+      const content = await zip.generateAsync({ type: "blob" });
+      saveAs(content, "selected_photos.zip");
+    }
+
+    input.addEventListener("change", async (e) => {
+      const files = Array.from(e.target.files);
+      if (!files.length) return;
+      progress.textContent = "Loading AI models...";
+      analyzedResults = [];
+
+      const mobilenetModel = await mobilenet.load();
+      const faceModel = await blazeface.load();
+      progress.textContent = "Analyzing photos...";
+
+      let count = 0;
+      for (const file of files) {
+        count++;
+        progress.textContent = `Analyzing ${count}/${files.length}...`;
+        const img = new Image();
+        img.src = URL.createObjectURL(file);
+        await new Promise((res) => (img.onload = res));
+        const stats = await analyzeImage(img, mobilenetModel, faceModel);
+        analyzedResults.push({ src: img.src, ...stats });
+      }
+
+      analyzedResults.sort((a, b) => b.aesthetic - a.aesthetic);
+      renderTable(analyzedResults);
+      progress.textContent = `Analysis complete ✅ (${files.length} photos analyzed)`;
+    });
+
+    downloadBtn.addEventListener("click", async () => {
+      const selected = Array.from(document.querySelectorAll(".selectPhoto:checked")).map(i => i.dataset.src);
+      if (!selected.length) return alert("Please select at least one photo!");
+      progress.textContent = "Creating ZIP file...";
+      await createZip(selected);
+      progress.textContent = "ZIP download complete ✅";
+    });
+  </script>
+</body>
+</html>
