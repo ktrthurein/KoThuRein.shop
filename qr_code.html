@@ -108,6 +108,23 @@
             resize: vertical;
         }
         
+        .char-count {
+            text-align: right;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .char-count.warning {
+            color: orange;
+            font-weight: bold;
+        }
+        
+        .char-count.error {
+            color: red;
+            font-weight: bold;
+        }
+        
         .logo-toggle {
             display: flex;
             align-items: center;
@@ -305,13 +322,22 @@
             margin-top: 30px;
         }
         
-        .debug-info {
+        .qrcode-info {
             background-color: #f8f9fa;
             padding: 10px;
             border-radius: 5px;
             margin-top: 10px;
             font-size: 0.9rem;
-            display: none;
+            text-align: center;
+        }
+        
+        .qrcode-type {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background: #4b6cb7;
+            color: white;
+            border-radius: 5px;
+            display: inline-block;
         }
         
         @media (max-width: 768px) {
@@ -343,6 +369,7 @@
                 <div class="form-group">
                     <label for="qr-text"><i class="fas fa-edit"></i> QR Code Content (မြန်မာစာ/အင်္ဂလိပ်စာ/နံပါတ်)</label>
                     <textarea id="qr-text" placeholder="ဒီမှာ ရေးပါ။ Example: ဇော်ဖော်, nsa001, https://example.com, မြန်မာပြည်">ဇော်ဖော်, nsa001</textarea>
+                    <div class="char-count" id="char-count">စာလုံးရေ: 0</div>
                 </div>
                 
                 <div class="form-group">
@@ -362,7 +389,7 @@
                         <img id="logo-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png" alt="Logo Preview" style="width: 80px; height: 80px;">
                         <p>Default logo preview</p>
                         <input type="file" id="logo-upload" accept="image/*" style="display: none;">
-                        <button id="change-logo-btn" style="padding: 8px 15px; background: #3498db; color: white; border: none; border-radius: 5px; margin-top: 5px;">
+                        <button type="button" id="change-logo-btn" style="padding: 8px 15px; background: #3498db; color: white; border: none; border-radius: 5px; margin-top: 5px;">
                             <i class="fas fa-sync-alt"></i> Change Logo
                         </button>
                     </div>
@@ -377,15 +404,17 @@
                     </button>
                 </div>
                 
-                <div class="debug-info" id="debug-info">
-                    <strong>Debug Information:</strong>
-                    <div id="debug-status">Status: Ready</div>
+                <div class="qrcode-info">
+                    <div id="qrcode-status">Status: Ready</div>
+                    <div id="qrcode-type" class="qrcode-type">Type: Not generated yet</div>
+                    <div id="qrcode-capacity" style="margin-top: 5px;">Maximum capacity: ~300 alphanumeric characters</div>
                 </div>
                 
                 <div class="instructions">
                     <h3><i class="fas fa-info-circle"></i> အသုံးပြုနည်း</h3>
                     <ul>
                         <li>အပေါ်က box ထဲမှာ QR Code ဖြစ်စေချင်တဲ့ စာသားကိုရိုက်ထည့်ပါ</li>
+                        <li><strong>သတိပြုရန်:</strong> စာသားအရမ်းရှည်ရင် QR Code အရမ်းကြီးလာမယ် (စာလုံး ၃၀၀ထက် မပိုပါစေနဲ့)</li>
                         <li>Logo ထည့်ချင်ရင် toggle ကိုဖွင့်ပေးပါ</li>
                         <li>"Generate QR Code" ကိုနှိပ်ပြီး QR Code ဖန်တီးပါ</li>
                         <li>ဖန်တီးပြီးရင် "Download PNG" ကိုနှိပ်ပြီး ပုံကိုသိမ်းဆည်းနိုင်ပါတယ်</li>
@@ -400,13 +429,14 @@
                     <div id="qrcode">
                         <!-- QR Code will appear here -->
                         <div id="loading-message" style="text-align: center; color: #666; padding: 20px;">
-                            <i class="fas fa-spinner fa-spin fa-2x"></i><br>
-                            <p>QR Code will appear here after clicking "Generate"</p>
+                            <i class="fas fa-qrcode fa-3x" style="color: #ccc;"></i><br>
+                            <p>QR Code will appear here</p>
                         </div>
                     </div>
                 </div>
                 <div class="example-text">
-                    ဥပမာ: ဇော်ဖော်, nsa001, https://example.com, မြန်မာပြည်
+                    ဥပမာ: ဇော်ဖော်, nsa001, https://example.com, မြန်မာပြည်<br>
+                    <strong>အကြံပြုချက်:</strong> URL ရှည်ရင် URL shortener (bit.ly, tinyurl) သုံးပါ
                 </div>
             </div>
         </div>
@@ -422,49 +452,58 @@
             
             // DOM elements
             const qrText = document.getElementById('qr-text');
+            const charCount = document.getElementById('char-count');
             const logoToggle = document.getElementById('logo-toggle');
             const logoPreview = document.getElementById('logo-preview');
             const logoImage = document.getElementById('logo-image');
-            const changeLogoBtn = document.getElementById('change-logo-btn');
+            const changeLogoBtn = document.getElementById('change-log-btn');
             const logoUpload = document.getElementById('logo-upload');
             const generateBtn = document.getElementById('generate-btn');
             const downloadBtn = document.getElementById('download-btn');
             const qrcodeDiv = document.getElementById('qrcode');
             const loadingMessage = document.getElementById('loading-message');
-            const debugInfo = document.getElementById('debug-info');
-            const debugStatus = document.getElementById('debug-status');
+            const qrcodeStatus = document.getElementById('qrcode-status');
+            const qrcodeType = document.getElementById('qrcode-type');
+            const qrcodeCapacity = document.getElementById('qrcode-capacity');
             
             let currentQRCode = null;
             let logoFile = null;
             
-            // Show debug info for troubleshooting
-            debugInfo.style.display = 'block';
-            debugStatus.textContent = 'Status: Page loaded successfully';
-            
-            // Check if QRCode library is loaded
-            if (typeof QRCode === 'undefined') {
-                debugStatus.textContent = 'Status: ERROR - QRCode library not loaded!';
-                console.error("QRCode library not loaded!");
-                alert("QRCode library မတင်ထားပါ။ Internet connection ကိုစစ်ဆေးပါ။");
-                return;
-            } else {
-                debugStatus.textContent = 'Status: QRCode library loaded successfully';
-                console.log("QRCode library loaded:", QRCode);
+            // Character count update
+            function updateCharCount() {
+                const text = qrText.value;
+                const count = text.length;
+                charCount.textContent = `စာလုံးရေ: ${count}`;
+                
+                // Warning colors based on length
+                if (count > 300) {
+                    charCount.classList.add('error');
+                    charCount.classList.remove('warning');
+                    qrcodeStatus.textContent = 'Status: ERROR - Text too long!';
+                } else if (count > 200) {
+                    charCount.classList.add('warning');
+                    charCount.classList.remove('error');
+                    qrcodeStatus.textContent = 'Status: Warning - Text may be too long';
+                } else {
+                    charCount.classList.remove('warning', 'error');
+                    qrcodeStatus.textContent = 'Status: Ready';
+                }
             }
+            
+            qrText.addEventListener('input', updateCharCount);
+            updateCharCount(); // Initial count
             
             // Toggle logo preview
             logoToggle.addEventListener('change', function() {
                 if (this.checked) {
                     logoPreview.classList.add('active');
-                    debugStatus.textContent = 'Status: Logo toggle ON';
                 } else {
                     logoPreview.classList.remove('active');
-                    debugStatus.textContent = 'Status: Logo toggle OFF';
                 }
             });
             
             // Change logo button
-            changeLogoBtn.addEventListener('click', function() {
+            document.getElementById('change-logo-btn').addEventListener('click', function() {
                 logoUpload.click();
             });
             
@@ -476,11 +515,6 @@
                     
                     reader.onload = function(event) {
                         logoImage.src = event.target.result;
-                        debugStatus.textContent = 'Status: Logo changed successfully';
-                    };
-                    
-                    reader.onerror = function() {
-                        debugStatus.textContent = 'Status: Error loading logo file';
                     };
                     
                     reader.readAsDataURL(logoFile);
@@ -493,29 +527,50 @@
                 
                 if (!text) {
                     alert('QR Code content ထည့်ပေးပါ။');
-                    debugStatus.textContent = 'Status: ERROR - No content provided';
+                    qrcodeStatus.textContent = 'Status: ERROR - No content provided';
                     return;
                 }
                 
-                debugStatus.textContent = 'Status: Generating QR Code...';
+                if (text.length > 500) {
+                    alert('စာသားအရမ်းရှည်နေပါတယ်။ ၅၀၀ စာလုံးထက်မပိုပါစေနဲ့။');
+                    qrcodeStatus.textContent = 'Status: ERROR - Text too long (max 500 chars)';
+                    return;
+                }
+                
+                qrcodeStatus.textContent = 'Status: Generating QR Code...';
                 
                 // Clear previous QR code
                 qrcodeDiv.innerHTML = '';
                 loadingMessage.style.display = 'none';
                 
                 try {
-                    // Create QR Code
+                    // Determine QR Code size based on text length
+                    let qrSize = 256;
+                    let correctLevel = QRCode.CorrectLevel.H;
+                    
+                    if (text.length > 200) {
+                        // For longer text, use higher error correction
+                        correctLevel = QRCode.CorrectLevel.Q;
+                        qrcodeType.textContent = 'Type: High capacity (Q error correction)';
+                    } else if (text.length > 100) {
+                        correctLevel = QRCode.CorrectLevel.M;
+                        qrcodeType.textContent = 'Type: Medium capacity (M error correction)';
+                    } else {
+                        qrcodeType.textContent = 'Type: Normal (H error correction)';
+                    }
+                    
+                    // Create QR Code - FIXED: Use proper parameters
                     currentQRCode = new QRCode(qrcodeDiv, {
                         text: text,
-                        width: 256,
-                        height: 256,
+                        width: qrSize,
+                        height: qrSize,
                         colorDark: "#000000",
                         colorLight: "#ffffff",
-                        correctLevel: QRCode.CorrectLevel.H
+                        correctLevel: correctLevel
                     });
                     
-                    debugStatus.textContent = 'Status: QR Code generated successfully';
-                    console.log("QR Code generated for text:", text);
+                    console.log("QR Code generated successfully for text length:", text.length);
+                    qrcodeStatus.textContent = 'Status: QR Code generated successfully';
                     
                     // Add logo if toggle is on
                     setTimeout(() => {
@@ -524,14 +579,63 @@
                         } else {
                             // Enable download button even without logo
                             downloadBtn.disabled = false;
-                            debugStatus.textContent = 'Status: Ready to download';
+                            qrcodeStatus.textContent = 'Status: Ready to download';
                         }
-                    }, 500);
+                    }, 300);
                     
                 } catch (error) {
                     console.error("Error generating QR Code:", error);
-                    debugStatus.textContent = 'Status: ERROR - ' + error.message;
-                    qrcodeDiv.innerHTML = '<div style="color: red; text-align: center; padding: 20px;"><i class="fas fa-exclamation-triangle"></i><br>Error generating QR Code<br>' + error.message + '</div>';
+                    
+                    // Try with lower error correction if it fails
+                    if (error.message.includes('overflow') || error.message.includes('length')) {
+                        qrcodeStatus.textContent = 'Status: Text too long, trying with lower error correction...';
+                        
+                        // Retry with lower error correction
+                        setTimeout(() => {
+                            try {
+                                qrcodeDiv.innerHTML = '';
+                                currentQRCode = new QRCode(qrcodeDiv, {
+                                    text: text,
+                                    width: 256,
+                                    height: 256,
+                                    colorDark: "#000000",
+                                    colorLight: "#ffffff",
+                                    correctLevel: QRCode.CorrectLevel.L // Lowest error correction
+                                });
+                                
+                                qrcodeStatus.textContent = 'Status: QR Code generated with L error correction';
+                                qrcodeType.textContent = 'Type: Low error correction (max capacity)';
+                                
+                                setTimeout(() => {
+                                    if (logoToggle.checked) {
+                                        addLogoToQRCode();
+                                    } else {
+                                        downloadBtn.disabled = false;
+                                    }
+                                }, 300);
+                                
+                            } catch (retryError) {
+                                qrcodeStatus.textContent = 'Status: ERROR - Text too long even for L correction';
+                                qrcodeDiv.innerHTML = `
+                                    <div style="color: red; text-align: center; padding: 20px;">
+                                        <i class="fas fa-exclamation-triangle fa-2x"></i><br>
+                                        <strong>Error: Text too long!</strong><br>
+                                        Please shorten your text (max ~500 characters)<br>
+                                        Current: ${text.length} characters
+                                    </div>
+                                `;
+                            }
+                        }, 500);
+                    } else {
+                        qrcodeStatus.textContent = 'Status: ERROR - ' + error.message;
+                        qrcodeDiv.innerHTML = `
+                            <div style="color: red; text-align: center; padding: 20px;">
+                                <i class="fas fa-exclamation-triangle fa-2x"></i><br>
+                                Error generating QR Code<br>
+                                ${error.message}
+                            </div>
+                        `;
+                    }
                 }
             });
             
@@ -540,7 +644,6 @@
                 const qrImg = qrcodeDiv.querySelector('img');
                 if (!qrImg) {
                     console.error("No QR Code image found");
-                    debugStatus.textContent = 'Status: ERROR - No QR Code image found';
                     return;
                 }
                 
@@ -580,20 +683,14 @@
                         
                         // Enable download button
                         downloadBtn.disabled = false;
-                        debugStatus.textContent = 'Status: Ready to download (with logo)';
+                        qrcodeStatus.textContent = 'Status: Ready to download (with logo)';
                     };
                     
                     logo.onerror = function() {
                         console.error("Error loading logo");
-                        debugStatus.textContent = 'Status: ERROR loading logo';
                         // Still enable download for QR without logo
                         downloadBtn.disabled = false;
                     };
-                };
-                
-                qrImage.onerror = function() {
-                    console.error("Error loading QR Code image");
-                    debugStatus.textContent = 'Status: ERROR loading QR Code image';
                 };
             }
             
@@ -601,18 +698,16 @@
             downloadBtn.addEventListener('click', function() {
                 if (!currentQRCode) {
                     alert('ကျေးဇူးပြု၍ QR Code ကိုအရင်ဖန်တီးပေးပါ။');
-                    debugStatus.textContent = 'Status: ERROR - No QR Code to download';
                     return;
                 }
                 
                 const qrImg = qrcodeDiv.querySelector('img');
                 if (!qrImg) {
                     alert('QR Code image မတွေ့ပါ။');
-                    debugStatus.textContent = 'Status: ERROR - No image found';
                     return;
                 }
                 
-                debugStatus.textContent = 'Status: Downloading...';
+                qrcodeStatus.textContent = 'Status: Downloading...';
                 
                 // Create download link
                 const link = document.createElement('a');
@@ -622,16 +717,16 @@
                 link.click();
                 document.body.removeChild(link);
                 
-                debugStatus.textContent = 'Status: Download started';
+                qrcodeStatus.textContent = 'Status: Download started';
                 setTimeout(() => {
-                    debugStatus.textContent = 'Status: Ready';
+                    qrcodeStatus.textContent = 'Status: Ready';
                 }, 2000);
             });
             
             // Generate QR code on page load with default text
             setTimeout(() => {
                 generateBtn.click();
-            }, 1000);
+            }, 500);
         });
     </script>
 </body>
