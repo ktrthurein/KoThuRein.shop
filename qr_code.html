@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator | မြန်မာလို</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pyidaungsu', 'Myanmar3', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 30px;
+        }
+        
+        .input-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+        }
+        
+        .preview-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+            font-size: 16px;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #6a11cb;
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 14px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 140px;
+        }
+        
+        .generate-btn {
+            background-color: #6a11cb;
+            color: white;
+        }
+        
+        .generate-btn:hover {
+            background-color: #5809b5;
+            transform: translateY(-2px);
+        }
+        
+        .download-btn {
+            background-color: #2575fc;
+            color: white;
+        }
+        
+        .download-btn:hover {
+            background-color: #0d65f0;
+            transform: translateY(-2px);
+        }
+        
+        .download-btn:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .qr-container {
+            width: 250px;
+            height: 250px;
+            border: 1px dashed #ddd;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            background-color: #f9f9f9;
+            padding: 15px;
+        }
+        
+        #qrcode {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #qrcode img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        
+        .placeholder-text {
+            text-align: center;
+            color: #888;
+            font-size: 16px;
+        }
+        
+        .instructions {
+            background-color: #f0f8ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 5px solid #2575fc;
+        }
+        
+        .instructions h3 {
+            color: #2575fc;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .input-section, .preview-section {
+                width: 100%;
+            }
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid #eee;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>QR Code Generator</h1>
+            <p>မြန်မာလို - QR Code ထုတ်ယူပြီး PNG ပုံအဖြစ်သိမ်းဆည်းနိုင်ပါသည်</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="qr-text">QR Code အတွက်စာ/လင့် (URL/Text)</label>
+                    <textarea id="qr-text" placeholder="ဒီနေရာမှာ QR Code အတွက်လိုချင်တဲ့စာ (သို့) လင့်ကိုရိုက်ထည့်ပါ...">https://example.com</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="qr-size">QR Code အရွယ်အစား</label>
+                    <select id="qr-size">
+                        <option value="128">128x128 (သေးငယ်)</option>
+                        <option value="256" selected>256x256 (ပုံမှန်)</option>
+                        <option value="400">400x400 (ကြီး)</option>
+                        <option value="512">512x512 (အကြီးဆုံး)</option>
+                    </select>
+                </div>
+                
+                <div class="buttons">
+                    <button class="generate-btn" id="generate-btn">QR Code ထုတ်ပါ</button>
+                    <button class="download-btn" id="download-btn" disabled>PNG ပုံသိမ်းပါ</button>
+                </div>
+            </div>
+            
+            <div class="preview-section">
+                <h3 style="margin-bottom: 20px; color: #444;">Preview ကြည့်ရှုရန်</h3>
+                
+                <div class="qr-container">
+                    <div id="qrcode">
+                        <div class="placeholder-text">
+                            QR Code ကို ထုတ်ယူရန်<br>"QR Code ထုတ်ပါ" ခလုတ်ကိုနှိပ်ပါ
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <h3>အသုံးပြုနည်း</h3>
+                    <ul>
+                        <li>အပေါ်ဆုံးအကွက်ထဲတွင် QR Code ထုတ်လိုသော စာ (သို့) လိပ်စာကို ရိုက်ထည့်ပါ</li>
+                        <li>QR Code အရွယ်အစားကို ရွေးချယ်ပါ</li>
+                        <li>"QR Code ထုတ်ပါ" ခလုတ်ကို နှိပ်ပါ</li>
+                        <li>Preview တွင် QR Code ပေါ်လာပါမည်</li>
+                        <li>"PNG ပုံသိမ်းပါ" ခလုတ်ဖြင့် ပုံကို သိမ်းဆည်းနိုင်ပါသည်</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>QR Code Generator - Developed for Myanmar Users</p>
+            <p>© 2023 | လွယ်ကူရှင်းလင်းသော QR Code ထုတ်ယူသည့် ကိရိယာ</p>
+        </footer>
+    </div>
+
+    <script>
+        // Elements
+        const qrTextElement = document.getElementById('qr-text');
+        const qrSizeElement = document.getElementById('qr-size');
+        const generateBtn = document.getElementById('generate-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const qrcodeDiv = document.getElementById('qrcode');
+        
+        // QR Code instance
+        let qrcode = null;
+        
+        // Generate QR Code function
+        function generateQRCode() {
+            const qrText = qrTextElement.value.trim();
+            const qrSize = parseInt(qrSizeElement.value);
+            
+            if (!qrText) {
+                alert('QR Code အတွက် စာ (သို့) လိပ်စာထည့်သွင်းပါ။');
+                return;
+            }
+            
+            // Clear previous QR Code
+            qrcodeDiv.innerHTML = '';
+            
+            try {
+                // Create new QR Code
+                qrcode = new QRCode(qrcodeDiv, {
+                    text: qrText,
+                    width: qrSize,
+                    height: qrSize,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                
+                // Enable download button
+                downloadBtn.disabled = false;
+                
+            } catch (error) {
+                console.error("QR Code ထုတ်ယူရာတွင် အမှားတစ်ခုဖြစ်နေပါသည်:", error);
+                alert('QR Code ထုတ်ယူရာတွင် အမှားတစ်ခုဖြစ်နေပါသည်။');
+            }
+        }
+        
+        // Download QR Code as PNG
+        function downloadQRCode() {
+            if (!qrcode) {
+                alert('ဦးစွာ QR Code ထုတ်ယူပါ။');
+                return;
+            }
+            
+            const canvas = qrcodeDiv.querySelector('canvas');
+            if (!canvas) {
+                alert('QR Code ပုံမရှိသေးပါ။');
+                return;
+            }
+            
+            // Create download link
+            const link = document.createElement('a');
+            link.download = `qr-code-${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Event Listeners
+        generateBtn.addEventListener('click', generateQRCode);
+        downloadBtn.addEventListener('click', downloadQRCode);
+        
+        // Generate QR Code on page load with default text
+        window.addEventListener('load', function() {
+            setTimeout(generateQRCode, 500);
+        });
+        
+        // Generate QR Code when Enter is pressed in textarea
+        qrTextElement.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                generateQRCode();
+            }
+        });
+    </script>
+</body>
+</html>
