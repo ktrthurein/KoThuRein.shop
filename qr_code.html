@@ -1,232 +1,197 @@
 <!DOCTYPE html>
 <html lang="my">
 <head>
-    <meta charset="UTF-8">
-    <title>Myanmar QR Code Generator</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>Myanmar + English QR Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- QRCode library (UTF-8 support OK) -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
 
-    <style>
-        body {
-            font-family: Pyidaungsu, Myanmar3, sans-serif;
-            background: #f4f6f8;
-            padding: 20px;
-        }
+<style>
+body{
+    font-family: Pyidaungsu, Myanmar3, sans-serif;
+    background:#f2f4f7;
+    padding:20px;
+}
+.container{
+    max-width:850px;
+    margin:auto;
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,.1);
+}
+header{
+    background:linear-gradient(135deg,#6a11cb,#2575fc);
+    color:#fff;
+    padding:20px;
+    text-align:center;
+}
+.main{
+    display:flex;
+    flex-wrap:wrap;
+    padding:20px;
+}
+.left,.right{
+    flex:1;
+    min-width:280px;
+    padding:20px;
+}
+label{font-weight:bold;}
+textarea,select{
+    width:100%;
+    margin-top:8px;
+    padding:12px;
+    font-size:16px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+textarea{min-height:110px;}
 
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,.1);
-            overflow: hidden;
-        }
+button{
+    padding:14px;
+    border:none;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
+.generate{background:#6a11cb;color:#fff;}
+.download{background:#2575fc;color:#fff;}
+.download:disabled{background:#aaa;}
 
-        header {
-            background: linear-gradient(135deg,#6a11cb,#2575fc);
-            color: #fff;
-            padding: 25px;
-            text-align: center;
-        }
+.qr-wrapper{
+    width:280px;
+    height:280px;
+    margin:auto;
+    position:relative;
+    border:2px dashed #ccc;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.qr-wrapper canvas{
+    width:100%;
+    height:100%;
+}
+.qr-logo{
+    position:absolute;
+    width:60px;
+    height:60px;
+    background:#fff;
+    padding:6px;
+    border-radius:10px;
+    display:none;
+}
+.info{text-align:center;margin-top:15px;font-size:14px;color:#555;}
 
-        header h1 {
-            margin-bottom: 5px;
-        }
-
-        .content {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 20px;
-        }
-
-        .left, .right {
-            flex: 1;
-            min-width: 280px;
-            padding: 20px;
-        }
-
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        textarea, select {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
-
-        textarea {
-            min-height: 120px;
-        }
-
-        .btns {
-            margin-top: 20px;
-            display: flex;
-            gap: 15px;
-        }
-
-        button {
-            flex: 1;
-            padding: 14px;
-            font-size: 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .generate {
-            background: #6a11cb;
-            color: #fff;
-        }
-
-        .download {
-            background: #2575fc;
-            color: #fff;
-        }
-
-        .download:disabled {
-            background: #aaa;
-            cursor: not-allowed;
-        }
-
-        .qr-box {
-            width: 280px;
-            height: 280px;
-            margin: auto;
-            border: 2px dashed #ccc;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #fafafa;
-        }
-
-        .info {
-            text-align: center;
-            margin-top: 15px;
-            color: #555;
-            font-size: 14px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 15px;
-            font-size: 13px;
-            color: #666;
-            border-top: 1px solid #eee;
-        }
-
-        @media(max-width:768px) {
-            .content {
-                flex-direction: column;
-            }
-        }
-    </style>
+footer{
+    text-align:center;
+    font-size:13px;
+    padding:15px;
+    border-top:1px solid #eee;
+    color:#666;
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
-    <header>
-        <h1>မြန်မာစာ QR Code Generator</h1>
-        <p>UTF-8 Encoding ဖြင့် မြန်မာစာ QR Code မှန်ကန်စွာ ထုတ်နိုင်ပါသည်</p>
-    </header>
+<header>
+<h2>မြန်မာ + English QR Code Generator</h2>
+<p>ဇော်ဖော် nsa001 လို စာတွေပါ အပြည့်အဝ Support</p>
+</header>
 
-    <div class="content">
-        <div class="left">
-            <label>QR Code အတွက် စာ / URL</label>
-            <textarea id="qrText">မင်္ဂလာပါ၊ မြန်မာစာ QR Code စမ်းသပ်ခြင်း</textarea>
+<div class="main">
+<div class="left">
+<label>QR Code စာ</label>
+<textarea id="qrText">ဇော်ဖော် nsa001</textarea>
 
-            <label style="margin-top:15px;">QR Code အရွယ်အစား</label>
-            <select id="qrSize">
-                <option value="200">200 x 200</option>
-                <option value="250" selected>250 x 250</option>
-                <option value="300">300 x 300</option>
-                <option value="350">350 x 350</option>
-            </select>
+<label style="margin-top:15px;">အရွယ်အစား</label>
+<select id="qrSize">
+<option value="200">200 x 200</option>
+<option value="250" selected>250 x 250</option>
+<option value="300">300 x 300</option>
+</select>
 
-            <div class="btns">
-                <button class="generate" onclick="generateQR()">QR Code ထုတ်ပါ</button>
-                <button class="download" id="downloadBtn" onclick="downloadQR()" disabled>PNG သိမ်းပါ</button>
-            </div>
-        </div>
+<div style="margin-top:20px;display:flex;gap:12px;">
+<button class="generate" onclick="generateQR()">QR Code ထုတ်ပါ</button>
+<button class="download" id="downloadBtn" onclick="downloadQR()" disabled>PNG သိမ်းပါ</button>
+</div>
+</div>
 
-        <div class="right">
-            <div class="qr-box" id="qrBox">
-                QR Code Preview
-            </div>
-            <div class="info" id="infoText">QR Code မထုတ်ရသေးပါ</div>
-        </div>
-    </div>
+<div class="right">
+<div class="qr-wrapper" id="qrBox">
+    QR Preview
+    <img src="logo.png" id="logoImg" class="qr-logo">
+</div>
+<div class="info" id="infoText">QR Code မထုတ်ရသေးပါ</div>
+</div>
+</div>
 
-    <footer>
-        © Myanmar UTF-8 QR Code Generator
-    </footer>
+<footer>
+UTF-8 Myanmar / English QR Generator
+</footer>
 </div>
 
 <script>
-    const qrBox = document.getElementById('qrBox');
-    const infoText = document.getElementById('infoText');
-    const downloadBtn = document.getElementById('downloadBtn');
+/* ================= SETTINGS ================= */
+const ENABLE_LOGO = true;   // true = logo ပါ | false = logo မပါ
+/* =========================================== */
 
-    let qrDataUrl = '';
+const qrBox = document.getElementById('qrBox');
+const logoImg = document.getElementById('logoImg');
+const infoText = document.getElementById('infoText');
+const downloadBtn = document.getElementById('downloadBtn');
+let qrDataUrl = '';
 
-    async function generateQR() {
-        const text = document.getElementById('qrText').value.trim();
-        const size = parseInt(document.getElementById('qrSize').value);
+async function generateQR(){
+    const text = document.getElementById('qrText').value.trim();
+    const size = parseInt(document.getElementById('qrSize').value);
 
-        if (!text) {
-            alert('စာထည့်ပါ');
-            return;
-        }
+    if(!text){ alert("စာထည့်ပါ"); return; }
 
-        qrBox.innerHTML = '';
-        const canvas = document.createElement('canvas');
+    qrBox.innerHTML = '';
+    qrBox.appendChild(logoImg);
 
-        try {
-            await QRCode.toCanvas(canvas, text, {
-                width: size,
-                errorCorrectionLevel: 'H', // မြန်မာစာအတွက် အရေးကြီး
-                margin: 2,
-                color: {
-                    dark: '#000000',
-                    light: '#ffffff'
-                }
-            });
+    const canvas = document.createElement('canvas');
 
-            qrBox.appendChild(canvas);
-            qrDataUrl = canvas.toDataURL('image/png');
-            downloadBtn.disabled = false;
+    await QRCode.toCanvas(canvas, text, {
+        width: size,
+        errorCorrectionLevel: 'H', // Logo အတွက် အရေးကြီး
+        margin: 2
+    });
 
-            const mmCount = (text.match(/[\u1000-\u109F]/g) || []).length;
+    qrBox.insertBefore(canvas, logoImg);
+    qrDataUrl = canvas.toDataURL('image/png');
+    downloadBtn.disabled = false;
 
-            infoText.innerHTML = `
-                စာလုံးရေ: ${text.length}<br>
-                မြန်မာစာလုံး: ${mmCount}<br>
-                Encoding: UTF-8 ✔
-            `;
-
-        } catch (e) {
-            console.error(e);
-            qrBox.innerHTML = 'QR Code မထုတ်နိုင်ပါ';
-        }
+    /* Logo true / false */
+    if(ENABLE_LOGO){
+        logoImg.style.display = 'block';
+    }else{
+        logoImg.style.display = 'none';
     }
 
-    function downloadQR() {
-        if (!qrDataUrl) return;
-        const a = document.createElement('a');
-        a.href = qrDataUrl;
-        a.download = 'myanmar-qr-code.png';
-        a.click();
-    }
+    const mm = (text.match(/[\u1000-\u109F]/g) || []).length;
 
-    window.onload = generateQR;
+    infoText.innerHTML = `
+        စာ: ${text}<br>
+        စာလုံးရေ: ${text.length}<br>
+        မြန်မာစာ: ${mm}<br>
+        Logo: ${ENABLE_LOGO ? 'ON' : 'OFF'}
+    `;
+}
+
+function downloadQR(){
+    if(!qrDataUrl) return;
+    const a = document.createElement('a');
+    a.href = qrDataUrl;
+    a.download = 'myanmar-mix-qr.png';
+    a.click();
+}
+
+window.onload = generateQR;
 </script>
 
 </body>
