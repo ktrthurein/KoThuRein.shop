@@ -1,182 +1,239 @@
-
-</body>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Generator with Logo</title>
+    <title>QR Code Generator with Plain Text</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Local QRCode.js file -->
-    <script src="qrcode.min.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Myanmar Text', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
             min-height: 100vh;
             padding: 20px;
-            color: #333;
         }
         
         .container {
-            max-width: 1100px;
+            max-width: 1400px;
             margin: 0 auto;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            padding: 20px;
         }
         
         header {
-            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
-            color: white;
-            padding: 25px;
             text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
         }
         
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
+            color: #2c3e50;
             margin-bottom: 10px;
         }
         
         .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 10px;
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
         }
         
-        .language-badge {
+        .download-button {
             display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            margin-top: 5px;
+            background: linear-gradient(to right, #3498db, #2c3e50);
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            text-decoration: none;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         
-        .main-content {
+        .download-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.5);
+        }
+        
+        .download-button i {
+            margin-right: 10px;
+        }
+        
+        .content {
             display: flex;
             flex-wrap: wrap;
-            padding: 30px;
+            gap: 30px;
+            margin-top: 30px;
         }
         
-        .input-section {
+        .left-panel {
             flex: 1;
-            min-width: 300px;
-            padding-right: 30px;
+            min-width: 400px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
         
-        .output-section {
+        .right-panel {
             flex: 1;
-            min-width: 300px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            min-width: 400px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
         
-        .form-group {
+        .panel-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f1f1;
+        }
+        
+        .input-group {
             margin-bottom: 25px;
         }
         
         label {
             display: block;
-            font-weight: 600;
             margin-bottom: 8px;
-            font-size: 1.1rem;
-            color: #182848;
+            font-weight: 600;
+            color: #555;
         }
         
-        input, textarea, select {
+        input[type="text"], input[type="url"] {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #ddd;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 1rem;
-            transition: border 0.3s;
+            transition: border-color 0.3s;
         }
         
-        input:focus, textarea:focus, select:focus {
-            border-color: #4b6cb7;
+        input[type="text"]:focus, input[type="url"]:focus {
+            border-color: #3498db;
             outline: none;
         }
         
-        textarea {
-            min-height: 120px;
+        .plaintext-area {
+            width: 100%;
+            height: 150px;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
             resize: vertical;
-            font-family: 'Myanmar Text', 'Segoe UI', sans-serif;
-            font-size: 16px;
+            transition: border-color 0.3s;
             line-height: 1.5;
         }
         
-        .test-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            flex-wrap: wrap;
+        .plaintext-area:focus {
+            border-color: #3498db;
+            outline: none;
         }
         
-        .test-btn {
-            padding: 8px 15px;
-            background: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: background 0.3s;
-        }
-        
-        .test-btn:hover {
-            background: #2980b9;
-        }
-        
-        .char-count {
-            text-align: right;
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 5px;
-        }
-        
-        .char-count.warning {
-            color: orange;
-            font-weight: bold;
-        }
-        
-        .char-count.error {
-            color: red;
-            font-weight: bold;
-        }
-        
-        .qr-options {
+        .color-options {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+        
+        .color-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 3px solid transparent;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.active {
+            border-color: #2c3e50;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .option-group {
+            display: flex;
+            flex-wrap: wrap;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+        
+        .option-btn {
+            padding: 12px 20px;
+            background-color: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            flex-grow: 1;
+            text-align: center;
+        }
+        
+        .option-btn:hover {
+            background-color: #e9ecef;
+        }
+        
+        .option-btn.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+        
+        .logo-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            border: 3px dashed #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+            position: relative;
+        }
+        
+        .logo-upload:hover {
+            border-color: #3498db;
+        }
+        
+        .logo-upload i {
+            font-size: 3rem;
+            color: #7f8c8d;
+            margin-bottom: 15px;
         }
         
         .logo-toggle {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-        
-        .toggle-container {
-            display: flex;
-            align-items: center;
+            margin-top: 15px;
+            justify-content: center;
         }
         
         .toggle-switch {
             position: relative;
             display: inline-block;
             width: 60px;
-            height: 30px;
+            height: 34px;
             margin: 0 15px;
         }
         
@@ -194,226 +251,215 @@
             right: 0;
             bottom: 0;
             background-color: #ccc;
-            border-radius: 34px;
             transition: .4s;
+            border-radius: 34px;
         }
         
         .toggle-slider:before {
             position: absolute;
             content: "";
-            height: 22px;
-            width: 22px;
+            height: 26px;
+            width: 26px;
             left: 4px;
             bottom: 4px;
             background-color: white;
-            border-radius: 50%;
             transition: .4s;
+            border-radius: 50%;
         }
         
         input:checked + .toggle-slider {
-            background-color: #4b6cb7;
+            background-color: #2ecc71;
         }
         
         input:checked + .toggle-slider:before {
-            transform: translateX(30px);
+            transform: translateX(26px);
         }
         
-        .logo-preview {
-            margin-top: 15px;
-            text-align: center;
-            padding: 15px;
+        .toggle-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+        }
+        
+        #qrCode {
+            width: 280px;
+            height: 280px;
+            margin: 20px auto;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7f8c8d;
             border: 2px dashed #ddd;
+            position: relative;
+        }
+        
+        #qrCode img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .logo-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background-color: white;
             border-radius: 8px;
-            display: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 10;
         }
         
-        .logo-preview.active {
-            display: block;
+        .logo-overlay i {
+            font-size: 2rem;
+            color: #3498db;
         }
         
-        .logo-preview img {
-            max-width: 100px;
-            max-height: 100px;
-            margin-bottom: 10px;
-            border-radius: 5px;
+        .preview-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #7f8c8d;
+            font-style: italic;
         }
         
-        .button-group {
+        .action-buttons {
             display: flex;
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 30px;
         }
         
-        button {
-            padding: 14px 25px;
+        .btn {
+            padding: 15px 30px;
             border: none;
             border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .generate-btn {
-            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
-            color: white;
-            flex: 2;
-        }
-        
-        .generate-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(75, 108, 183, 0.4);
-        }
-        
-        .download-btn {
-            background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%);
-            color: white;
             flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
-        .download-btn:hover {
+        .btn-save {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            color: white;
+        }
+        
+        .btn-reset {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            color: white;
+        }
+        
+        .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
-        .download-btn:disabled {
-            background: #95a5a6;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        .qr-container {
-            width: 320px;
-            height: 320px;
-            border: 20px solid white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            background-color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 25px;
-            position: relative;
-        }
-        
-        #qrcode {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        #qrcode img {
-            max-width: 100%;
-            max-height: 100%;
-            border-radius: 5px;
-        }
-        
-        .preview-text {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 1.3rem;
-            color: #182848;
-            font-weight: 600;
-        }
-        
-        .example-text {
-            font-size: 0.9rem;
-            color: #7f8c8d;
-            margin-top: 10px;
-            text-align: center;
-            line-height: 1.5;
-        }
-        
-        .instructions {
-            background-color: #f8f9fa;
-            border-left: 5px solid #4b6cb7;
-            padding: 20px;
+        .status-debug-container {
             margin-top: 30px;
-            border-radius: 0 8px 8px 0;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 5px solid #3498db;
         }
         
-        .instructions h3 {
-            color: #182848;
+        .status-section, .debug-section {
+            margin-bottom: 20px;
+        }
+        
+        .status-title, .debug-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2c3e50;
             margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        .instructions ul {
-            padding-left: 20px;
+        .status-title i {
+            color: #2ecc71;
         }
         
-        .instructions li {
-            margin-bottom: 8px;
-            line-height: 1.5;
+        .debug-title i {
+            color: #e74c3c;
         }
         
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #7f8c8d;
-            border-top: 1px solid #eee;
-            margin-top: 30px;
-        }
-        
-        .qrcode-info {
-            background-color: #f8f9fa;
+        .status-content, .debug-content {
+            background-color: white;
             padding: 15px;
             border-radius: 8px;
-            margin-top: 10px;
+            font-family: 'Courier New', monospace;
             font-size: 0.9rem;
-            text-align: center;
-        }
-        
-        .qrcode-type {
-            margin-top: 10px;
-            padding: 5px 10px;
-            background: #4b6cb7;
-            color: white;
-            border-radius: 5px;
-            display: inline-block;
-        }
-        
-        .debug-info {
-            background-color: #f1f2f6;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            font-size: 0.8rem;
-            font-family: monospace;
-            max-height: 150px;
+            border: 1px solid #e0e0e0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 200px;
             overflow-y: auto;
         }
         
-        .scan-test {
-            background-color: #e8f5e8;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            border-left: 4px solid #2ecc71;
+        .debug-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .debug-label {
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+        
+        .debug-value {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .debug-value.success {
+            color: #27ae60;
+        }
+        
+        .debug-value.error {
+            color: #e74c3c;
+        }
+        
+        .debug-value.warning {
+            color: #f39c12;
         }
         
         @media (max-width: 768px) {
-            .main-content {
+            .content {
                 flex-direction: column;
             }
             
-            .input-section {
-                padding-right: 0;
-                margin-bottom: 30px;
-            }
-            
-            .button-group {
+            .action-buttons {
                 flex-direction: column;
             }
             
-            .qr-options {
-                grid-template-columns: 1fr;
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .left-panel, .right-panel {
+                min-width: 100%;
             }
         }
     </style>
@@ -421,571 +467,627 @@
 <body>
     <div class="container">
         <header>
-            <h1><i class="fas fa-qrcode"></i> QR Code Generator</h1>
-            <div class="subtitle">မြန်မာစာ၊ အင်္ဂလိပ်စာ၊ နံပါတ်အကုန်ရေးလို့ရပါတယ်</div>
-            <div class="language-badge">မြန်မာစာ Scan ဖတ်ရင် အတိအကျထွက်မည်</div>
+            <h1>QR Code Generator with Plain Text</h1>
+            <p class="subtitle">Generate QR codes from plain text, URLs, or any data. Scanner မှာ "ဇော်ဖော်, nsa001" စာသားတွေ အတိအကျအမှန်အကန် ဖတ်ရှုနိုင်ပါမည်။</p>
+            <a href="#" class="download-button" id="downloadAllBtn">
+                <i class="fas fa-download"></i> Download Complete Code
+            </a>
         </header>
         
-        <div class="main-content">
-            <div class="input-section">
-                <div class="form-group">
-                    <label for="qr-text"><i class="fas fa-edit"></i> QR Code Content (မြန်မာစာ/အင်္ဂလိပ်စာ/နံပါတ်)</label>
-                    <textarea id="qr-text" placeholder="ဒီမှာ ရေးပါ။ Example: ဇော်ဖော်, nsa001, https://example.com, မြန်မာပြည်">ဇော်ဖော်, nsa001</textarea>
-                    <div class="char-count" id="char-count">စာလုံးရေ: 0</div>
-                    
-                    <div class="test-buttons">
-                        <button class="test-btn" data-text="ဇော်ဖော်, nsa001">Test 1: ဇော်ဖော်, nsa001</button>
-                        <button class="test-btn" data-text="မြန်မာပြည် ရန်ကုန်မြို့">Test 2: မြန်မာပြည်</button>
-                        <button class="test-btn" data-text="https://example.com">Test 3: URL Only</button>
-                        <button class="test-btn" data-text="ကျေးဇူးပြု၍ QR Code ဖန်တီးပါ">Test 4: ကျေးဇူးပြု၍</button>
+        <div class="content">
+            <div class="left-panel">
+                <h2 class="panel-title">QR Code Settings</h2>
+                
+                <div class="input-group">
+                    <label for="plaintextInput">Plain Text / Data</label>
+                    <textarea class="plaintext-area" id="plaintextInput" placeholder="Enter text, URL, or data here...">ဇော်ဖော်, nsa001
+https://www.youtube.com/@techwebchain/videos
+Phone: 09-123456789
+Location: Yangon, Myanmar</textarea>
+                    <div style="font-size: 0.85rem; color: #7f8c8d; margin-top: 5px;">
+                        QR code scanner မှာ ဖတ်ရင် ဤစာသားအတိုင်း အတိအကျပေါ်ပါမည်။
                     </div>
                 </div>
                 
-                <div class="qr-options">
-                    <div class="form-group">
-                        <label for="qr-size"><i class="fas fa-expand-alt"></i> QR Size</label>
-                        <select id="qr-size">
-                            <option value="200">Small (200x200)</option>
-                            <option value="256" selected>Medium (256x256)</option>
-                            <option value="300">Large (300x300)</option>
-                            <option value="350">Very Large (350x350)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="qr-error"><i class="fas fa-shield-alt"></i> Error Correction</label>
-                        <select id="qr-error">
-                            <option value="L" selected>Low (7%) - More Capacity</option>
-                            <option value="M">Medium (15%)</option>
-                            <option value="Q">Quartile (25%)</option>
-                            <option value="H">High (30%) - Less Capacity</option>
-                        </select>
+                <div class="input-group">
+                    <label>Colors</label>
+                    <div class="color-options">
+                        <div class="color-option active" style="background-color: #000000;" data-color="#000000"></div>
+                        <div class="color-option" style="background-color: #3498db;" data-color="#3498db"></div>
+                        <div class="color-option" style="background-color: #2ecc71;" data-color="#2ecc71"></div>
+                        <div class="color-option" style="background-color: #e74c3c;" data-color="#e74c3c"></div>
+                        <div class="color-option" style="background-color: #9b59b6;" data-color="#9b59b6"></div>
+                        <div class="color-option" style="background-color: #f39c12;" data-color="#f39c12"></div>
+                        <div class="color-option" style="background-color: #1abc9c;" data-color="#1abc9c"></div>
+                        <div class="color-option" style="background-color: #34495e;" data-color="#34495e"></div>
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label><i class="fas fa-image"></i> Logo in Center</label>
+                <div class="input-group">
+                    <label>Design</label>
+                    <div class="option-group">
+                        <div class="option-btn active" data-design="standard">Standard</div>
+                        <div class="option-btn" data-design="rounded">Rounded</div>
+                        <div class="option-btn" data-design="dots">Dots</div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>Logo Center</label>
+                    <div class="logo-upload" id="logoUpload">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Click to upload logo</span>
+                        <input type="file" id="logoFile" accept="image/*" style="display: none;">
+                    </div>
                     <div class="logo-toggle">
-                        <span>Logo မထည့်ပါ</span>
-                        <div class="toggle-container">
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="logo-toggle">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                        <span>Logo ထည့်မယ်</span>
+                        <span class="toggle-label">Logo OFF</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="logoToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span class="toggle-label">Logo ON</span>
                     </div>
-                    
-                    <div class="logo-preview" id="logo-preview">
-                        <img id="logo-image" src="https://cdn-icons-png.flaticon.com/512/2452/2452119.png" alt="Logo Preview">
-                        <p>Default logo</p>
-                        <input type="file" id="logo-upload" accept="image/*" style="display: none;">
-                        <button type="button" id="change-logo-btn" style="padding: 8px 15px; background: #3498db; color: white; border: none; border-radius: 5px; margin-top: 5px;">
-                            <i class="fas fa-sync-alt"></i> Change Logo
-                        </button>
+                    <div style="font-size: 0.85rem; color: #7f8c8d; margin-top: 10px; text-align: center;">
+                        Toggle ကို ON လုပ်ပြီး logo ကို QR code အလယ်မှာ ထည့်နိုင်ပါသည်
                     </div>
                 </div>
                 
-                <div class="button-group">
-                    <button class="generate-btn" id="generate-btn">
-                        <i class="fas fa-bolt"></i> Generate QR Code
+                <div class="input-group">
+                    <label>Frame</label>
+                    <div class="option-group">
+                        <div class="option-btn active" data-frame="none">None</div>
+                        <div class="option-btn" data-frame="square">Square</div>
+                        <div class="option-btn" data-frame="circle">Circle</div>
+                        <div class="option-btn" data-frame="rounded">Rounded</div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-save" id="saveBtn">
+                        <i class="fas fa-save"></i> Save QR Code
                     </button>
-                    <button class="download-btn" id="download-btn" disabled>
-                        <i class="fas fa-download"></i> Download PNG
+                    <button class="btn btn-reset" id="resetBtn">
+                        <i class="fas fa-redo"></i> Reset All
                     </button>
-                </div>
-                
-                <div class="qrcode-info">
-                    <div id="qrcode-status">Status: Ready</div>
-                    <div id="qrcode-type" class="qrcode-type">Type: Not generated yet</div>
-                    <div id="qrcode-encoding" style="margin-top: 5px; font-size: 0.8rem;">Using Myanmar Text Optimized Encoding</div>
-                </div>
-                
-                <div class="scan-test">
-                    <h4><i class="fas fa-mobile-alt"></i> Scan Test Information</h4>
-                    <p><strong>QR Code ထဲရှိ content:</strong> <code id="qr-content-preview">myanmar:ဇော်ဖော်,nsa001</code></p>
-                    <p><strong>Scan လုပ်ရင် ထွက်ရမည့်စာသား:</strong> <span id="scan-result-preview" style="color: #27ae60; font-weight: bold;">ဇော်ဖော်, nsa001</span></p>
-                    <p style="font-size: 0.8rem; color: #666;">မှတ်ချက်: QR Code ကို scan လုပ်ရင် အတိအကျဒီစာသားထွက်ပါမည်</p>
-                </div>
-                
-                <div class="debug-info" id="debug-info">
-                    <strong>Debug Information:</strong><br>
-                    <div id="debug-content">Loading QRCode.js library...</div>
-                </div>
-                
-                <div class="instructions">
-                    <h3><i class="fas fa-info-circle"></i> အသုံးပြုနည်းနှင့် အကြံပြုချက်များ</h3>
-                    <ul>
-                        <li><strong>မြန်မာစာအတွက် Optimized Encoding:</strong> QR Code ထဲမှာ <code>myanmar:ဇော်ဖော်,nsa001</code> format နဲ့သိမ်းတယ်</li>
-                        <li><strong>Scan Result:</strong> QR Code ကို scan လုပ်ရင် <code>myanmar:</code> prefix ကို ဖယ်ပြီး မူရင်းစာသားပဲပြမယ်</li>
-                        <li><strong>Test:</strong> Generate လုပ်ပြီး ဖုန်းနဲ့ scan ဖတ်ကြည့်ပါ</li>
-                        <li><strong>Logo:</strong> Logo ထည့်ချင်ရင် toggle ကိုဖွင့်ပေးပါ</li>
-                    </ul>
                 </div>
             </div>
             
-            <div class="output-section">
-                <div class="preview-text">QR Code Preview</div>
+            <div class="right-panel">
+                <h2 class="panel-title">QR Code Preview</h2>
+                
                 <div class="qr-container">
-                    <div id="qrcode">
-                        <div id="loading-message" style="text-align: center; color: #666; padding: 20px;">
-                            <i class="fas fa-qrcode fa-4x" style="color: #ccc;"></i><br>
-                            <p>QR Code will appear here</p>
-                            <p style="font-size: 0.8rem; margin-top: 10px;">Click "Generate QR Code"</p>
+                    <div id="qrCode">
+                        <p>Your QR code will appear here</p>
+                    </div>
+                    <p class="preview-text">Preview of your QR code. Scanner မှာ အောက်က plain text အတိုင်း ဖတ်ရှုရပါမည်။</p>
+                </div>
+                
+                <div class="status-debug-container">
+                    <div class="status-section">
+                        <div class="status-title">
+                            <i class="fas fa-check-circle"></i> Status:
+                        </div>
+                        <div class="status-content" id="statusContent">
+QR Code generated successfully!
+Data length: 112 characters
+Encoding: UTF-8
+Error correction: High (H)
+Ready to scan.
                         </div>
                     </div>
-                </div>
-                <div class="example-text">
-                    <strong>မြန်မာစာ Test အတွက်:</strong><br>
-                    • ဇော်ဖော်, nsa001<br>
-                    • Generate လုပ်ပြီး Scan ဖတ်ကြည့်ပါ<br>
-                    • Scan ရလဒ်: <strong>ဇော်ဖော်, nsa001</strong> (အတိအကျ)<br>
-                    • QR ထဲမှာ: <code>myanmar:ဇော်ဖော်,nsa001</code>
+                    
+                    <div class="debug-section">
+                        <div class="debug-title">
+                            <i class="fas fa-bug"></i> Debug Information:
+                        </div>
+                        <div class="debug-content">
+                            <div class="debug-item">
+                                <span class="debug-label">QR Version:</span>
+                                <span class="debug-value success" id="debugVersion">4</span>
+                            </div>
+                            <div class="debug-item">
+                                <span class="debug-label">Modules:</span>
+                                <span class="debug-value" id="debugModules">33x33</span>
+                            </div>
+                            <div class="debug-item">
+                                <span class="debug-label">Logo Enabled:</span>
+                                <span class="debug-value warning" id="debugLogo">No</span>
+                            </div>
+                            <div class="debug-item">
+                                <span class="debug-label">Color:</span>
+                                <span class="debug-value" id="debugColor">#000000</span>
+                            </div>
+                            <div class="debug-item">
+                                <span class="debug-label">Design:</span>
+                                <span class="debug-value" id="debugDesign">Standard</span>
+                            </div>
+                            <div class="debug-item">
+                                <span class="debug-label">Frame:</span>
+                                <span class="debug-value" id="debugFrame">None</span>
+                            </div>
+                            <div class="debug-item">
+                                <span class="debug-label">Last Generated:</span>
+                                <span class="debug-value" id="debugTime">Just now</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <footer>
-            <p>QR Code Generator with Logo Option | Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> | Myanmar Text Optimized</p>
-        </footer>
     </div>
 
-    <!-- Main Application Code - Fixed Myanmar Text Encoding Issue -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("Page loaded. Checking QRCode.js library...");
+        // Initialize variables
+        let qrCode = null;
+        let currentColor = "#000000";
+        let currentDesign = "standard";
+        let currentFrame = "none";
+        let uploadedLogo = null;
+        let logoEnabled = false;
+        let lastGeneratedTime = new Date();
+        
+        // Initialize the QR code
+        function initQRCode() {
+            const plaintext = document.getElementById('plaintextInput').value;
+            const qrElement = document.getElementById('qrCode');
             
-            // Check if QRCode library is loaded
-            const debugContent = document.getElementById('debug-content');
+            // Clear previous QR code
+            qrElement.innerHTML = '';
             
-            if (typeof QRCode === 'undefined') {
-                debugContent.innerHTML = "ERROR: QRCode.js library not loaded!<br>Please make sure 'qrcode.min.js' file is in the same folder.";
-                alert("QRCode.js library မတင်ထားပါ။ 'qrcode.min.js' ဖိုင်ကို ဒီဖိုင်နဲ့အတူတူထားပေးပါ။");
-                return;
-            } else {
-                debugContent.innerHTML = "✓ QRCode.js library loaded successfully from local file";
-                console.log("QRCode library loaded:", QRCode);
-            }
+            // Calculate QR code version based on text length
+            const textLength = plaintext.length;
+            let qrVersion = 4; // Default version
             
-            // DOM elements
-            const qrText = document.getElementById('qr-text');
-            const charCount = document.getElementById('char-count');
-            const qrSize = document.getElementById('qr-size');
-            const qrError = document.getElementById('qr-error');
-            const logoToggle = document.getElementById('logo-toggle');
-            const logoPreview = document.getElementById('logo-preview');
-            const logoImage = document.getElementById('logo-image');
-            const logoUpload = document.getElementById('logo-upload');
-            const generateBtn = document.getElementById('generate-btn');
-            const downloadBtn = document.getElementById('download-btn');
-            const qrcodeDiv = document.getElementById('qrcode');
-            const loadingMessage = document.getElementById('loading-message');
-            const qrcodeStatus = document.getElementById('qrcode-status');
-            const qrcodeType = document.getElementById('qrcode-type');
-            const qrcodeEncoding = document.getElementById('qrcode-encoding');
-            const qrContentPreview = document.getElementById('qr-content-preview');
-            const scanResultPreview = document.getElementById('scan-result-preview');
+            if (textLength > 150) qrVersion = 6;
+            else if (textLength > 100) qrVersion = 5;
+            else if (textLength > 50) qrVersion = 4;
+            else if (textLength > 25) qrVersion = 3;
+            else qrVersion = 2;
             
-            let currentQRCode = null;
-            let logoFile = null;
-            let qrCanvas = null;
+            // Calculate module size based on version
+            const moduleSize = 21 + (qrVersion - 1) * 4;
             
-            // Character count update
-            function updateCharCount() {
-                const text = qrText.value;
-                const count = text.length;
-                charCount.textContent = `စာလုံးရေ: ${count}`;
-                
-                debugContent.innerHTML = `Library: QRCode.js ✓ | Characters: ${count}`;
-                
-                if (count > 200) {
-                    charCount.classList.add('error');
-                    charCount.classList.remove('warning');
-                    qrcodeStatus.textContent = 'Status: ERROR - Text too long!';
-                } else if (count > 100) {
-                    charCount.classList.add('warning');
-                    charCount.classList.remove('error');
-                    qrcodeStatus.textContent = 'Status: Warning - Text may be too long';
-                } else {
-                    charCount.classList.remove('warning', 'error');
-                    qrcodeStatus.textContent = 'Status: Ready';
-                }
-            }
-            
-            qrText.addEventListener('input', updateCharCount);
-            updateCharCount(); // Initial count
-            
-            // Test buttons
-            document.querySelectorAll('.test-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    qrText.value = this.getAttribute('data-text');
-                    updateCharCount();
-                    setTimeout(() => generateBtn.click(), 100);
-                });
+            // Create new QR code
+            qrCode = new QRCode(qrElement, {
+                text: plaintext || "QR Code Generator",
+                width: 250,
+                height: 250,
+                colorDark: currentColor,
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H,
+                useSVG: false
             });
             
-            // Toggle logo preview
-            logoToggle.addEventListener('change', function() {
-                if (this.checked) {
-                    logoPreview.classList.add('active');
-                } else {
-                    logoPreview.classList.remove('active');
-                }
-            });
+            // Update debug info
+            updateDebugInfo(qrVersion, moduleSize);
             
-            // Change logo button
-            document.getElementById('change-logo-btn').addEventListener('click', function() {
-                logoUpload.click();
-            });
+            // Update status
+            updateStatus(textLength);
             
-            // Handle logo upload
-            logoUpload.addEventListener('change', function(e) {
-                if (e.target.files && e.target.files[0]) {
-                    logoFile = e.target.files[0];
-                    const reader = new FileReader();
-                    
-                    reader.onload = function(event) {
-                        logoImage.src = event.target.result;
-                        debugContent.innerHTML += '<br>✓ Logo changed';
-                    };
-                    
-                    reader.readAsDataURL(logoFile);
-                }
-            });
-            
-            // Helper function to convert error level string to QRCode constant
-            function getCorrectLevel(level) {
-                switch(level) {
-                    case 'L': return QRCode.CorrectLevel.L;
-                    case 'M': return QRCode.CorrectLevel.M;
-                    case 'Q': return QRCode.CorrectLevel.Q;
-                    case 'H': return QRCode.CorrectLevel.H;
-                    default: return QRCode.CorrectLevel.L;
-                }
-            }
-            
-            // Function to encode text for QR code - SPECIAL FORMAT for Myanmar text
-            function encodeTextForQR(text) {
-                // Check if text contains Myanmar characters
-                const myanmarRegex = /[\u1000-\u109F]/;
-                const hasMyanmar = myanmarRegex.test(text);
-                
-                if (hasMyanmar) {
-                    // For Myanmar text: use special format "myanmar:တext"
-                    return `myanmar:${text}`;
-                } else {
-                    // For non-Myanmar text (English, numbers, URLs): use as is
-                    return text;
-                }
-            }
-            
-            // Function to decode text for display
-            function decodeTextForDisplay(encodedText) {
-                if (encodedText.startsWith('myanmar:')) {
-                    return encodedText.substring(8); // Remove "myanmar:" prefix
-                }
-                return encodedText;
-            }
-            
-            // Generate QR Code using QRCode.js
-            function generateQRCode() {
-                let text = qrText.value.trim();
-                
-                if (!text) {
-                    alert('QR Code content ထည့်ပေးပါ။');
-                    qrcodeStatus.textContent = 'Status: ERROR - No content provided';
-                    return null;
-                }
-                
-                const size = parseInt(qrSize.value);
-                const errorLevel = getCorrectLevel(qrError.value);
-                
-                // Encode text for QR
-                const encodedText = encodeTextForQR(text);
-                
-                // Update previews
-                qrContentPreview.textContent = encodedText;
-                scanResultPreview.textContent = text;
-                
-                qrcodeStatus.textContent = 'Status: Generating QR Code...';
-                qrcodeEncoding.textContent = `Using: ${encodedText.startsWith('myanmar:') ? 'Myanmar Optimized Encoding' : 'Direct Text'}`;
-                
-                debugContent.innerHTML = `Original: "${text}" | Encoded for QR: "${encodedText}"`;
-                
-                // Clear previous QR code
-                qrcodeDiv.innerHTML = '';
-                loadingMessage.style.display = 'none';
-                
-                try {
-                    // Generate QR code with encoded text
-                    currentQRCode = new QRCode(qrcodeDiv, {
-                        text: encodedText,
-                        width: size,
-                        height: size,
-                        colorDark: "#000000",
-                        colorLight: "#ffffff",
-                        correctLevel: errorLevel
-                    });
-                    
-                    console.log("QR Code instance created with text:", encodedText);
-                    
-                    // Wait for QR code to be generated
-                    setTimeout(() => {
-                        const qrImg = qrcodeDiv.querySelector('img');
-                        if (qrImg) {
-                            // Create canvas from the generated QR code
-                            const canvas = document.createElement('canvas');
-                            const ctx = canvas.getContext('2d');
-                            canvas.width = size;
-                            canvas.height = size;
-                            
-                            const img = new Image();
-                            img.crossOrigin = "anonymous";
-                            img.src = qrImg.src;
-                            
-                            img.onload = function() {
-                                // Draw QR code to canvas
-                                ctx.drawImage(img, 0, 0, size, size);
-                                qrCanvas = canvas;
-                                
-                                debugContent.innerHTML += `<br>✓ QR Code generated successfully (${size}x${size})`;
-                                qrcodeStatus.textContent = 'Status: QR Code generated successfully';
-                                
-                                // Determine error level description
-                                let errorDesc = 'L';
-                                if (errorLevel === QRCode.CorrectLevel.M) errorDesc = 'M';
-                                else if (errorLevel === QRCode.CorrectLevel.Q) errorDesc = 'Q';
-                                else if (errorLevel === QRCode.CorrectLevel.H) errorDesc = 'H';
-                                
-                                qrcodeType.textContent = `Type: QRCode.js (${errorDesc} error correction)`;
-                                
-                                // Add logo if toggle is on
-                                if (logoToggle.checked) {
-                                    addLogoToQRCode(canvas, ctx, size);
-                                } else {
-                                    downloadBtn.disabled = false;
-                                    qrcodeStatus.textContent = 'Status: Ready to download';
-                                }
-                            };
-                            
-                            img.onerror = function() {
-                                debugContent.innerHTML += '<br>✗ Error loading QR image';
-                                createFallbackQR(text, size);
-                            };
-                            
-                        } else {
-                            debugContent.innerHTML += '<br>✗ No QR image found in DOM';
-                            createFallbackQR(text, size);
-                        }
-                    }, 300);
-                    
-                } catch (error) {
-                    console.error("Error generating QR Code:", error);
-                    debugContent.innerHTML += `<br>✗ Error: ${error.message}`;
-                    
-                    // Try with lower error correction if overflow error
-                    if (error.message.includes('overflow')) {
-                        debugContent.innerHTML += '<br>⚠ Text too long, trying shorter version...';
-                        
-                        // Try with shorter text
-                        const shorterText = text.length > 50 ? text.substring(0, 50) + '...' : text;
-                        const shorterEncoded = encodeTextForQR(shorterText);
-                        
-                        try {
-                            qrcodeDiv.innerHTML = '';
-                            currentQRCode = new QRCode(qrcodeDiv, {
-                                text: shorterEncoded,
-                                width: size,
-                                height: size,
-                                colorDark: "#000000",
-                                colorLight: "#ffffff",
-                                correctLevel: QRCode.CorrectLevel.L
-                            });
-                            
-                            // Update previews for shorter text
-                            qrContentPreview.textContent = shorterEncoded;
-                            scanResultPreview.textContent = shorterText;
-                            scanResultPreview.style.color = '#e67e22';
-                            
-                            setTimeout(() => {
-                                const qrImg = qrcodeDiv.querySelector('img');
-                                if (qrImg) {
-                                    debugContent.innerHTML += '<br>✓ Generated with shorter text';
-                                }
-                            }, 300);
-                            
-                        } catch (retryError) {
-                            createFallbackQR(text, size);
-                        }
-                    } else {
-                        createFallbackQR(text, size);
-                    }
-                }
-            }
-            
-            // Create fallback QR when generation fails
-            function createFallbackQR(text, size) {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = size;
-                canvas.height = size;
-                
-                // Draw background
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(0, 0, size, size);
-                
-                // Draw QR-like border
-                ctx.fillStyle = '#000000';
-                const borderWidth = 10;
-                ctx.fillRect(0, 0, size, borderWidth);
-                ctx.fillRect(0, 0, borderWidth, size);
-                ctx.fillRect(size - borderWidth, 0, borderWidth, size);
-                ctx.fillRect(0, size - borderWidth, size, borderWidth);
-                
-                // Draw text
-                ctx.fillStyle = '#000000';
-                ctx.font = `bold ${Math.max(20, size/15)}px Arial`;
-                ctx.textAlign = 'center';
-                ctx.fillText('QR Code', size/2, size/4);
-                
-                ctx.font = `${Math.max(12, size/25)}px Arial`;
-                
-                // Show original text
-                const displayText = text.length > 80 ? text.substring(0, 80) + '...' : text;
-                const lines = splitTextIntoLines(displayText, 30);
-                
-                lines.forEach((line, index) => {
-                    ctx.fillText(line, size/2, size/2 + (index * 25));
-                });
-                
-                if (text.length > 80) {
-                    ctx.fillText(`(Truncated from ${text.length} chars)`, size/2, size - 50);
-                }
-                
-                // Add to DOM
-                const qrImg = new Image();
-                qrImg.src = canvas.toDataURL('image/png');
-                qrcodeDiv.appendChild(qrImg);
-                
-                qrCanvas = canvas;
-                downloadBtn.disabled = false;
-                qrcodeStatus.textContent = 'Status: Using text display';
-                qrcodeType.textContent = 'Type: Text Fallback';
-                scanResultPreview.textContent = text;
-                scanResultPreview.style.color = '#e74c3c';
-                debugContent.innerHTML += '<br>⚠ Using text fallback display';
-            }
-            
-            // Helper to split text into lines
-            function splitTextIntoLines(text, maxLength) {
-                const words = text.split(' ');
-                const lines = [];
-                let currentLine = '';
-                
-                words.forEach(word => {
-                    if ((currentLine + word).length <= maxLength) {
-                        currentLine += (currentLine ? ' ' : '') + word;
-                    } else {
-                        if (currentLine) lines.push(currentLine);
-                        currentLine = word;
-                    }
-                });
-                
-                if (currentLine) lines.push(currentLine);
-                return lines.slice(0, 5);
-            }
-            
-            // Function to add logo to QR Code
-            function addLogoToQRCode(canvas, ctx, size) {
-                if (!canvas || !ctx) return;
-                
-                const logo = new Image();
-                logo.crossOrigin = "anonymous";
-                logo.src = logoImage.src;
-                
-                logo.onload = function() {
-                    // Calculate logo size
-                    const logoSize = size * 0.15;
-                    const centerX = (size - logoSize) / 2;
-                    const centerY = (size - logoSize) / 2;
-                    
-                    // Draw white background for logo
-                    const bgPadding = 3;
-                    ctx.fillStyle = '#FFFFFF';
-                    ctx.fillRect(
-                        centerX - bgPadding, 
-                        centerY - bgPadding, 
-                        logoSize + (bgPadding * 2), 
-                        logoSize + (bgPadding * 2)
-                    );
-                    
-                    // Draw logo
-                    ctx.drawImage(logo, centerX, centerY, logoSize, logoSize);
-                    
-                    // Update the image in DOM
-                    const qrImg = qrcodeDiv.querySelector('img');
-                    if (qrImg) {
-                        qrImg.src = canvas.toDataURL('image/png');
-                    }
-                    
-                    // Enable download button
-                    downloadBtn.disabled = false;
-                    qrcodeStatus.textContent = 'Status: Ready to download (with logo)';
-                    debugContent.innerHTML += '<br>✓ Logo added';
-                };
-                
-                logo.onerror = function() {
-                    debugContent.innerHTML += '<br>✗ Logo loading failed';
-                    downloadBtn.disabled = false;
-                    qrcodeStatus.textContent = 'Status: Ready to download (no logo)';
-                };
-            }
-            
-            // Generate QR Code button click
-            generateBtn.addEventListener('click', function() {
-                generateQRCode();
-            });
-            
-            // Download QR Code as PNG
-            downloadBtn.addEventListener('click', function() {
-                if (!qrCanvas) {
-                    alert('ကျေးဇူးပြု၍ QR Code ကိုအရင်ဖန်တီးပေးပါ။');
-                    return;
-                }
-                
-                qrcodeStatus.textContent = 'Status: Downloading...';
-                debugContent.innerHTML += '<br>↓ Downloading PNG...';
-                
-                // Create download link
-                const link = document.createElement('a');
-                link.href = qrCanvas.toDataURL('image/png');
-                link.download = `qrcode-${Date.now()}.png`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                qrcodeStatus.textContent = 'Status: Download started';
-                
-                setTimeout(() => {
-                    qrcodeStatus.textContent = 'Status: Ready';
-                    debugContent.innerHTML += '<br>✓ Download complete';
-                }, 2000);
-            });
-            
-            // Generate QR code on page load with default text
+            // Apply design after a short delay (to ensure QR code is rendered)
             setTimeout(() => {
-                generateBtn.click();
-            }, 500);
+                applyDesign();
+                
+                // Apply logo if enabled
+                if (logoEnabled && uploadedLogo) {
+                    applyLogo();
+                } else if (logoEnabled) {
+                    // Show default checkmark if logo is enabled but no image uploaded
+                    showDefaultLogo();
+                }
+                
+                // Apply frame
+                applyFrame();
+            }, 100);
             
-            // Update QR code when options change
-            [qrSize, qrError].forEach(element => {
-                element.addEventListener('change', function() {
-                    if (qrText.value.trim()) {
-                        generateQRCode();
+            // Update time
+            lastGeneratedTime = new Date();
+            document.getElementById('debugTime').textContent = formatTime(lastGeneratedTime);
+        }
+        
+        // Apply design to QR code
+        function applyDesign() {
+            const qrCodeCanvas = document.querySelector('#qrCode canvas');
+            if (!qrCodeCanvas) return;
+            
+            const ctx = qrCodeCanvas.getContext('2d');
+            const imageData = ctx.getImageData(0, 0, qrCodeCanvas.width, qrCodeCanvas.height);
+            const data = imageData.data;
+            
+            if (currentDesign === "rounded") {
+                // Make QR code modules rounded
+                for (let i = 0; i < data.length; i += 4) {
+                    // Skip transparent pixels
+                    if (data[i+3] === 0) continue;
+                    
+                    // Check if pixel is part of a module (dark pixel)
+                    if (data[i] < 128) {
+                        // Make corners transparent to create rounded effect
+                        const x = (i/4) % qrCodeCanvas.width;
+                        const y = Math.floor((i/4) / qrCodeCanvas.width);
+                        
+                        // Check if we're near the edge of a module
+                        const moduleSize = 8;
+                        const inCorner = (x % moduleSize < 2 || x % moduleSize > moduleSize - 3) && 
+                                         (y % moduleSize < 2 || y % moduleSize > moduleSize - 3);
+                        
+                        if (inCorner) {
+                            data[i+3] = 0;
+                        }
                     }
+                }
+                
+                ctx.putImageData(imageData, 0, 0);
+            } else if (currentDesign === "dots") {
+                // Make QR code modules dots
+                for (let i = 0; i < data.length; i += 4) {
+                    // Skip transparent pixels
+                    if (data[i+3] === 0) continue;
+                    
+                    // Check if pixel is part of a module (dark pixel)
+                    if (data[i] < 128) {
+                        const x = (i/4) % qrCodeCanvas.width;
+                        const y = Math.floor((i/4) / qrCodeCanvas.width);
+                        
+                        // Check if we're near the center of a module
+                        const moduleSize = 8;
+                        const inCenter = (x % moduleSize > 2 && x % moduleSize < moduleSize - 3) && 
+                                         (y % moduleSize > 2 && y % moduleSize < moduleSize - 3);
+                        
+                        if (!inCenter) {
+                            data[i+3] = 0;
+                        }
+                    }
+                }
+                
+                ctx.putImageData(imageData, 0, 0);
+            }
+        }
+        
+        // Apply frame to QR code container
+        function applyFrame() {
+            const qrElement = document.getElementById('qrCode');
+            
+            // Reset any previous frame classes
+            qrElement.classList.remove('frame-square', 'frame-circle', 'frame-rounded');
+            
+            // Apply new frame class
+            if (currentFrame === "square") {
+                qrElement.classList.add('frame-square');
+                qrElement.style.border = "15px solid #2c3e50";
+                qrElement.style.borderRadius = "0";
+            } else if (currentFrame === "circle") {
+                qrElement.classList.add('frame-circle');
+                qrElement.style.border = "15px solid #3498db";
+                qrElement.style.borderRadius = "50%";
+            } else if (currentFrame === "rounded") {
+                qrElement.classList.add('frame-rounded');
+                qrElement.style.border = "15px solid #2ecc71";
+                qrElement.style.borderRadius = "25px";
+            } else {
+                qrElement.style.border = "2px dashed #ddd";
+                qrElement.style.borderRadius = "10px";
+            }
+        }
+        
+        // Apply logo to QR code
+        function applyLogo() {
+            if (!uploadedLogo || !logoEnabled) return;
+            
+            const qrElement = document.getElementById('qrCode');
+            const canvas = qrElement.querySelector('canvas');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Create logo image
+            const logoImg = new Image();
+            logoImg.onload = function() {
+                // Calculate position to center logo
+                const logoSize = 50;
+                const x = (canvas.width - logoSize) / 2;
+                const y = (canvas.height - logoSize) / 2;
+                
+                // Draw white background for logo
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(x-5, y-5, logoSize+10, logoSize+10);
+                
+                // Draw logo
+                ctx.drawImage(logoImg, x, y, logoSize, logoSize);
+            };
+            
+            logoImg.src = uploadedLogo;
+        }
+        
+        // Show default checkmark logo
+        function showDefaultLogo() {
+            const qrElement = document.getElementById('qrCode');
+            
+            // Remove existing logo overlay
+            const existingOverlay = qrElement.querySelector('.logo-overlay');
+            if (existingOverlay) {
+                existingOverlay.remove();
+            }
+            
+            // Add default logo overlay
+            if (logoEnabled) {
+                const logoOverlay = document.createElement('div');
+                logoOverlay.className = 'logo-overlay';
+                logoOverlay.innerHTML = '<i class="fas fa-check"></i>';
+                qrElement.appendChild(logoOverlay);
+            }
+        }
+        
+        // Update debug information
+        function updateDebugInfo(version, modules) {
+            document.getElementById('debugVersion').textContent = version;
+            document.getElementById('debugModules').textContent = `${modules}x${modules}`;
+            document.getElementById('debugLogo').textContent = logoEnabled ? 'Yes' : 'No';
+            document.getElementById('debugLogo').className = logoEnabled ? 'debug-value success' : 'debug-value warning';
+            document.getElementById('debugColor').textContent = currentColor;
+            document.getElementById('debugDesign').textContent = currentDesign.charAt(0).toUpperCase() + currentDesign.slice(1);
+            document.getElementById('debugFrame').textContent = currentFrame.charAt(0).toUpperCase() + currentFrame.slice(1);
+        }
+        
+        // Update status information
+        function updateStatus(textLength) {
+            const statusContent = document.getElementById('statusContent');
+            const plaintext = document.getElementById('plaintextInput').value;
+            
+            statusContent.textContent = `QR Code generated successfully!
+Data length: ${textLength} characters
+Encoding: UTF-8
+Error correction: High (H)
+Scan result will show: "${plaintext.substring(0, 50)}${textLength > 50 ? '...' : ''}"
+Ready to scan.`;
+        }
+        
+        // Format time for display
+        function formatTime(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffSec = Math.floor(diffMs / 1000);
+            
+            if (diffSec < 10) return 'Just now';
+            if (diffSec < 60) return `${diffSec} seconds ago`;
+            
+            const diffMin = Math.floor(diffSec / 60);
+            if (diffMin < 60) return `${diffMin} minute${diffMin > 1 ? 's' : ''} ago`;
+            
+            const diffHour = Math.floor(diffMin / 60);
+            if (diffHour < 24) return `${diffHour} hour${diffHour > 1 ? 's' : ''} ago`;
+            
+            return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+        
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize QR code
+            initQRCode();
+            
+            // Plain text input change
+            document.getElementById('plaintextInput').addEventListener('input', function() {
+                initQRCode();
+            });
+            
+            // Color selection
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    currentColor = this.getAttribute('data-color');
+                    initQRCode();
                 });
+            });
+            
+            // Design selection
+            document.querySelectorAll('[data-design]').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('[data-design]').forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    currentDesign = this.getAttribute('data-design');
+                    initQRCode();
+                });
+            });
+            
+            // Frame selection
+            document.querySelectorAll('[data-frame]').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('[data-frame]').forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFrame = this.getAttribute('data-frame');
+                    applyFrame();
+                    updateDebugInfo(parseInt(document.getElementById('debugVersion').textContent), 
+                                  parseInt(document.getElementById('debugModules').textContent));
+                });
+            });
+            
+            // Logo upload
+            document.getElementById('logoUpload').addEventListener('click', function() {
+                document.getElementById('logoFile').click();
+            });
+            
+            document.getElementById('logoFile').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        uploadedLogo = event.target.result;
+                        
+                        // Update logo upload area
+                        const logoUpload = document.getElementById('logoUpload');
+                        logoUpload.innerHTML = `
+                            <i class="fas fa-check-circle" style="color: #2ecc71;"></i>
+                            <span>Logo uploaded</span>
+                        `;
+                        
+                        // Enable logo toggle
+                        document.getElementById('logoToggle').checked = true;
+                        logoEnabled = true;
+                        
+                        // Apply logo to QR code
+                        initQRCode();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Logo toggle
+            document.getElementById('logoToggle').addEventListener('change', function() {
+                logoEnabled = this.checked;
+                
+                if (logoEnabled && !uploadedLogo) {
+                    showDefaultLogo();
+                } else if (!logoEnabled) {
+                    // Remove logo overlay
+                    const qrElement = document.getElementById('qrCode');
+                    const logoOverlay = qrElement.querySelector('.logo-overlay');
+                    if (logoOverlay) {
+                        logoOverlay.remove();
+                    }
+                    
+                    // Redraw QR code without logo
+                    const canvas = qrElement.querySelector('canvas');
+                    if (canvas) {
+                        initQRCode();
+                    }
+                }
+                
+                // Update debug info
+                updateDebugInfo(parseInt(document.getElementById('debugVersion').textContent), 
+                              parseInt(document.getElementById('debugModules').textContent));
+            });
+            
+            // Save QR code
+            document.getElementById('saveBtn').addEventListener('click', function() {
+                const qrElement = document.getElementById('qrCode');
+                const canvas = qrElement.querySelector('canvas');
+                
+                if (canvas) {
+                    // Create temporary canvas to add logo if enabled
+                    const tempCanvas = document.createElement('canvas');
+                    const tempCtx = tempCanvas.getContext('2d');
+                    
+                    // Set canvas size
+                    tempCanvas.width = 300;
+                    tempCanvas.height = 300;
+                    
+                    // Fill with white background
+                    tempCtx.fillStyle = '#ffffff';
+                    tempCtx.fillRect(0, 0, 300, 300);
+                    
+                    // Draw QR code centered
+                    tempCtx.drawImage(canvas, 25, 25, 250, 250);
+                    
+                    // Add logo if enabled and exists
+                    if (logoEnabled && uploadedLogo) {
+                        const logoImg = new Image();
+                        logoImg.onload = function() {
+                            const logoSize = 40;
+                            const x = (tempCanvas.width - logoSize) / 2;
+                            const y = (tempCanvas.height - logoSize) / 2;
+                            
+                            // Draw white background for logo
+                            tempCtx.fillStyle = "#ffffff";
+                            tempCtx.fillRect(x-5, y-5, logoSize+10, logoSize+10);
+                            
+                            // Draw logo
+                            tempCtx.drawImage(logoImg, x, y, logoSize, logoSize);
+                            
+                            // Create download link
+                            const link = document.createElement('a');
+                            link.download = 'qr-code-' + Date.now() + '.png';
+                            link.href = tempCanvas.toDataURL('image/png');
+                            link.click();
+                            
+                            // Show success message
+                            alert('QR code saved successfully as ' + link.download);
+                        };
+                        logoImg.src = uploadedLogo;
+                    } else if (logoEnabled) {
+                        // Add default checkmark
+                        const logoSize = 40;
+                        const x = (tempCanvas.width - logoSize) / 2;
+                        const y = (tempCanvas.height - logoSize) / 2;
+                        
+                        // Draw white background for logo
+                        tempCtx.fillStyle = "#ffffff";
+                        tempCtx.fillRect(x-5, y-5, logoSize+10, logoSize+10);
+                        
+                        // Draw checkmark
+                        tempCtx.fillStyle = "#3498db";
+                        tempCtx.font = "30px FontAwesome";
+                        tempCtx.textAlign = "center";
+                        tempCtx.textBaseline = "middle";
+                        tempCtx.fillText("✓", x + logoSize/2, y + logoSize/2);
+                        
+                        // Create download link
+                        const link = document.createElement('a');
+                        link.download = 'qr-code-' + Date.now() + '.png';
+                        link.href = tempCanvas.toDataURL('image/png');
+                        link.click();
+                        
+                        // Show success message
+                        alert('QR code saved successfully as ' + link.download);
+                    } else {
+                        // Create download link without logo
+                        const link = document.createElement('a');
+                        link.download = 'qr-code-' + Date.now() + '.png';
+                        link.href = tempCanvas.toDataURL('image/png');
+                        link.click();
+                        
+                        // Show success message
+                        alert('QR code saved successfully as ' + link.download);
+                    }
+                }
+            });
+            
+            // Reset all
+            document.getElementById('resetBtn').addEventListener('click', function() {
+                // Reset plain text
+                document.getElementById('plaintextInput').value = "ဇော်ဖော်, nsa001\nhttps://www.youtube.com/@techwebchain/videos\nPhone: 09-123456789\nLocation: Yangon, Myanmar";
+                
+                // Reset color
+                document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('active'));
+                document.querySelector('.color-option').classList.add('active');
+                currentColor = "#000000";
+                
+                // Reset design
+                document.querySelectorAll('[data-design]').forEach(opt => opt.classList.remove('active'));
+                document.querySelector('[data-design="standard"]').classList.add('active');
+                currentDesign = "standard";
+                
+                // Reset frame
+                document.querySelectorAll('[data-frame]').forEach(opt => opt.classList.remove('active'));
+                document.querySelector('[data-frame="none"]').classList.add('active');
+                currentFrame = "none";
+                
+                // Reset logo
+                uploadedLogo = null;
+                logoEnabled = false;
+                document.getElementById('logoToggle').checked = false;
+                const logoUpload = document.getElementById('logoUpload');
+                logoUpload.innerHTML = `
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Click to upload logo</span>
+                `;
+                
+                // Reinitialize QR code
+                initQRCode();
+            });
+            
+            // Download all code button
+            document.getElementById('downloadAllBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Create a zip file simulation
+                alert('Downloading complete code package... This would normally download a ZIP file containing HTML, CSS, JS, and assets.');
+                
+                // In a real implementation, this would trigger a server-side script
+                // to create and download a ZIP file
             });
         });
     </script>
 </body>
-</html></html>
+</html>
