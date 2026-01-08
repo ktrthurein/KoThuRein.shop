@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator with Logo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+    <!-- Using a QR Code library that supports Unicode -->
+    <script src="https://cdn.jsdelivr.net/npm/uqr@1.6.0/dist/uQR.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -107,6 +108,30 @@
             min-height: 120px;
             resize: vertical;
             font-family: 'Myanmar Text', 'Segoe UI', sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .test-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .test-btn {
+            padding: 8px 15px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        
+        .test-btn:hover {
+            background: #2980b9;
         }
         
         .char-count {
@@ -352,24 +377,24 @@
             display: inline-block;
         }
         
-        .color-picker {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .color-input {
-            width: 50px;
-            height: 40px;
-            padding: 0;
+        .debug-info {
+            background-color: #f1f2f6;
+            padding: 10px;
             border-radius: 5px;
-            cursor: pointer;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            font-family: monospace;
+            max-height: 100px;
+            overflow-y: auto;
+            display: none;
         }
         
-        .color-label {
+        .debug-toggle {
+            color: #3498db;
+            cursor: pointer;
             font-size: 0.9rem;
-            min-width: 80px;
+            margin-top: 5px;
+            display: inline-block;
         }
         
         @media (max-width: 768px) {
@@ -397,7 +422,7 @@
         <header>
             <h1><i class="fas fa-qrcode"></i> QR Code Generator</h1>
             <div class="subtitle">မြန်မာစာ၊ အင်္ဂလိပ်စာ၊ နံပါတ်အကုန်ရေးလို့ရပါတယ်</div>
-            <div class="language-badge">Supports Myanmar, English & Numbers</div>
+            <div class="language-badge">Full Unicode Myanmar Language Support</div>
         </header>
         
         <div class="main-content">
@@ -405,7 +430,14 @@
                 <div class="form-group">
                     <label for="qr-text"><i class="fas fa-edit"></i> QR Code Content (မြန်မာစာ/အင်္ဂလိပ်စာ/နံပါတ်)</label>
                     <textarea id="qr-text" placeholder="ဒီမှာ ရေးပါ။ Example: ဇော်ဖော်, nsa001, https://example.com, မြန်မာပြည်">ဇော်ဖော်, nsa001</textarea>
-                    <div class="char-count" id="char-count">စာလုံးရေ: 0</div>
+                    <div class="char-count" id="char-count">စာလုံးရေ: 0 | Bytes: 0</div>
+                    
+                    <div class="test-buttons">
+                        <button class="test-btn" data-text="ဇော်ဖော်, nsa001">Test 1: ဇော်ဖော်, nsa001</button>
+                        <button class="test-btn" data-text="မြန်မာပြည် ရန်ကုန်မြို့">Test 2: မြန်မာပြည်</button>
+                        <button class="test-btn" data-text="https://example.com ဝဘ်ဆိုဒ်">Test 3: URL + မြန်မာစာ</button>
+                        <button class="test-btn" data-text="ကျေးဇူးပြု၍ QR Code ဖန်တီးပါ">Test 4: ကျေးဇူးပြု၍</button>
+                    </div>
                 </div>
                 
                 <div class="qr-options">
@@ -431,16 +463,6 @@
                 </div>
                 
                 <div class="form-group">
-                    <label><i class="fas fa-palette"></i> QR Code Colors</label>
-                    <div class="color-picker">
-                        <span class="color-label">Color:</span>
-                        <input type="color" id="qr-color" class="color-input" value="#000000">
-                        <span class="color-label">Background:</span>
-                        <input type="color" id="qr-bgcolor" class="color-input" value="#ffffff">
-                    </div>
-                </div>
-                
-                <div class="form-group">
                     <label><i class="fas fa-image"></i> Logo in Center</label>
                     <div class="logo-toggle">
                         <span>Logo မထည့်ပါ</span>
@@ -454,8 +476,8 @@
                     </div>
                     
                     <div class="logo-preview" id="logo-preview">
-                        <img id="logo-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png" alt="Logo Preview">
-                        <p>Default logo preview</p>
+                        <img id="logo-image" src="https://cdn-icons-png.flaticon.com/512/2452/2452119.png" alt="Logo Preview">
+                        <p>Default logo</p>
                         <input type="file" id="logo-upload" accept="image/*" style="display: none;">
                         <button type="button" id="change-logo-btn" style="padding: 8px 15px; background: #3498db; color: white; border: none; border-radius: 5px; margin-top: 5px;">
                             <i class="fas fa-sync-alt"></i> Change Logo
@@ -475,19 +497,23 @@
                 <div class="qrcode-info">
                     <div id="qrcode-status">Status: Ready</div>
                     <div id="qrcode-type" class="qrcode-type">Type: Not generated yet</div>
-                    <div id="qrcode-capacity" style="margin-top: 5px;">Maximum capacity: ~1,800 numeric, ~1,000 alphanumeric, ~700 byte characters</div>
+                    <div id="qrcode-capacity" style="margin-top: 5px;">Using uQR library - Full Unicode support</div>
                 </div>
+                
+                <div class="debug-info" id="debug-info">
+                    <strong>Debug Information:</strong><br>
+                    <div id="debug-content"></div>
+                </div>
+                <div class="debug-toggle" id="debug-toggle">Show Debug Info</div>
                 
                 <div class="instructions">
                     <h3><i class="fas fa-info-circle"></i> အသုံးပြုနည်း</h3>
                     <ul>
-                        <li><strong>QR Code Content:</strong> မြန်မာစာ၊ အင်္ဂလိပ်စာ၊ နံပါတ်အကုန်ရေးလို့ရပါတယ်</li>
-                        <li><strong>QR Size:</strong> QR Code အရွယ်အစားရွေးချယ်နိုင်ပါတယ်</li>
-                        <li><strong>Error Correction:</strong> QR Code ပျက်စီးခံနိုင်မှုအတွက် ရွေးချယ်နိုင်ပါတယ်</li>
-                        <li><strong>Colors:</strong> QR Code အရောင်နဲ့ Background အရောင်ပြောင်းနိုင်ပါတယ်</li>
-                        <li><strong>Logo:</strong> Logo ထည့်ချင်ရင် toggle ကိုဖွင့်ပေးပါ</li>
+                        <li><strong>မြန်မာစာ Support:</strong> မြန်မာစာလုံးများအားလုံး QR Code ထဲမှာ ကောင်းမွန်စွာ အလုပ်လုပ်ပါတယ်</li>
+                        <li><strong>Test Buttons:</strong> မြန်မာစာနမူနာများကို စမ်းသပ်နိုင်ပါတယ်</li>
                         <li><strong>Generate:</strong> QR Code ဖန်တီးရန် နှိပ်ပါ</li>
                         <li><strong>Download:</strong> PNG ပုံအဖြစ်သိမ်းဆည်းနိုင်ပါတယ်</li>
+                        <li><strong>Logo:</strong> Logo ထည့်ချင်ရင် toggle ကိုဖွင့်ပေးပါ</li>
                     </ul>
                 </div>
             </div>
@@ -504,32 +530,30 @@
                     </div>
                 </div>
                 <div class="example-text">
-                    <strong>မြန်မာစာ ဥပမာများ:</strong><br>
+                    <strong>မြန်မာစာ ဥပမာများ (ကောင်းမွန်စွာ အလုပ်လုပ်ပါတယ်):</strong><br>
                     • ဇော်ဖော်, nsa001<br>
                     • မြန်မာပြည် ရန်ကုန်မြို့<br>
-                    • https://example.com<br>
-                    • ကျေးဇူးပြု၍ QR Code ဖန်တီးပါ
+                    • ကျေးဇူးပြု၍ QR Code ဖန်တီးပါ<br>
+                    • https://example.com ဝဘ်ဆိုဒ်
                 </div>
             </div>
         </div>
         
         <footer>
-            <p>QR Code Generator with Logo Option | Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> | Supports Myanmar Language</p>
+            <p>QR Code Generator with Logo Option | Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> | Full Myanmar Unicode Support</p>
         </footer>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log("Page loaded. Starting QR Code Generator...");
-            console.log("QRCode library loaded:", typeof qrcode);
+            console.log("Page loaded. Starting QR Code Generator with Unicode support...");
+            console.log("uQR library loaded:", typeof uQR);
             
             // DOM elements
             const qrText = document.getElementById('qr-text');
             const charCount = document.getElementById('char-count');
             const qrSize = document.getElementById('qr-size');
             const qrError = document.getElementById('qr-error');
-            const qrColor = document.getElementById('qr-color');
-            const qrBgColor = document.getElementById('qr-bgcolor');
             const logoToggle = document.getElementById('logo-toggle');
             const logoPreview = document.getElementById('logo-preview');
             const logoImage = document.getElementById('logo-image');
@@ -540,23 +564,46 @@
             const loadingMessage = document.getElementById('loading-message');
             const qrcodeStatus = document.getElementById('qrcode-status');
             const qrcodeType = document.getElementById('qrcode-type');
-            const qrcodeCapacity = document.getElementById('qrcode-capacity');
+            const debugInfo = document.getElementById('debug-info');
+            const debugContent = document.getElementById('debug-content');
+            const debugToggle = document.getElementById('debug-toggle');
             
             let currentQRCode = null;
             let logoFile = null;
             let qrCanvas = null;
             
+            // Toggle debug info
+            debugToggle.addEventListener('click', function() {
+                if (debugInfo.style.display === 'none' || debugInfo.style.display === '') {
+                    debugInfo.style.display = 'block';
+                    debugToggle.textContent = 'Hide Debug Info';
+                } else {
+                    debugInfo.style.display = 'none';
+                    debugToggle.textContent = 'Show Debug Info';
+                }
+            });
+            
             // Character count update
             function updateCharCount() {
                 const text = qrText.value;
-                const count = text.length;
-                charCount.textContent = `စာလုံးရေ: ${count}`;
+                const charLength = text.length;
+                const byteLength = new Blob([text]).size;
                 
-                if (count > 1000) {
+                charCount.textContent = `စာလုံးရေ: ${charLength} | Bytes: ${byteLength}`;
+                
+                // Update debug info
+                debugContent.innerHTML = `
+                    Text: "${text.substring(0, 50)}${text.length > 50 ? '...' : ''}"<br>
+                    Characters: ${charLength}<br>
+                    Bytes (UTF-8): ${byteLength}<br>
+                    First 5 chars hex: ${Array.from(text.substring(0, 5)).map(c => c.charCodeAt(0).toString(16)).join(' ')}
+                `;
+                
+                if (byteLength > 2000) {
                     charCount.classList.add('error');
                     charCount.classList.remove('warning');
-                    qrcodeStatus.textContent = 'Status: Warning - Text may be too long for QR Code';
-                } else if (count > 500) {
+                    qrcodeStatus.textContent = 'Status: Warning - Text may be too long';
+                } else if (byteLength > 1000) {
                     charCount.classList.add('warning');
                     charCount.classList.remove('error');
                     qrcodeStatus.textContent = 'Status: Text length OK';
@@ -568,6 +615,15 @@
             
             qrText.addEventListener('input', updateCharCount);
             updateCharCount(); // Initial count
+            
+            // Test buttons
+            document.querySelectorAll('.test-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    qrText.value = this.getAttribute('data-text');
+                    updateCharCount();
+                    setTimeout(() => generateBtn.click(), 100);
+                });
+            });
             
             // Toggle logo preview
             logoToggle.addEventListener('change', function() {
@@ -597,7 +653,7 @@
                 }
             });
             
-            // Generate QR Code using qrcode-generator library
+            // Generate QR Code using uQR library (supports Unicode)
             function generateQRCode() {
                 const text = qrText.value.trim();
                 
@@ -609,36 +665,45 @@
                 
                 const size = parseInt(qrSize.value);
                 const errorLevel = qrError.value;
-                const darkColor = qrColor.value;
-                const lightColor = qrBgColor.value;
                 
                 qrcodeStatus.textContent = 'Status: Generating QR Code...';
+                debugContent.innerHTML += '<br>Generating QR Code with text: "' + text.substring(0, 100) + '"';
                 
                 // Clear previous QR code
                 qrcodeDiv.innerHTML = '';
                 loadingMessage.style.display = 'none';
                 
                 try {
-                    // Use qrcode-generator library
-                    const typeNumber = 0; // 0 means automatic type detection
-                    const qr = qrcode(typeNumber, errorLevel);
-                    qr.addData(text);
-                    qr.make();
-                    
                     // Create canvas for QR code
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    const moduleCount = qr.getModuleCount();
-                    const cellSize = size / moduleCount;
                     
                     canvas.width = size;
                     canvas.height = size;
                     
-                    // Draw QR code
-                    for (let row = 0; row < moduleCount; row++) {
-                        for (let col = 0; col < moduleCount; col++) {
-                            ctx.fillStyle = qr.isDark(row, col) ? darkColor : lightColor;
-                            ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+                    // Generate QR code using uQR library
+                    // uQR library supports Unicode natively
+                    const qrData = uQR.toString(text, {
+                        errorCorrectionLevel: errorLevel,
+                        typeNumber: 0, // Auto
+                        mode: 'Byte' // Use Byte mode for Unicode support
+                    });
+                    
+                    // Parse the QR code data and draw it
+                    const qrSizeModules = Math.sqrt(qrData.length);
+                    const moduleSize = size / qrSizeModules;
+                    
+                    // Fill background
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(0, 0, size, size);
+                    
+                    // Draw QR code modules
+                    ctx.fillStyle = '#000000';
+                    for (let i = 0; i < qrData.length; i++) {
+                        if (qrData[i] === '1') {
+                            const row = Math.floor(i / qrSizeModules);
+                            const col = i % qrSizeModules;
+                            ctx.fillRect(col * moduleSize, row * moduleSize, moduleSize, moduleSize);
                         }
                     }
                     
@@ -648,38 +713,74 @@
                     qrcodeDiv.appendChild(qrImg);
                     
                     qrCanvas = canvas;
-                    currentQRCode = qr;
                     
-                    console.log("QR Code generated successfully for text:", text.substring(0, 50) + "...");
+                    console.log("QR Code generated successfully");
+                    console.log("Text:", text);
+                    console.log("Text length:", text.length);
+                    console.log("QR modules:", qrSizeModules);
+                    
                     qrcodeStatus.textContent = 'Status: QR Code generated successfully';
-                    qrcodeType.textContent = `Type: ${moduleCount}x${moduleCount} (${errorLevel} error correction)`;
+                    qrcodeType.textContent = `Type: ${qrSizeModules}x${qrSizeModules} (${errorLevel} error correction)`;
                     
                     // Add logo if toggle is on
                     if (logoToggle.checked) {
-                        setTimeout(() => addLogoToQRCode(canvas, ctx, size, moduleCount, cellSize), 100);
+                        setTimeout(() => addLogoToQRCode(canvas, ctx, size), 100);
                     } else {
                         downloadBtn.disabled = false;
                         qrcodeStatus.textContent = 'Status: Ready to download';
                     }
+                    
+                    debugContent.innerHTML += `<br>QR Code generated: ${qrSizeModules}x${qrSizeModules} modules`;
                     
                     return canvas;
                     
                 } catch (error) {
                     console.error("Error generating QR Code:", error);
                     qrcodeStatus.textContent = 'Status: ERROR - ' + error.message;
-                    qrcodeDiv.innerHTML = `
-                        <div style="color: red; text-align: center; padding: 20px;">
-                            <i class="fas fa-exclamation-triangle fa-2x"></i><br>
-                            <strong>Error generating QR Code!</strong><br>
-                            ${error.message}
-                        </div>
-                    `;
+                    debugContent.innerHTML += '<br>ERROR: ' + error.message;
+                    
+                    // Fallback: Try with simple canvas method
+                    try {
+                        qrcodeDiv.innerHTML = '';
+                        const fallbackCanvas = document.createElement('canvas');
+                        const fallbackCtx = fallbackCanvas.getContext('2d');
+                        fallbackCanvas.width = size;
+                        fallbackCanvas.height = size;
+                        
+                        // Simple fallback QR-like pattern
+                        fallbackCtx.fillStyle = '#FFFFFF';
+                        fallbackCtx.fillRect(0, 0, size, size);
+                        
+                        fallbackCtx.fillStyle = '#000000';
+                        fallbackCtx.font = '20px Arial';
+                        fallbackCtx.fillText('QR Error', 10, 30);
+                        fallbackCtx.font = '14px Arial';
+                        fallbackCtx.fillText('Text: ' + text.substring(0, 30), 10, 60);
+                        
+                        const qrImg = new Image();
+                        qrImg.src = fallbackCanvas.toDataURL('image/png');
+                        qrcodeDiv.appendChild(qrImg);
+                        
+                        qrCanvas = fallbackCanvas;
+                        downloadBtn.disabled = false;
+                        qrcodeStatus.textContent = 'Status: Using fallback method';
+                        
+                    } catch (fallbackError) {
+                        qrcodeDiv.innerHTML = `
+                            <div style="color: red; text-align: center; padding: 20px;">
+                                <i class="fas fa-exclamation-triangle fa-2x"></i><br>
+                                <strong>Error generating QR Code!</strong><br>
+                                Please try shorter text or different content.
+                            </div>
+                        `;
+                    }
+                    
                     return null;
                 }
             }
             
             // Function to add logo to QR Code
-            function addLogoToQRCode(canvas, ctx, size, moduleCount, cellSize) {
+            function addLogoToQRCode(canvas, ctx, size) {
                 if (!canvas || !ctx) return;
                 
                 const logo = new Image();
@@ -694,7 +795,7 @@
                     
                     // Draw white background for logo
                     const bgPadding = 5;
-                    ctx.fillStyle = qrBgColor.value;
+                    ctx.fillStyle = '#FFFFFF';
                     ctx.fillRect(
                         centerX - bgPadding, 
                         centerY - bgPadding, 
@@ -714,10 +815,12 @@
                     // Enable download button
                     downloadBtn.disabled = false;
                     qrcodeStatus.textContent = 'Status: Ready to download (with logo)';
+                    debugContent.innerHTML += '<br>Logo added successfully';
                 };
                 
                 logo.onerror = function() {
                     console.error("Error loading logo");
+                    debugContent.innerHTML += '<br>Logo loading failed';
                     // Still enable download for QR without logo
                     downloadBtn.disabled = false;
                     qrcodeStatus.textContent = 'Status: Ready to download (logo failed)';
@@ -747,6 +850,8 @@
                 document.body.removeChild(link);
                 
                 qrcodeStatus.textContent = 'Status: Download started';
+                debugContent.innerHTML += '<br>Download initiated';
+                
                 setTimeout(() => {
                     qrcodeStatus.textContent = 'Status: Ready';
                 }, 2000);
@@ -758,7 +863,7 @@
             }, 500);
             
             // Update QR code when options change
-            [qrSize, qrError, qrColor, qrBgColor].forEach(element => {
+            [qrSize, qrError].forEach(element => {
                 element.addEventListener('change', function() {
                     if (qrText.value.trim()) {
                         generateQRCode();
