@@ -2,570 +2,232 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Generator | မြန်မာလို</title>
-    <!-- Pyidaungsu font from Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <title>Myanmar QR Code Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- QRCode library (UTF-8 support OK) -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        /* Pyidaungsu font settings */
         body {
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
+            font-family: Pyidaungsu, Myanmar3, sans-serif;
+            background: #f4f6f8;
             padding: 20px;
-            min-height: 100vh;
-            font-size: 16px;
         }
-        
-        /* Force Myanmar text to use Padauk/Pyidaungsu */
-        .myanmar-text {
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
-            font-size: 16px;
-        }
-        
+
         .container {
             max-width: 900px;
-            margin: 0 auto;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,.1);
             overflow: hidden;
         }
-        
+
         header {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
-            padding: 25px 30px;
+            background: linear-gradient(135deg,#6a11cb,#2575fc);
+            color: #fff;
+            padding: 25px;
             text-align: center;
         }
-        
+
         header h1 {
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
-            font-size: 28px;
-            margin-bottom: 8px;
-            font-weight: bold;
+            margin-bottom: 5px;
         }
-        
-        header p {
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
-            opacity: 0.9;
-            font-size: 16px;
-        }
-        
-        .main-content {
+
+        .content {
             display: flex;
             flex-wrap: wrap;
-            padding: 30px;
-        }
-        
-        .input-section {
-            flex: 1;
-            min-width: 300px;
             padding: 20px;
         }
-        
-        .preview-section {
+
+        .left, .right {
             flex: 1;
-            min-width: 300px;
+            min-width: 280px;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
-        
-        .form-group {
-            margin-bottom: 25px;
-        }
-        
+
         label {
+            font-weight: bold;
             display: block;
             margin-bottom: 8px;
-            font-weight: bold;
-            color: #444;
-            font-size: 16px;
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
         }
-        
-        input, textarea, select {
+
+        textarea, select {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            padding: 12px;
             font-size: 16px;
-            transition: border 0.3s;
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
+            border-radius: 8px;
+            border: 1px solid #ccc;
         }
-        
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: #6a11cb;
-            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
-        }
-        
+
         textarea {
             min-height: 120px;
-            resize: vertical;
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
         }
-        
-        .buttons {
+
+        .btns {
+            margin-top: 20px;
             display: flex;
             gap: 15px;
-            flex-wrap: wrap;
-            margin-top: 30px;
         }
-        
+
         button {
-            padding: 14px 25px;
+            flex: 1;
+            padding: 14px;
+            font-size: 16px;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
-            flex: 1;
-            min-width: 140px;
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
+            font-weight: bold;
         }
-        
-        .generate-btn {
-            background-color: #6a11cb;
-            color: white;
+
+        .generate {
+            background: #6a11cb;
+            color: #fff;
         }
-        
-        .generate-btn:hover {
-            background-color: #5809b5;
-            transform: translateY(-2px);
+
+        .download {
+            background: #2575fc;
+            color: #fff;
         }
-        
-        .download-btn {
-            background-color: #2575fc;
-            color: white;
-        }
-        
-        .download-btn:hover {
-            background-color: #0d65f0;
-            transform: translateY(-2px);
-        }
-        
-        .download-btn:disabled {
-            background-color: #aaa;
+
+        .download:disabled {
+            background: #aaa;
             cursor: not-allowed;
-            transform: none;
         }
-        
-        .qr-container {
+
+        .qr-box {
             width: 280px;
             height: 280px;
-            border: 1px dashed #ddd;
+            margin: auto;
+            border: 2px dashed #ccc;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 25px;
-            background-color: #f9f9f9;
-            padding: 15px;
+            background: #fafafa;
         }
-        
-        #qrcode {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        #qrcode img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-        
-        .placeholder-text {
+
+        .info {
             text-align: center;
-            color: #888;
-            font-size: 16px;
-            padding: 20px;
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
-        }
-        
-        .test-buttons {
-            display: flex;
-            gap: 10px;
             margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .test-btn {
-            padding: 8px 15px;
-            background-color: #f0f8ff;
-            border: 1px solid #2575fc;
-            border-radius: 5px;
-            color: #2575fc;
-            cursor: pointer;
+            color: #555;
             font-size: 14px;
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
-            transition: all 0.3s;
         }
-        
-        .test-btn:hover {
-            background-color: #e1f0ff;
-            transform: translateY(-2px);
-        }
-        
-        .instructions {
-            background-color: #f0f8ff;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
-            border-left: 5px solid #2575fc;
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
-        }
-        
-        .instructions h3 {
-            color: #2575fc;
-            margin-bottom: 10px;
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
-        }
-        
-        .instructions ul {
-            padding-left: 20px;
-        }
-        
-        .instructions li {
-            margin-bottom: 8px;
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
-        }
-        
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
-            }
-            
-            .input-section, .preview-section {
-                width: 100%;
-            }
-        }
-        
+
         footer {
             text-align: center;
-            padding: 20px;
-            color: #666;
-            font-size: 14px;
-            border-top: 1px solid #eee;
-            margin-top: 30px;
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
-        }
-        
-        .warning {
-            background-color: #fff8e1;
-            border: 1px solid #ffd54f;
-            border-radius: 8px;
             padding: 15px;
-            margin-bottom: 20px;
-            color: #5d4037;
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
+            font-size: 13px;
+            color: #666;
+            border-top: 1px solid #eee;
         }
-        
-        .warning h4 {
-            color: #e65100;
-            margin-bottom: 8px;
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
-        }
-        
-        /* Special Myanmar text styling */
-        .myanmar-example {
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
-            background-color: #f9f9f9;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 5px 0;
-            border-left: 3px solid #6a11cb;
-        }
-        
-        /* Fix for input placeholder */
-        ::placeholder {
-            font-family: 'Padauk', 'Pyidaungsu', 'Myanmar3', sans-serif;
-            color: #999;
+
+        @media(max-width:768px) {
+            .content {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1 class="myanmar-text">QR Code Generator (မြန်မာစာအတွက်)</h1>
-            <p class="myanmar-text">မြန်မာစာ QR Code ထုတ်ယူပြီး PNG ပုံအဖြစ်သိမ်းဆည်းနိုင်ပါသည်</p>
-        </header>
-        
-        <div class="main-content">
-            <div class="input-section">
-                <div class="warning">
-                    <h4 class="myanmar-text">အရေးကြီးသတိပေးချက်</h4>
-                    <p class="myanmar-text">မြန်မာစာ QR Code အတွက် QR Code Scanner App တစ်ချို့က UTF-8 encoding ကိုသာ အသိအမှတ်ပြုပါသည်။ မြန်မာစာဖတ်နိုင်သော scanner များကိုသုံးပါ။</p>
-                </div>
-                
-                <div class="form-group">
-                    <label for="qr-text" class="myanmar-text">QR Code အတွက် မြန်မာစာ / URL / စာ</label>
-                    <textarea id="qr-text" placeholder="ဒီနေရာမှာ QR Code အတွက် မြန်မာစာ (သို့) လင့်ကိုရိုက်ထည့်ပါ..." class="myanmar-text">မင်္ဂလာပါ၊ မြန်မာစာ QR Code စမ်းသပ်ခြင်း</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="qr-type" class="myanmar-text">QR Code အမျိုးအစား</label>
-                    <select id="qr-type" class="myanmar-text">
-                        <option value="utf8">မြန်မာစာ (UTF-8)</option>
-                        <option value="url">ဝဘ်ဆိုဒ်လိပ်စာ (URL)</option>
-                        <option value="text">အင်္ဂလိပ်စာ (Text)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="qr-size" class="myanmar-text">QR Code အရွယ်အစား</label>
-                    <select id="qr-size" class="myanmar-text">
-                        <option value="200">200x200</option>
-                        <option value="250" selected>250x250</option>
-                        <option value="300">300x300</option>
-                        <option value="350">350x350</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label class="myanmar-text">နမူနာမြန်မာစာများ (ကလစ်နှိပ်ပါ)</label>
-                    <div class="test-buttons">
-                        <div class="test-btn myanmar-text" onclick="setText('မင်္ဂလာပါ၊ ကျေးဇူးတင်ပါတယ်။')">မင်္ဂလာပါ</div>
-                        <div class="test-btn myanmar-text" onclick="setText('ကြက်ဥဈေးနှုန်း - ၂၅၀၀ကျပ်')">ကြက်ဥဈေး</div>
-                        <div class="test-btn myanmar-text" onclick="setText('ဖုန်း - ၀၉၇၉၁၂၃၄၅၆၇')">ဖုန်းနံပါတ်</div>
-                        <div class="test-btn myanmar-text" onclick="setText('ကျေးဇူးပြု၍ မနက်ဖြန်လာပါ။')">ကျေးဇူးပြု၍</div>
-                        <div class="test-btn myanmar-text" onclick="setText('https://my.wikipedia.org')">မြန်မာဝီကီ</div>
-                    </div>
-                    
-                    <div style="margin-top: 10px;">
-                        <div class="myanmar-example myanmar-text">မနက်ဖြန် ၉ နာရီတွင် စည်းဝေးပွဲရှိပါသည်။</div>
-                        <div class="myanmar-example myanmar-text">သင်တန်းကြေး - ကျပ် ၁၅၀,၀၀၀</div>
-                    </div>
-                </div>
-                
-                <div class="buttons">
-                    <button class="generate-btn myanmar-text" id="generate-btn">QR Code ထုတ်ပါ</button>
-                    <button class="download-btn myanmar-text" id="download-btn" disabled>PNG ပုံသိမ်းပါ</button>
-                </div>
-            </div>
-            
-            <div class="preview-section">
-                <h3 style="margin-bottom: 20px; color: #444;" class="myanmar-text">Preview ကြည့်ရှုရန်</h3>
-                
-                <div class="qr-container">
-                    <div id="qrcode">
-                        <div class="placeholder-text myanmar-text">
-                            QR Code ကို ထုတ်ယူရန်<br>"QR Code ထုတ်ပါ" ခလုတ်ကိုနှိပ်ပါ
-                        </div>
-                    </div>
-                </div>
-                
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <div id="qr-info" style="color: #666; font-size: 14px; margin-top: 10px;" class="myanmar-text">
-                        QR Code မထုတ်ရသေးပါ
-                    </div>
-                </div>
-                
-                <div class="instructions">
-                    <h3 class="myanmar-text">မြန်မာစာ QR Code အတွက် အကြံပြုချက်များ</h3>
-                    <ul>
-                        <li class="myanmar-text">မြန်မာစာ QR Code ဖတ်ရန် <strong>UTF-8 ကိုအသိအမှတ်ပြုသော QR Scanner</strong> သုံးပါ</li>
-                        <li class="myanmar-text">Android ဖုန်းများအတွက် "QR & Barcode Scanner" app ကိုအကြံပြုပါသည်</li>
-                        <li class="myanmar-text">iPhone များအတွက် default camera app ကလည်း မြန်မာစာဖတ်နိုင်ပါသည်</li>
-                        <li class="myanmar-text">QR Code အရွယ်အစားကြီးလေ ဖတ်ရလွယ်လေဖြစ်သည် (စာရှည်ရင် 300x300 အထက်ထုတ်ပါ)</li>
-                        <li class="myanmar-text">မြန်မာစာ ၅၀ လုံးထက်ကျော်ရင် QR Code အရွယ်အစား 300x300 ထက်ကြီးအောင်ထုတ်ပါ</li>
-                    </ul>
-                </div>
+
+<div class="container">
+    <header>
+        <h1>မြန်မာစာ QR Code Generator</h1>
+        <p>UTF-8 Encoding ဖြင့် မြန်မာစာ QR Code မှန်ကန်စွာ ထုတ်နိုင်ပါသည်</p>
+    </header>
+
+    <div class="content">
+        <div class="left">
+            <label>QR Code အတွက် စာ / URL</label>
+            <textarea id="qrText">မင်္ဂလာပါ၊ မြန်မာစာ QR Code စမ်းသပ်ခြင်း</textarea>
+
+            <label style="margin-top:15px;">QR Code အရွယ်အစား</label>
+            <select id="qrSize">
+                <option value="200">200 x 200</option>
+                <option value="250" selected>250 x 250</option>
+                <option value="300">300 x 300</option>
+                <option value="350">350 x 350</option>
+            </select>
+
+            <div class="btns">
+                <button class="generate" onclick="generateQR()">QR Code ထုတ်ပါ</button>
+                <button class="download" id="downloadBtn" onclick="downloadQR()" disabled>PNG သိမ်းပါ</button>
             </div>
         </div>
-        
-        <footer>
-            <p class="myanmar-text">မြန်မာစာ QR Code Generator - Pyidaungsu Font ဖြင့်</p>
-            <p class="myanmar-text">© 2023 | မြန်မာစာပါ QR Code များ လွယ်ကူစွာထုတ်လုပ်နိုင်ရန်</p>
-        </footer>
+
+        <div class="right">
+            <div class="qr-box" id="qrBox">
+                QR Code Preview
+            </div>
+            <div class="info" id="infoText">QR Code မထုတ်ရသေးပါ</div>
+        </div>
     </div>
 
-    <script>
-        // Elements
-        const qrTextElement = document.getElementById('qr-text');
-        const qrTypeElement = document.getElementById('qr-type');
-        const qrSizeElement = document.getElementById('qr-size');
-        const generateBtn = document.getElementById('generate-btn');
-        const downloadBtn = document.getElementById('download-btn');
-        const qrcodeDiv = document.getElementById('qrcode');
-        const qrInfoElement = document.getElementById('qr-info');
-        
-        // Current QR Code data
-        let currentQRCodeUrl = null;
-        let currentQRText = '';
-        
-        // Set text for testing
-        function setText(text) {
-            qrTextElement.value = text;
-            // Auto-generate QR code when test button is clicked
-            setTimeout(generateQRCode, 100);
+    <footer>
+        © Myanmar UTF-8 QR Code Generator
+    </footer>
+</div>
+
+<script>
+    const qrBox = document.getElementById('qrBox');
+    const infoText = document.getElementById('infoText');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    let qrDataUrl = '';
+
+    async function generateQR() {
+        const text = document.getElementById('qrText').value.trim();
+        const size = parseInt(document.getElementById('qrSize').value);
+
+        if (!text) {
+            alert('စာထည့်ပါ');
+            return;
         }
-        
-        // Generate QR Code function with UTF-8 support
-        function generateQRCode() {
-            const qrText = qrTextElement.value.trim();
-            const qrType = qrTypeElement.value;
-            const qrSize = parseInt(qrSizeElement.value);
-            
-            if (!qrText) {
-                alert('QR Code အတွက် စာ (သို့) လိပ်စာထည့်သွင်းပါ။');
-                return;
-            }
-            
-            // Show loading
-            qrcodeDiv.innerHTML = '<div class="placeholder-text myanmar-text">QR Code ထုတ်နေသည်...<br>ခေတ္တစောင့်ပါ</div>';
-            
-            // Store current text
-            currentQRText = qrText;
-            
-            // Create QR Code with proper encoding
-            try {
-                // Clear previous QR Code
-                qrcodeDiv.innerHTML = '';
-                
-                // Create QR Code with proper options for Myanmar text
-                const qrCodeOptions = {
-                    text: qrText,
-                    width: qrSize,
-                    height: qrSize,
-                    colorDark: "#000000",
-                    colorLight: "#ffffff",
-                    correctLevel: QRCode.CorrectLevel.H, // High error correction for Myanmar text
-                    useUTF8: true // Important for Myanmar text
-                };
-                
-                // Generate QR Code
-                const qrCodeInstance = new QRCode(qrcodeDiv, qrCodeOptions);
-                
-                // Update info
-                const textLength = qrText.length;
-                const myanmarChars = (qrText.match(/[\u1000-\u109F]/g) || []).length;
-                
-                qrInfoElement.innerHTML = `
-                    <div class="myanmar-text">စာလုံးရေ: ${textLength} (မြန်မာစာလုံး: ${myanmarChars})</div>
-                    <div class="myanmar-text">အရွယ်အစား: ${qrSize}x${qrSize} pixels</div>
-                    <div class="myanmar-text">အမျိုးအစား: ${qrType === 'utf8' ? 'မြန်မာစာ (UTF-8)' : qrType === 'url' ? 'ဝဘ်ဆိုဒ်လိပ်စာ' : 'အင်္ဂလိပ်စာ'}</div>
-                `;
-                
-                // Enable download button
-                downloadBtn.disabled = false;
-                
-                // Get the canvas for download
-                setTimeout(() => {
-                    const canvas = qrcodeDiv.querySelector('canvas');
-                    if (canvas) {
-                        currentQRCodeUrl = canvas.toDataURL('image/png');
-                        console.log('QR Code generated successfully with Myanmar text');
-                    }
-                }, 300);
-                
-            } catch (error) {
-                console.error("QR Code ထုတ်ယူရာတွင် အမှားတစ်ခုဖြစ်နေပါသည်:", error);
-                qrcodeDiv.innerHTML = '<div class="placeholder-text myanmar-text" style="color: red;">QR Code ထုတ်ယူရာတွင် အမှားတစ်ခုဖြစ်နေပါသည်။</div>';
-                alert('QR Code ထုတ်ယူရာတွင် အမှားတစ်ခုဖြစ်နေပါသည်။');
-            }
-        }
-        
-        // Download QR Code as PNG
-        function downloadQRCode() {
-            if (!currentQRCodeUrl) {
-                alert('ဦးစွာ QR Code ထုတ်ယူပါ။');
-                return;
-            }
-            
-            // Create download link
-            const link = document.createElement('a');
-            
-            // Create filename with first few characters
-            let filename = 'qr-code-myanmar';
-            if (currentQRText) {
-                // Take first 20 chars for filename
-                const cleanText = currentQRText.replace(/[^\w\u1000-\u109F\s]/g, '').substring(0, 20).trim();
-                if (cleanText) {
-                    filename = cleanText;
+
+        qrBox.innerHTML = '';
+        const canvas = document.createElement('canvas');
+
+        try {
+            await QRCode.toCanvas(canvas, text, {
+                width: size,
+                errorCorrectionLevel: 'H', // မြန်မာစာအတွက် အရေးကြီး
+                margin: 2,
+                color: {
+                    dark: '#000000',
+                    light: '#ffffff'
                 }
-            }
-            
-            const now = new Date();
-            const timestamp = `${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}_${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}`;
-            
-            link.download = `myanmar-qrcode_${filename}_${timestamp}.png`;
-            link.href = currentQRCodeUrl;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            // Show download success message
-            const originalText = downloadBtn.textContent;
-            downloadBtn.textContent = 'ပုံသိမ်းပြီးပါပြီ!';
-            downloadBtn.style.backgroundColor = '#4CAF50';
-            
-            setTimeout(() => {
-                downloadBtn.textContent = originalText;
-                downloadBtn.style.backgroundColor = '#2575fc';
-            }, 2000);
+            });
+
+            qrBox.appendChild(canvas);
+            qrDataUrl = canvas.toDataURL('image/png');
+            downloadBtn.disabled = false;
+
+            const mmCount = (text.match(/[\u1000-\u109F]/g) || []).length;
+
+            infoText.innerHTML = `
+                စာလုံးရေ: ${text.length}<br>
+                မြန်မာစာလုံး: ${mmCount}<br>
+                Encoding: UTF-8 ✔
+            `;
+
+        } catch (e) {
+            console.error(e);
+            qrBox.innerHTML = 'QR Code မထုတ်နိုင်ပါ';
         }
-        
-        // Event Listeners
-        generateBtn.addEventListener('click', generateQRCode);
-        downloadBtn.addEventListener('click', downloadQRCode);
-        
-        // Generate QR Code on page load with default text
-        window.addEventListener('load', function() {
-            setTimeout(generateQRCode, 1000);
-        });
-        
-        // Generate QR Code when Enter is pressed in textarea
-        qrTextElement.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && e.ctrlKey) {
-                generateQRCode();
-            }
-        });
-        
-        // Auto-generate when type is changed
-        qrTypeElement.addEventListener('change', function() {
-            if (qrTextElement.value.trim()) {
-                generateQRCode();
-            }
-        });
-        
-        // Auto-generate when size is changed (if QR code already exists)
-        qrSizeElement.addEventListener('change', function() {
-            if (!downloadBtn.disabled) {
-                generateQRCode();
-            }
-        });
-        
-        // Check for Myanmar text in QR code
-        function checkMyanmarText() {
-            const text = qrTextElement.value;
-            const hasMyanmar = /[\u1000-\u109F]/.test(text);
-            
-            if (hasMyanmar && qrTypeElement.value !== 'utf8') {
-                qrTypeElement.value = 'utf8';
-                console.log('Auto-switched to Myanmar (UTF-8) mode');
-            }
-            
-            return hasMyanmar;
-        }
-        
-        // Check for Myanmar text when typing
-        qrTextElement.addEventListener('input', function() {
-            checkMyanmarText();
-        });
-    </script>
+    }
+
+    function downloadQR() {
+        if (!qrDataUrl) return;
+        const a = document.createElement('a');
+        a.href = qrDataUrl;
+        a.download = 'myanmar-qr-code.png';
+        a.click();
+    }
+
+    window.onload = generateQR;
+</script>
+
 </body>
 </html>
