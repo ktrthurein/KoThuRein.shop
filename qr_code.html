@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator | မြန်မာလို</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -99,6 +99,7 @@
         textarea {
             min-height: 120px;
             resize: vertical;
+            font-family: 'Pyidaungsu', 'Myanmar3', sans-serif;
         }
         
         .buttons {
@@ -147,8 +148,8 @@
         }
         
         .qr-container {
-            width: 250px;
-            height: 250px;
+            width: 280px;
+            height: 280px;
             border: 1px dashed #ddd;
             border-radius: 10px;
             display: flex;
@@ -175,6 +176,28 @@
             text-align: center;
             color: #888;
             font-size: 16px;
+            padding: 20px;
+        }
+        
+        .test-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .test-btn {
+            padding: 8px 15px;
+            background-color: #f0f8ff;
+            border: 1px solid #2575fc;
+            border-radius: 5px;
+            color: #2575fc;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .test-btn:hover {
+            background-color: #e1f0ff;
         }
         
         .instructions {
@@ -216,30 +239,65 @@
             border-top: 1px solid #eee;
             margin-top: 30px;
         }
+        
+        .warning {
+            background-color: #fff8e1;
+            border: 1px solid #ffd54f;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #5d4037;
+        }
+        
+        .warning h4 {
+            color: #e65100;
+            margin-bottom: 8px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>QR Code Generator</h1>
-            <p>မြန်မာလို - QR Code ထုတ်ယူပြီး PNG ပုံအဖြစ်သိမ်းဆည်းနိုင်ပါသည်</p>
+            <h1>QR Code Generator (မြန်မာစာအတွက်)</h1>
+            <p>မြန်မာစာ QR Code ထုတ်ယူပြီး PNG ပုံအဖြစ်သိမ်းဆည်းနိုင်ပါသည်</p>
         </header>
         
         <div class="main-content">
             <div class="input-section">
+                <div class="warning">
+                    <h4>အရေးကြီးသတိပေးချက်</h4>
+                    <p>မြန်မာစာ QR Code အတွက် QR Code Scanner App တစ်ချို့က UTF-8 encoding ကိုသာ အသိအမှတ်ပြုပါသည်။ ပုံမှန်အားဖြင့် မြန်မာစာမပါတဲ့ QR Code Scanner တွေမှာ မမှန်နိုင်ပါ။</p>
+                </div>
+                
                 <div class="form-group">
-                    <label for="qr-text">QR Code အတွက်စာ/လင့် (URL/Text)</label>
-                    <textarea id="qr-text" placeholder="ဒီနေရာမှာ QR Code အတွက်လိုချင်တဲ့စာ (သို့) လင့်ကိုရိုက်ထည့်ပါ...">https://example.com</textarea>
+                    <label for="qr-text">QR Code အတွက် မြန်မာစာ / URL / စာ</label>
+                    <textarea id="qr-text" placeholder="ဒီနေရာမှာ QR Code အတွက် မြန်မာစာ (သို့) လင့်ကိုရိုက်ထည့်ပါ...">မင်္ဂလာပါ၊ မြန်မာစာ QR Code စမ်းသပ်ခြင်း</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="qr-type">QR Code အမျိုးအစား</label>
+                    <select id="qr-type">
+                        <option value="utf8">မြန်မာစာ (UTF-8)</option>
+                        <option value="url">ဝဘ်ဆိုဒ်လိပ်စာ (URL)</option>
+                        <option value="text">အင်္ဂလိပ်စာ (Text)</option>
+                    </select>
                 </div>
                 
                 <div class="form-group">
                     <label for="qr-size">QR Code အရွယ်အစား</label>
                     <select id="qr-size">
-                        <option value="128">128x128 (သေးငယ်)</option>
-                        <option value="256" selected>256x256 (ပုံမှန်)</option>
-                        <option value="400">400x400 (ကြီး)</option>
-                        <option value="512">512x512 (အကြီးဆုံး)</option>
+                        <option value="200">200x200</option>
+                        <option value="250" selected>250x250</option>
+                        <option value="300">300x300</option>
+                        <option value="350">350x350</option>
                     </select>
+                </div>
+                
+                <div class="test-buttons">
+                    <div class="test-btn" onclick="setText('မင်္ဂလာပါ၊ ကျေးဇူးတင်ပါတယ်။')">မင်္ဂလာပါ</div>
+                    <div class="test-btn" onclick="setText('ကြက်ဥဈေးနှုန်း - ၂၅၀၀ကျပ်')">ကြက်ဥဈေး</div>
+                    <div class="test-btn" onclick="setText('ဖုန်း - ၀၉၇၉၁၂၃၄၅၆၇')">ဖုန်းနံပါတ်</div>
+                    <div class="test-btn" onclick="setText('https://myanmar.wikipedia.org')">မြန်မာဝီကီ</div>
                 </div>
                 
                 <div class="buttons">
@@ -259,39 +317,54 @@
                     </div>
                 </div>
                 
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div id="qr-info" style="color: #666; font-size: 14px; margin-top: 10px;">
+                        QR Code မထုတ်ရသေးပါ
+                    </div>
+                </div>
+                
                 <div class="instructions">
-                    <h3>အသုံးပြုနည်း</h3>
+                    <h3>မြန်မာစာ QR Code အတွက် အကြံပြုချက်များ</h3>
                     <ul>
-                        <li>အပေါ်ဆုံးအကွက်ထဲတွင် QR Code ထုတ်လိုသော စာ (သို့) လိပ်စာကို ရိုက်ထည့်ပါ</li>
-                        <li>QR Code အရွယ်အစားကို ရွေးချယ်ပါ</li>
-                        <li>"QR Code ထုတ်ပါ" ခလုတ်ကို နှိပ်ပါ</li>
-                        <li>Preview တွင် QR Code ပေါ်လာပါမည်</li>
-                        <li>"PNG ပုံသိမ်းပါ" ခလုတ်ဖြင့် ပုံကို သိမ်းဆည်းနိုင်ပါသည်</li>
+                        <li>မြန်မာစာ QR Code ဖတ်ရန် <strong>UTF-8 ကိုအသိအမှတ်ပြုသော QR Scanner</strong> သုံးပါ</li>
+                        <li>Android ဖုန်းများအတွက် "QR & Barcode Scanner" app ကိုအကြံပြုပါသည်</li>
+                        <li>iPhone များအတွက် default camera app ကလည်း မြန်မာစာဖတ်နိုင်ပါသည်</li>
+                        <li>QR Code အရွယ်အစားကြီးလေ ဖတ်ရလွယ်လေဖြစ်သည်</li>
+                        <li>မြန်မာစာရှည်ရင် QR Code အရွယ်အစားကြီးကြီးထုတ်ပါ</li>
                     </ul>
                 </div>
             </div>
         </div>
         
         <footer>
-            <p>QR Code Generator - Developed for Myanmar Users</p>
-            <p>© 2023 | လွယ်ကူရှင်းလင်းသော QR Code ထုတ်ယူသည့် ကိရိယာ</p>
+            <p>မြန်မာစာ QR Code Generator - Developed for Myanmar Users</p>
+            <p>© 2023 | မြန်မာစာပါ QR Code များ လွယ်ကူစွာထုတ်လုပ်နိုင်ရန်</p>
         </footer>
     </div>
 
     <script>
         // Elements
         const qrTextElement = document.getElementById('qr-text');
+        const qrTypeElement = document.getElementById('qr-type');
         const qrSizeElement = document.getElementById('qr-size');
         const generateBtn = document.getElementById('generate-btn');
         const downloadBtn = document.getElementById('download-btn');
         const qrcodeDiv = document.getElementById('qrcode');
+        const qrInfoElement = document.getElementById('qr-info');
         
-        // QR Code instance
-        let qrcode = null;
+        // Current QR Code data
+        let currentQRCodeUrl = null;
+        let currentQRText = '';
         
-        // Generate QR Code function
+        // Set text for testing
+        function setText(text) {
+            qrTextElement.value = text;
+        }
+        
+        // Generate QR Code function with UTF-8 support
         function generateQRCode() {
             const qrText = qrTextElement.value.trim();
+            const qrType = qrTypeElement.value;
             const qrSize = parseInt(qrSizeElement.value);
             
             if (!qrText) {
@@ -300,45 +373,80 @@
             }
             
             // Clear previous QR Code
-            qrcodeDiv.innerHTML = '';
+            qrcodeDiv.innerHTML = '<div class="placeholder-text">QR Code ထုတ်နေသည်...</div>';
             
+            // Store current text
+            currentQRText = qrText;
+            
+            // Create QR Code with proper encoding
             try {
-                // Create new QR Code
-                qrcode = new QRCode(qrcodeDiv, {
+                // Clear previous QR Code
+                qrcodeDiv.innerHTML = '';
+                
+                // Create QR Code with proper options for Myanmar text
+                const qrCodeOptions = {
                     text: qrText,
                     width: qrSize,
                     height: qrSize,
                     colorDark: "#000000",
                     colorLight: "#ffffff",
-                    correctLevel: QRCode.CorrectLevel.H
-                });
+                    correctLevel: QRCode.CorrectLevel.H, // High error correction for Myanmar text
+                    useUTF8: true // Important for Myanmar text
+                };
+                
+                // Generate QR Code
+                new QRCode(qrcodeDiv, qrCodeOptions);
+                
+                // Update info
+                const textLength = qrText.length;
+                const myanmarChars = (qrText.match(/[\u1000-\u109F]/g) || []).length;
+                
+                qrInfoElement.innerHTML = `
+                    <div>စာလုံးရေ: ${textLength} (မြန်မာစာလုံး: ${myanmarChars})</div>
+                    <div>အရွယ်အစား: ${qrSize}x${qrSize} pixels</div>
+                    <div>အမျိုးအစား: ${qrType === 'utf8' ? 'မြန်မာစာ (UTF-8)' : qrType === 'url' ? 'ဝဘ်ဆိုဒ်လိပ်စာ' : 'အင်္ဂလိပ်စာ'}</div>
+                `;
                 
                 // Enable download button
                 downloadBtn.disabled = false;
                 
+                // Get the canvas for download
+                setTimeout(() => {
+                    const canvas = qrcodeDiv.querySelector('canvas');
+                    if (canvas) {
+                        currentQRCodeUrl = canvas.toDataURL('image/png');
+                    }
+                }, 100);
+                
             } catch (error) {
                 console.error("QR Code ထုတ်ယူရာတွင် အမှားတစ်ခုဖြစ်နေပါသည်:", error);
+                qrcodeDiv.innerHTML = '<div class="placeholder-text" style="color: red;">QR Code ထုတ်ယူရာတွင် အမှားတစ်ခုဖြစ်နေပါသည်။</div>';
                 alert('QR Code ထုတ်ယူရာတွင် အမှားတစ်ခုဖြစ်နေပါသည်။');
             }
         }
         
         // Download QR Code as PNG
         function downloadQRCode() {
-            if (!qrcode) {
+            if (!currentQRCodeUrl) {
                 alert('ဦးစွာ QR Code ထုတ်ယူပါ။');
-                return;
-            }
-            
-            const canvas = qrcodeDiv.querySelector('canvas');
-            if (!canvas) {
-                alert('QR Code ပုံမရှိသေးပါ။');
                 return;
             }
             
             // Create download link
             const link = document.createElement('a');
-            link.download = `qr-code-${Date.now()}.png`;
-            link.href = canvas.toDataURL('image/png');
+            
+            // Create filename with first few characters
+            let filename = 'qr-code';
+            if (currentQRText) {
+                // Take first 20 chars for filename (remove special chars)
+                const cleanText = currentQRText.replace(/[^a-zA-Z0-9\u1000-\u109F]/g, ' ').substring(0, 20).trim();
+                if (cleanText) {
+                    filename = cleanText + '-qr-code';
+                }
+            }
+            
+            link.download = `${filename}-${Date.now()}.png`;
+            link.href = currentQRCodeUrl;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -356,6 +464,20 @@
         // Generate QR Code when Enter is pressed in textarea
         qrTextElement.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && e.ctrlKey) {
+                generateQRCode();
+            }
+        });
+        
+        // Auto-generate when type is changed
+        qrTypeElement.addEventListener('change', function() {
+            if (qrTextElement.value.trim()) {
+                generateQRCode();
+            }
+        });
+        
+        // Auto-generate when size is changed (if QR code already exists)
+        qrSizeElement.addEventListener('change', function() {
+            if (!downloadBtn.disabled) {
                 generateQRCode();
             }
         });
